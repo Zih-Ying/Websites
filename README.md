@@ -1,7 +1,7 @@
 # Websites
-Here are some websites I made. Currently, they are built under the frame of R package (e.g. shiny, bookdown), and deployed on shinyapps.io or bookdown.org.
+Here are some websites I made. Currently, they are built under the frame of R package (e.g. `shiny`, `bookdown`, `rmarkdown`), and deployed on shinyapps.io or bookdown.org.
 
-這裡會放上我製作的網站，目前都使用R套件的框架來製作(例如bookdown, shiny)，並發布於shinyapps.io或是bookdown.org
+這裡會放上我製作的網站，目前都使用R套件的框架來製作(例如`shiny`, `bookdown`, `rmarkdown`)，並發布於shinyapps.io或是bookdown.org
 
 ___
 # Content
@@ -9,6 +9,13 @@ ___
   <summary>[Bookdown] Time Series</b> (112-1 時間數列分析) Visit it at https://bookdown.org/k408651759/bookdown-TS/ :D</summary>
   <br>
   Personal note for <i>Time Series</i> course.
+  <hr>
+</details>
+<br>
+<details>
+  <summary>[Bookdown] Recommender System</b> (112-1 推薦系統) Visit it at https://bookdown.org/k408651759/bookdown-RS/ -w-</summary>
+  <br>
+  Personal note for <i>Recommender System</i> course.
   <hr>
 </details>
 <br>
