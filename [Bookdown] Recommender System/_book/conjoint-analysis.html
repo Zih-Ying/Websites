@@ -1,0 +1,928 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Sec 1 Conjoint Analysis | Recommender System</title>
+  <meta name="description" content="Sec 1 Conjoint Analysis | Recommender System" />
+  <meta name="generator" content="bookdown 0.35 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Sec 1 Conjoint Analysis | Recommender System" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Sec 1 Conjoint Analysis | Recommender System" />
+  
+  
+  
+
+<meta name="author" content="ZIH-YING, LI" />
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="problem.html"/>
+<link rel="next" href="self-learning.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script src="libs/htmlwidgets-1.6.2/htmlwidgets.js"></script>
+<link href="libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet" />
+<script src="libs/datatables-binding-0.30/datatables.js"></script>
+<link href="libs/dt-core-1.13.4/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="libs/dt-core-1.13.4/css/jquery.dataTables.extra.css" rel="stylesheet" />
+<script src="libs/dt-core-1.13.4/js/jquery.dataTables.min.js"></script>
+<link href="libs/nouislider-7.0.10/jquery.nouislider.min.css" rel="stylesheet" />
+<script src="libs/nouislider-7.0.10/jquery.nouislider.min.js"></script>
+<link href="libs/selectize-0.12.0/selectize.bootstrap3.css" rel="stylesheet" />
+<script src="libs/selectize-0.12.0/selectize.min.js"></script>
+<link href="libs/crosstalk-1.2.1/css/crosstalk.min.css" rel="stylesheet" />
+<script src="libs/crosstalk-1.2.1/js/crosstalk.min.js"></script>
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    background-color: #2a211c;
+    color: #bdae9d;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #bdae9d;  padding-left: 4px; }
+div.sourceCode
+  { color: #bdae9d; background-color: #2a211c; }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ffff00; } /* Alert */
+code span.an { color: #0066ff; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { } /* Attribute */
+code span.bn { color: #44aa43; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #43a8ed; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #049b0a; } /* Char */
+code span.cn { } /* Constant */
+code span.co { color: #0066ff; font-weight: bold; font-style: italic; } /* Comment */
+code span.do { color: #0066ff; font-style: italic; } /* Documentation */
+code span.dt { text-decoration: underline; } /* DataType */
+code span.dv { color: #44aa43; } /* DecVal */
+code span.er { color: #ffff00; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #44aa43; } /* Float */
+code span.fu { color: #ff9358; font-weight: bold; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #0066ff; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #43a8ed; font-weight: bold; } /* Keyword */
+code span.op { } /* Operator */
+code span.pp { font-weight: bold; } /* Preprocessor */
+code span.sc { color: #049b0a; } /* SpecialChar */
+code span.ss { color: #049b0a; } /* SpecialString */
+code span.st { color: #049b0a; } /* String */
+code span.va { } /* Variable */
+code span.vs { color: #049b0a; } /* VerbatimString */
+code span.wa { color: #ffff00; font-weight: bold; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Recommender System</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>About</a></li>
+<li class="chapter" data-level="" data-path="note.html"><a href="note.html"><i class="fa fa-check"></i>Note</a></li>
+<li class="chapter" data-level="" data-path="problem.html"><a href="problem.html"><i class="fa fa-check"></i>Problem</a></li>
+<li class="part"><span><b>I Conjoint Analysis</b></span></li>
+<li class="chapter" data-level="1" data-path="conjoint-analysis.html"><a href="conjoint-analysis.html"><i class="fa fa-check"></i><b>1</b> Conjoint Analysis</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="conjoint-analysis.html"><a href="conjoint-analysis.html#example"><i class="fa fa-check"></i><b>1.1</b> Example</a>
+<ul>
+<li class="chapter" data-level="1.1.1" data-path="conjoint-analysis.html"><a href="conjoint-analysis.html#preprocess"><i class="fa fa-check"></i><b>1.1.1</b> Preprocess</a></li>
+<li class="chapter" data-level="1.1.2" data-path="conjoint-analysis.html"><a href="conjoint-analysis.html#compute-part-worth"><i class="fa fa-check"></i><b>1.1.2</b> Compute part-worth</a></li>
+<li class="chapter" data-level="1.1.3" data-path="conjoint-analysis.html"><a href="conjoint-analysis.html#compute-relative-importance"><i class="fa fa-check"></i><b>1.1.3</b> Compute relative importance</a></li>
+<li class="chapter" data-level="1.1.4" data-path="conjoint-analysis.html"><a href="conjoint-analysis.html#output"><i class="fa fa-check"></i><b>1.1.4</b> Output</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="self-learning.html"><a href="self-learning.html"><i class="fa fa-check"></i><b>2</b> Self-learning</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="self-learning.html"><a href="self-learning.html#enter-new-ranking"><i class="fa fa-check"></i><b>2.1</b> Enter new ranking</a></li>
+<li class="chapter" data-level="2.2" data-path="self-learning.html"><a href="self-learning.html#add-interaction"><i class="fa fa-check"></i><b>2.2</b> Add interaction</a></li>
+<li class="chapter" data-level="2.3" data-path="self-learning.html"><a href="self-learning.html#rewrite-spine_chart.r"><i class="fa fa-check"></i><b>2.3</b> Rewrite spine_chart.R</a></li>
+</ul></li>
+<li class="part"><span><b>II Association Rule</b></span></li>
+<li class="chapter" data-level="3" data-path="association-rule.html"><a href="association-rule.html"><i class="fa fa-check"></i><b>3</b> Association Rule</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="association-rule.html"><a href="association-rule.html#evaluation-metrics"><i class="fa fa-check"></i><b>3.1</b> Evaluation Metrics</a></li>
+<li class="chapter" data-level="3.2" data-path="association-rule.html"><a href="association-rule.html#example-dvd"><i class="fa fa-check"></i><b>3.2</b> Example: DVD</a>
+<ul>
+<li class="chapter" data-level="3.2.1" data-path="association-rule.html"><a href="association-rule.html#prepare-data"><i class="fa fa-check"></i><b>3.2.1</b> Prepare data</a></li>
+<li class="chapter" data-level="3.2.2" data-path="association-rule.html"><a href="association-rule.html#mining-rules"><i class="fa fa-check"></i><b>3.2.2</b> Mining rules</a></li>
+<li class="chapter" data-level="3.2.3" data-path="association-rule.html"><a href="association-rule.html#by-apriori-get-rules"><i class="fa fa-check"></i><b>3.2.3</b> By Apriori get rules</a></li>
+<li class="chapter" data-level="3.2.4" data-path="association-rule.html"><a href="association-rule.html#by-eclat-equivalence-class-clustering-and-bottom-up-lattice-traversal."><i class="fa fa-check"></i><b>3.2.4</b> By Eclat: Equivalence Class Clustering and bottom-up Lattice Traversal.</a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="association-rule.html"><a href="association-rule.html#example-income"><i class="fa fa-check"></i><b>3.3</b> Example: Income</a>
+<ul>
+<li class="chapter" data-level="3.3.1" data-path="association-rule.html"><a href="association-rule.html#IFP-ex"><i class="fa fa-check"></i><b>3.3.1</b> explore data</a></li>
+<li class="chapter" data-level="3.3.2" data-path="association-rule.html"><a href="association-rule.html#get-rules-with-apriori"><i class="fa fa-check"></i><b>3.3.2</b> get rules with apriori</a></li>
+</ul></li>
+<li class="chapter" data-level="3.4" data-path="association-rule.html"><a href="association-rule.html#處理多餘規則-example-groceries"><i class="fa fa-check"></i><b>3.4</b> [處理多餘規則] Example: Groceries</a>
+<ul>
+<li class="chapter" data-level="3.4.1" data-path="association-rule.html"><a href="association-rule.html#基本處理"><i class="fa fa-check"></i><b>3.4.1</b> 基本處理</a></li>
+<li class="chapter" data-level="3.4.2" data-path="association-rule.html"><a href="association-rule.html#處理冗贅的規則"><i class="fa fa-check"></i><b>3.4.2</b> 處理冗贅的規則</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="self-learning-1.html"><a href="self-learning-1.html"><i class="fa fa-check"></i><b>4</b> Self-learning</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="self-learning-1.html"><a href="self-learning-1.html#check-details-of-income-data-set"><i class="fa fa-check"></i><b>4.1</b> check details of <code>Income</code> data set</a></li>
+<li class="chapter" data-level="4.2" data-path="self-learning-1.html"><a href="self-learning-1.html#compare-different-grouping-regroup-income-into-2-levels"><i class="fa fa-check"></i><b>4.2</b> [compare different grouping] regroup income into 2 levels</a>
+<ul>
+<li class="chapter" data-level="4.2.1" data-path="self-learning-1.html"><a href="self-learning-1.html#explore-data"><i class="fa fa-check"></i><b>4.2.1</b> explore data</a></li>
+<li class="chapter" data-level="4.2.2" data-path="self-learning-1.html"><a href="self-learning-1.html#explore-rule"><i class="fa fa-check"></i><b>4.2.2</b> explore rule</a></li>
+</ul></li>
+<li class="chapter" data-level="4.3" data-path="self-learning-1.html"><a href="self-learning-1.html#compare-different-algorithm-mine-rule-of-adultuci-data-set"><i class="fa fa-check"></i><b>4.3</b> [compare different algorithm] mine rule of <code>AdultUCI</code> data set</a>
+<ul>
+<li class="chapter" data-level="4.3.1" data-path="self-learning-1.html"><a href="self-learning-1.html#details-of-data"><i class="fa fa-check"></i><b>4.3.1</b> details of data</a></li>
+<li class="chapter" data-level="4.3.2" data-path="self-learning-1.html"><a href="self-learning-1.html#explore-data-1"><i class="fa fa-check"></i><b>4.3.2</b> explore data</a></li>
+<li class="chapter" data-level="4.3.3" data-path="self-learning-1.html"><a href="self-learning-1.html#explore-rule-1"><i class="fa fa-check"></i><b>4.3.3</b> explore rule</a></li>
+<li class="chapter" data-level="4.3.4" data-path="self-learning-1.html"><a href="self-learning-1.html#conclusion"><i class="fa fa-check"></i><b>4.3.4</b> conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="4.4" data-path="self-learning-1.html"><a href="self-learning-1.html#就診紀錄"><i class="fa fa-check"></i><b>4.4</b> 就診紀錄</a></li>
+<li class="chapter" data-level="4.5" data-path="self-learning-1.html"><a href="self-learning-1.html#早餐店購買紀錄"><i class="fa fa-check"></i><b>4.5</b> 早餐店購買紀錄</a></li>
+<li class="chapter" data-level="4.6" data-path="self-learning-1.html"><a href="self-learning-1.html#groceries-data"><i class="fa fa-check"></i><b>4.6</b> Groceries data</a>
+<ul>
+<li class="chapter" data-level="4.6.1" data-path="self-learning-1.html"><a href="self-learning-1.html#rightarrow-item"><i class="fa fa-check"></i><b>4.6.1</b> ??? <span class="math inline">\(\rightarrow\)</span> item</a></li>
+<li class="chapter" data-level="4.6.2" data-path="self-learning-1.html"><a href="self-learning-1.html#item-rightarrow"><i class="fa fa-check"></i><b>4.6.2</b> item <span class="math inline">\(\rightarrow\)</span> ???</a></li>
+</ul></li>
+</ul></li>
+<li class="part"><span><b>III Collaborative filtering</b></span></li>
+<li class="chapter" data-level="5" data-path="collaborative-filtering.html"><a href="collaborative-filtering.html"><i class="fa fa-check"></i><b>5</b> Collaborative filtering</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="collaborative-filtering.html"><a href="collaborative-filtering.html#methods-for-realratingmatrix-class"><i class="fa fa-check"></i><b>5.1</b> Methods for “realRatingMatrix” Class</a></li>
+<li class="chapter" data-level="5.2" data-path="collaborative-filtering.html"><a href="collaborative-filtering.html#compare-the-storage-sizes"><i class="fa fa-check"></i><b>5.2</b> Compare the storage sizes</a></li>
+<li class="chapter" data-level="5.3" data-path="collaborative-filtering.html"><a href="collaborative-filtering.html#computie-similarity-matrix"><i class="fa fa-check"></i><b>5.3</b> Computie Similarity Matrix</a></li>
+<li class="chapter" data-level="5.4" data-path="collaborative-filtering.html"><a href="collaborative-filtering.html#recommender-model"><i class="fa fa-check"></i><b>5.4</b> Recommender Model</a></li>
+<li class="chapter" data-level="5.5" data-path="collaborative-filtering.html"><a href="collaborative-filtering.html#exploratory-data-analysis"><i class="fa fa-check"></i><b>5.5</b> Exploratory Data Analysis</a>
+<ul>
+<li class="chapter" data-level="5.5.1" data-path="collaborative-filtering.html"><a href="collaborative-filtering.html#rating"><i class="fa fa-check"></i><b>5.5.1</b> Rating</a></li>
+<li class="chapter" data-level="5.5.2" data-path="collaborative-filtering.html"><a href="collaborative-filtering.html#movie-views"><i class="fa fa-check"></i><b>5.5.2</b> Movie views</a></li>
+<li class="chapter" data-level="5.5.3" data-path="collaborative-filtering.html"><a href="collaborative-filtering.html#average-ratings"><i class="fa fa-check"></i><b>5.5.3</b> Average ratings</a></li>
+<li class="chapter" data-level="5.5.4" data-path="collaborative-filtering.html"><a href="collaborative-filtering.html#rating-matrix"><i class="fa fa-check"></i><b>5.5.4</b> Rating Matrix</a></li>
+<li class="chapter" data-level="5.5.5" data-path="collaborative-filtering.html"><a href="collaborative-filtering.html#normalize"><i class="fa fa-check"></i><b>5.5.5</b> Normalize</a></li>
+<li class="chapter" data-level="5.5.6" data-path="collaborative-filtering.html"><a href="collaborative-filtering.html#binarization"><i class="fa fa-check"></i><b>5.5.6</b> Binarization</a></li>
+</ul></li>
+<li class="chapter" data-level="5.6" data-path="collaborative-filtering.html"><a href="collaborative-filtering.html#rating-example-movie"><i class="fa fa-check"></i><b>5.6</b> [Rating] Example: Movie</a>
+<ul>
+<li class="chapter" data-level="5.6.1" data-path="collaborative-filtering.html"><a href="collaborative-filtering.html#IBCF"><i class="fa fa-check"></i><b>5.6.1</b> [Rating] Item-based Collaborative Filtering</a></li>
+<li class="chapter" data-level="5.6.2" data-path="collaborative-filtering.html"><a href="collaborative-filtering.html#UBCF"><i class="fa fa-check"></i><b>5.6.2</b> [Rating] User-based Collaborative Filtering</a></li>
+</ul></li>
+<li class="chapter" data-level="5.7" data-path="collaborative-filtering.html"><a href="collaborative-filtering.html#binary-example-movie"><i class="fa fa-check"></i><b>5.7</b> [Binary] Example: Movie</a>
+<ul>
+<li class="chapter" data-level="5.7.1" data-path="collaborative-filtering.html"><a href="collaborative-filtering.html#binary-item-based-collaborative-filtering"><i class="fa fa-check"></i><b>5.7.1</b> [Binary] Item-based Collaborative Filtering</a></li>
+<li class="chapter" data-level="5.7.2" data-path="collaborative-filtering.html"><a href="collaborative-filtering.html#binary-user-based-collaborative-filtering"><i class="fa fa-check"></i><b>5.7.2</b> [Binary] User-based Collaborative Filtering</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="self-learning-2.html"><a href="self-learning-2.html"><i class="fa fa-check"></i><b>6</b> Self-learning</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="self-learning-2.html"><a href="self-learning-2.html#eda-movielens"><i class="fa fa-check"></i><b>6.1</b> [EDA] MovieLens</a>
+<ul>
+<li class="chapter" data-level="6.1.1" data-path="self-learning-2.html"><a href="self-learning-2.html#get-data"><i class="fa fa-check"></i><b>6.1.1</b> Get data</a></li>
+<li class="chapter" data-level="6.1.2" data-path="self-learning-2.html"><a href="self-learning-2.html#eda"><i class="fa fa-check"></i><b>6.1.2</b> EDA</a></li>
+<li class="chapter" data-level="6.1.3" data-path="self-learning-2.html"><a href="self-learning-2.html#adjust-plot-output"><i class="fa fa-check"></i><b>6.1.3</b> Adjust plot output</a></li>
+<li class="chapter" data-level="6.1.4" data-path="self-learning-2.html"><a href="self-learning-2.html#average-ratings-1"><i class="fa fa-check"></i><b>6.1.4</b> Average Ratings</a></li>
+<li class="chapter" data-level="6.1.5" data-path="self-learning-2.html"><a href="self-learning-2.html#rating-matrix-1"><i class="fa fa-check"></i><b>6.1.5</b> Rating Matrix</a></li>
+<li class="chapter" data-level="6.1.6" data-path="self-learning-2.html"><a href="self-learning-2.html#normalize-1"><i class="fa fa-check"></i><b>6.1.6</b> Normalize</a></li>
+<li class="chapter" data-level="6.1.7" data-path="self-learning-2.html"><a href="self-learning-2.html#binarization-1"><i class="fa fa-check"></i><b>6.1.7</b> Binarization</a></li>
+</ul></li>
+<li class="chapter" data-level="6.2" data-path="self-learning-2.html"><a href="self-learning-2.html#cf-movielens"><i class="fa fa-check"></i><b>6.2</b> [CF] MovieLens</a>
+<ul>
+<li class="chapter" data-level="6.2.1" data-path="self-learning-2.html"><a href="self-learning-2.html#problem1"><i class="fa fa-check"></i><b>6.2.1</b> Use <code>similarity()</code> to recheck Hand-on problem 1</a></li>
+<li class="chapter" data-level="6.2.2" data-path="self-learning-2.html"><a href="self-learning-2.html#similarity-try-using-robust-statistic"><i class="fa fa-check"></i><b>6.2.2</b> Similarity: try using robust statistic</a></li>
+<li class="chapter" data-level="6.2.3" data-path="self-learning-2.html"><a href="self-learning-2.html#why-the-following-code-get-different-results-between-hand-on-problem-2"><i class="fa fa-check"></i><b>6.2.3</b> Why the following code get different results between Hand-on problem 2</a></li>
+</ul></li>
+</ul></li>
+<li class="part"><span><b>IV Final Project</b></span></li>
+<li class="chapter" data-level="7" data-path="final-project.html"><a href="final-project.html"><i class="fa fa-check"></i><b>7</b> Final Project</a></li>
+<li class="divider"></li>
+<li><a href="./">by ZIH-YING, LI</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Recommender System</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="conjoint-analysis" class="section level1 hasAnchor" number="1">
+<h1><span class="header-section-number">Sec 1</span> Conjoint Analysis<a href="conjoint-analysis.html#conjoint-analysis" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p><em>聯合分析 (Conjoint Analysis)</em> 或稱<em>偏好分析</em>，常用於社會科學或是市場分析等，基於特徵組合(產品特色)的<strong>排名</strong>，可以幫助我們把特徵組合分解成每個<strong>單獨特徵的偏好</strong>(i.e. part-worth, 部分價值)。</p>
+<p>不只可以應用於產品 (品質 or 價格)，也可應用於服務 (良好的服務 or 較短的等待時間 or 較低的價格)。
+對於企業來說，準確了解客戶如何評價產品或服務的不同元素意味著產品或服務的部署可以變得更加容易，並且可以在更大程度上進行最佳化</p>
+<br>
+<div class="header-moon">
+<h2>
+Simple Introduction
+</h2>
+</div>
+<p><br></p>
+<ul>
+<li>Example<br />
+有兩個mp3，分別為A: 16MB,運送時間1天；B: 64MB,運送時間1週，偏好哪一個?<br />
+
+<div>
+<ul>
+<li>attr. 1: memory<br />
+</li>
+<li>attr. 2: delivery<br />
+</li>
+</ul>
+</div>
+如果選擇A，表示更強調短運送時間；選擇B則更強調大記憶體</li>
+</ul>
+<hr />
+<ul>
+<li>Relative importance
+<ol style="list-style-type: decimal">
+<li>計算每個個體在各特徵下的偏好範圍(preference <strong>range</strong>)</li>
+<li>計算每個個體在各特徵下的重要比率(importance <strong>ratio</strong>)</li>
+<li>計算個特徵的平均重要性(<strong>average</strong> importance)</li>
+</ol></li>
+</ul>
+<hr />
+<ul>
+<li>part-worth
+<ol style="list-style-type: decimal">
+<li>計算各水準(level)下個體間的平均偏好(<strong>average</strong> preference)</li>
+<li><strong>標準化</strong>至<span class="math inline">\(\mu=0\)</span></li>
+</ol></li>
+</ul>
+<hr />
+<ul>
+<li>Use linear regression<br />
+<span class="math display">\[Ranking=\mu+\beta_1Attr_1+\beta_2Attr_2\]</span>
+<ul>
+<li><span class="math inline">\(\beta\)</span>表示part-worth，所有類別的加總須為0<br />
+</li>
+<li>if <span class="math inline">\(Attr_i\)</span> 只有兩類，則<span class="math display">\[relative\:importance=\pm\beta_i/\sum \pm\beta_i\]</span>
+假設<span class="math inline">\(\beta_1=2\)</span>，<span class="math inline">\(\beta_2=0.5\)</span>，則<span class="math inline">\(\sum \pm\beta_i=4+1=5\)</span><br />
+memory的relative importance<span class="math inline">\(=4/5=80\%\)</span><br />
+delivery的relative importance<span class="math inline">\(=1/5=20\%\)</span></li>
+</ul></li>
+</ul>
+<div id="example" class="section level2 hasAnchor" number="1.1">
+<h2><span class="header-section-number">1.1</span> Example<a href="conjoint-analysis.html#example" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="preprocess" class="section level3 hasAnchor" number="1.1.1">
+<h3><span class="header-section-number">1.1.1</span> Preprocess<a href="conjoint-analysis.html#preprocess" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<ol style="list-style-type: decimal">
+<li>Read data</li>
+</ol>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="conjoint-analysis.html#cb2-1" tabindex="-1"></a>conjoint.data.frame <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;data/mobile_services_ranking.csv&quot;</span>)</span>
+<span id="cb2-2"><a href="conjoint-analysis.html#cb2-2" tabindex="-1"></a><span class="fu">head</span>(conjoint.data.frame, <span class="dv">3</span>) <span class="sc">|&gt;</span> knitr<span class="sc">::</span><span class="fu">kable</span>()</span></code></pre></div>
+<table>
+<colgroup>
+<col width="14%" />
+<col width="8%" />
+<col width="8%" />
+<col width="8%" />
+<col width="13%" />
+<col width="12%" />
+<col width="14%" />
+<col width="11%" />
+<col width="8%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">brand</th>
+<th align="left">startup</th>
+<th align="left">monthly</th>
+<th align="left">service</th>
+<th align="left">retail</th>
+<th align="left">apple</th>
+<th align="left">samsung</th>
+<th align="left">google</th>
+<th align="right">ranking</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">“AT&amp;T”</td>
+<td align="left">“$100”</td>
+<td align="left">“$100”</td>
+<td align="left">“4G NO”</td>
+<td align="left">“Retail NO”</td>
+<td align="left">“Apple NO”</td>
+<td align="left">“Samsung NO”</td>
+<td align="left">“Nexus NO”</td>
+<td align="right">11</td>
+</tr>
+<tr class="even">
+<td align="left">“Verizon”</td>
+<td align="left">“$300”</td>
+<td align="left">“$100”</td>
+<td align="left">“4G NO”</td>
+<td align="left">“Retail YES”</td>
+<td align="left">“Apple YES”</td>
+<td align="left">“Samsung YES”</td>
+<td align="left">“Nexus NO”</td>
+<td align="right">12</td>
+</tr>
+<tr class="odd">
+<td align="left">“US Cellular”</td>
+<td align="left">“$400”</td>
+<td align="left">“$200”</td>
+<td align="left">“4G NO”</td>
+<td align="left">“Retail NO”</td>
+<td align="left">“Apple NO”</td>
+<td align="left">“Samsung YES”</td>
+<td align="left">“Nexus NO”</td>
+<td align="right">9</td>
+</tr>
+</tbody>
+</table>
+<ol start="2" style="list-style-type: decimal">
+<li>Fit linear model using main effects only (no interaction terms)</li>
+</ol>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="conjoint-analysis.html#cb3-1" tabindex="-1"></a>main.effects.model <span class="ot">&lt;-</span> {ranking <span class="sc">~</span> brand <span class="sc">+</span> startup <span class="sc">+</span> monthly <span class="sc">+</span> service <span class="sc">+</span> </span>
+<span id="cb3-2"><a href="conjoint-analysis.html#cb3-2" tabindex="-1"></a>  retail <span class="sc">+</span> apple <span class="sc">+</span> samsung <span class="sc">+</span> google}</span>
+<span id="cb3-3"><a href="conjoint-analysis.html#cb3-3" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="conjoint-analysis.html#cb3-4" tabindex="-1"></a>main.effects.model.fit <span class="ot">&lt;-</span> <span class="fu">lm</span>(main.effects.model, <span class="at">data=</span>conjoint.data.frame)</span>
+<span id="cb3-5"><a href="conjoint-analysis.html#cb3-5" tabindex="-1"></a><span class="fu">summary</span>(main.effects.model.fit)<span class="sc">$</span>coef <span class="sc">|&gt;</span> <span class="fu">round</span>(<span class="dv">2</span>) <span class="sc">|&gt;</span> knitr<span class="sc">::</span><span class="fu">kable</span>()</span></code></pre></div>
+<table>
+<colgroup>
+<col width="30%" />
+<col width="13%" />
+<col width="16%" />
+<col width="11%" />
+<col width="27%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left"></th>
+<th align="right">Estimate</th>
+<th align="right">Std. Error</th>
+<th align="right">t value</th>
+<th align="right">Pr(&gt;|t|)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">(Intercept)</td>
+<td align="right">11.12</td>
+<td align="right">0.48</td>
+<td align="right">22.98</td>
+<td align="right">0.03</td>
+</tr>
+<tr class="even">
+<td align="left">brand”T-Mobile”</td>
+<td align="right">-0.25</td>
+<td align="right">0.35</td>
+<td align="right">-0.71</td>
+<td align="right">0.61</td>
+</tr>
+<tr class="odd">
+<td align="left">brand”US Cellular”</td>
+<td align="right">0.00</td>
+<td align="right">0.35</td>
+<td align="right">0.00</td>
+<td align="right">1.00</td>
+</tr>
+<tr class="even">
+<td align="left">brand”Verizon”</td>
+<td align="right">0.25</td>
+<td align="right">0.35</td>
+<td align="right">0.71</td>
+<td align="right">0.61</td>
+</tr>
+<tr class="odd">
+<td align="left">startup”$200”</td>
+<td align="right">-0.75</td>
+<td align="right">0.35</td>
+<td align="right">-2.12</td>
+<td align="right">0.28</td>
+</tr>
+<tr class="even">
+<td align="left">startup”$300”</td>
+<td align="right">-0.75</td>
+<td align="right">0.35</td>
+<td align="right">-2.12</td>
+<td align="right">0.28</td>
+</tr>
+<tr class="odd">
+<td align="left">startup”$400”</td>
+<td align="right">-1.50</td>
+<td align="right">0.35</td>
+<td align="right">-4.24</td>
+<td align="right">0.15</td>
+</tr>
+<tr class="even">
+<td align="left">monthly”$200”</td>
+<td align="right">-3.00</td>
+<td align="right">0.35</td>
+<td align="right">-8.49</td>
+<td align="right">0.07</td>
+</tr>
+<tr class="odd">
+<td align="left">monthly”$300”</td>
+<td align="right">-6.25</td>
+<td align="right">0.35</td>
+<td align="right">-17.68</td>
+<td align="right">0.04</td>
+</tr>
+<tr class="even">
+<td align="left">monthly”$400”</td>
+<td align="right">-10.75</td>
+<td align="right">0.35</td>
+<td align="right">-30.41</td>
+<td align="right">0.02</td>
+</tr>
+<tr class="odd">
+<td align="left">service”4G YES”</td>
+<td align="right">3.50</td>
+<td align="right">0.25</td>
+<td align="right">14.00</td>
+<td align="right">0.05</td>
+</tr>
+<tr class="even">
+<td align="left">retail”Retail YES”</td>
+<td align="right">-0.50</td>
+<td align="right">0.25</td>
+<td align="right">-2.00</td>
+<td align="right">0.30</td>
+</tr>
+<tr class="odd">
+<td align="left">apple”Apple YES”</td>
+<td align="right">-0.50</td>
+<td align="right">0.25</td>
+<td align="right">-2.00</td>
+<td align="right">0.30</td>
+</tr>
+<tr class="even">
+<td align="left">samsung”Samsung YES”</td>
+<td align="right">2.25</td>
+<td align="right">0.25</td>
+<td align="right">9.00</td>
+<td align="right">0.07</td>
+</tr>
+<tr class="odd">
+<td align="left">google”Nexus YES”</td>
+<td align="right">1.50</td>
+<td align="right">0.25</td>
+<td align="right">6.00</td>
+<td align="right">0.11</td>
+</tr>
+</tbody>
+</table>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="conjoint-analysis.html#cb4-1" tabindex="-1"></a><span class="fu">sum</span>(<span class="fu">coef</span>(main.effects.model.fit)[<span class="sc">-</span><span class="dv">1</span>])</span></code></pre></div>
+<pre><code>## [1] -16.75</code></pre>
+<ol start="3" style="list-style-type: decimal">
+<li>Store result<br />
+save key list elements of the fitted model as needed for conjoint measures</li>
+</ol>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="conjoint-analysis.html#cb6-1" tabindex="-1"></a>conjoint.results <span class="ot">&lt;-</span> main.effects.model.fit[<span class="fu">c</span>(<span class="st">&quot;contrasts&quot;</span>,<span class="st">&quot;xlevels&quot;</span>,<span class="st">&quot;coefficients&quot;</span>)]</span>
+<span id="cb6-2"><a href="conjoint-analysis.html#cb6-2" tabindex="-1"></a></span>
+<span id="cb6-3"><a href="conjoint-analysis.html#cb6-3" tabindex="-1"></a>conjoint.results<span class="sc">$</span>attributes <span class="ot">&lt;-</span> <span class="fu">names</span>(conjoint.results<span class="sc">$</span>contrasts)</span>
+<span id="cb6-4"><a href="conjoint-analysis.html#cb6-4" tabindex="-1"></a>conjoint.results</span></code></pre></div>
+<pre><code>## $contrasts
+## $contrasts$brand
+## [1] &quot;contr.treatment&quot;
+## 
+## $contrasts$startup
+## [1] &quot;contr.treatment&quot;
+## 
+## $contrasts$monthly
+## [1] &quot;contr.treatment&quot;
+## 
+## $contrasts$service
+## [1] &quot;contr.treatment&quot;
+## 
+## $contrasts$retail
+## [1] &quot;contr.treatment&quot;
+## 
+## $contrasts$apple
+## [1] &quot;contr.treatment&quot;
+## 
+## $contrasts$samsung
+## [1] &quot;contr.treatment&quot;
+## 
+## $contrasts$google
+## [1] &quot;contr.treatment&quot;
+## 
+## 
+## $xlevels
+## $xlevels$brand
+## [1] &quot;\&quot;AT&amp;T\&quot;&quot;        &quot;\&quot;T-Mobile\&quot;&quot;    &quot;\&quot;US Cellular\&quot;&quot; &quot;\&quot;Verizon\&quot;&quot;    
+## 
+## $xlevels$startup
+## [1] &quot;\&quot;$100\&quot;&quot; &quot;\&quot;$200\&quot;&quot; &quot;\&quot;$300\&quot;&quot; &quot;\&quot;$400\&quot;&quot;
+## 
+## $xlevels$monthly
+## [1] &quot;\&quot;$100\&quot;&quot; &quot;\&quot;$200\&quot;&quot; &quot;\&quot;$300\&quot;&quot; &quot;\&quot;$400\&quot;&quot;
+## 
+## $xlevels$service
+## [1] &quot;\&quot;4G NO\&quot;&quot;  &quot;\&quot;4G YES\&quot;&quot;
+## 
+## $xlevels$retail
+## [1] &quot;\&quot;Retail NO\&quot;&quot;  &quot;\&quot;Retail YES\&quot;&quot;
+## 
+## $xlevels$apple
+## [1] &quot;\&quot;Apple NO\&quot;&quot;  &quot;\&quot;Apple YES\&quot;&quot;
+## 
+## $xlevels$samsung
+## [1] &quot;\&quot;Samsung NO\&quot;&quot;  &quot;\&quot;Samsung YES\&quot;&quot;
+## 
+## $xlevels$google
+## [1] &quot;\&quot;Nexus NO\&quot;&quot;  &quot;\&quot;Nexus YES\&quot;&quot;
+## 
+## 
+## $coefficients
+##          (Intercept)      brand&quot;T-Mobile&quot;   brand&quot;US Cellular&quot; 
+##         1.112500e+01        -2.500000e-01        -6.628732e-16 
+##       brand&quot;Verizon&quot;        startup&quot;$200&quot;        startup&quot;$300&quot; 
+##         2.500000e-01        -7.500000e-01        -7.500000e-01 
+##        startup&quot;$400&quot;        monthly&quot;$200&quot;        monthly&quot;$300&quot; 
+##        -1.500000e+00        -3.000000e+00        -6.250000e+00 
+##        monthly&quot;$400&quot;      service&quot;4G YES&quot;   retail&quot;Retail YES&quot; 
+##        -1.075000e+01         3.500000e+00        -5.000000e-01 
+##     apple&quot;Apple YES&quot; samsung&quot;Samsung YES&quot;    google&quot;Nexus YES&quot; 
+##        -5.000000e-01         2.250000e+00         1.500000e+00 
+## 
+## $attributes
+## [1] &quot;brand&quot;   &quot;startup&quot; &quot;monthly&quot; &quot;service&quot; &quot;retail&quot;  &quot;apple&quot;   &quot;samsung&quot;
+## [8] &quot;google&quot;</code></pre>
+</div>
+<div id="compute-part-worth" class="section level3 hasAnchor" number="1.1.2">
+<h3><span class="header-section-number">1.1.2</span> Compute part-worth<a href="conjoint-analysis.html#compute-part-worth" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<ul>
+<li><code>last.part.worth</code>: <span class="math inline">\(-\sum \hat{\beta}\)</span>，
+除了base類別以外的類別的係數，例如顏色分紅黃藍，base為紅色，則<span class="math inline">\(\sum \hat{\beta}=\)</span>黃色加藍色的係數</li>
+<li><code>part.worths</code>: 所有類別的part-worth，加總為0</li>
+</ul>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="conjoint-analysis.html#cb8-1" tabindex="-1"></a>part.worths <span class="ot">&lt;-</span> conjoint.results<span class="sc">$</span>xlevels  <span class="co"># list of same structure as xlevels</span></span>
+<span id="cb8-2"><a href="conjoint-analysis.html#cb8-2" tabindex="-1"></a>end.index.for.coefficient <span class="ot">&lt;-</span> <span class="dv">1</span>  <span class="co"># initialize skipping the intercept</span></span>
+<span id="cb8-3"><a href="conjoint-analysis.html#cb8-3" tabindex="-1"></a>part.worth.vector <span class="ot">&lt;-</span> <span class="cn">NULL</span> <span class="co"># used for accumulation of part worths</span></span>
+<span id="cb8-4"><a href="conjoint-analysis.html#cb8-4" tabindex="-1"></a><span class="cf">for</span>(index.for.attribute <span class="cf">in</span> <span class="fu">seq</span>(<span class="at">along=</span>conjoint.results<span class="sc">$</span>contrasts)) {</span>
+<span id="cb8-5"><a href="conjoint-analysis.html#cb8-5" tabindex="-1"></a>  nlevels <span class="ot">&lt;-</span> <span class="fu">length</span>(<span class="fu">unlist</span>(conjoint.results<span class="sc">$</span>xlevels[index.for.attribute]))</span>
+<span id="cb8-6"><a href="conjoint-analysis.html#cb8-6" tabindex="-1"></a>  begin.index.for.coefficient <span class="ot">&lt;-</span> end.index.for.coefficient <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb8-7"><a href="conjoint-analysis.html#cb8-7" tabindex="-1"></a>  end.index.for.coefficient <span class="ot">&lt;-</span> begin.index.for.coefficient <span class="sc">+</span> nlevels <span class="sc">-</span><span class="dv">2</span></span>
+<span id="cb8-8"><a href="conjoint-analysis.html#cb8-8" tabindex="-1"></a>  last.part.worth <span class="ot">&lt;-</span> <span class="sc">-</span><span class="fu">sum</span>(conjoint.results<span class="sc">$</span>coefficients[begin.index.for.coefficient<span class="sc">:</span>end.index.for.coefficient])</span>
+<span id="cb8-9"><a href="conjoint-analysis.html#cb8-9" tabindex="-1"></a>  part.worths[index.for.attribute] <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="fu">as.numeric</span>(<span class="fu">c</span>(conjoint.results<span class="sc">$</span>coefficients[begin.index.for.coefficient<span class="sc">:</span>end.index.for.coefficient],</span>
+<span id="cb8-10"><a href="conjoint-analysis.html#cb8-10" tabindex="-1"></a>                                                        last.part.worth)))</span>
+<span id="cb8-11"><a href="conjoint-analysis.html#cb8-11" tabindex="-1"></a>  part.worth.vector <span class="ot">&lt;-</span> <span class="fu">c</span>(part.worth.vector,<span class="fu">unlist</span>(part.worths[index.for.attribute]))    </span>
+<span id="cb8-12"><a href="conjoint-analysis.html#cb8-12" tabindex="-1"></a>  } </span>
+<span id="cb8-13"><a href="conjoint-analysis.html#cb8-13" tabindex="-1"></a>conjoint.results<span class="sc">$</span>part.worths <span class="ot">&lt;-</span> part.worths</span></code></pre></div>
+<ul>
+<li><code>seq(along=conjoint.results$contrasts)</code></li>
+</ul>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="conjoint-analysis.html#cb9-1" tabindex="-1"></a><span class="fu">seq</span>(<span class="fu">c</span>(<span class="dv">3</span>,<span class="dv">4</span>))</span>
+<span id="cb9-2"><a href="conjoint-analysis.html#cb9-2" tabindex="-1"></a><span class="do">## [1] 1 2</span></span>
+<span id="cb9-3"><a href="conjoint-analysis.html#cb9-3" tabindex="-1"></a><span class="fu">seq_along</span>(<span class="fu">c</span>(<span class="dv">3</span>,<span class="dv">4</span>))</span>
+<span id="cb9-4"><a href="conjoint-analysis.html#cb9-4" tabindex="-1"></a><span class="do">## [1] 1 2</span></span>
+<span id="cb9-5"><a href="conjoint-analysis.html#cb9-5" tabindex="-1"></a><span class="fu">seq</span>(<span class="at">along=</span><span class="fu">c</span>(<span class="dv">3</span>,<span class="dv">4</span>))</span>
+<span id="cb9-6"><a href="conjoint-analysis.html#cb9-6" tabindex="-1"></a><span class="do">## [1] 1 2</span></span>
+<span id="cb9-7"><a href="conjoint-analysis.html#cb9-7" tabindex="-1"></a></span>
+<span id="cb9-8"><a href="conjoint-analysis.html#cb9-8" tabindex="-1"></a><span class="fu">seq</span>(<span class="dv">5</span>)</span>
+<span id="cb9-9"><a href="conjoint-analysis.html#cb9-9" tabindex="-1"></a><span class="do">## [1] 1 2 3 4 5</span></span>
+<span id="cb9-10"><a href="conjoint-analysis.html#cb9-10" tabindex="-1"></a><span class="fu">seq_along</span>(<span class="dv">5</span>)</span>
+<span id="cb9-11"><a href="conjoint-analysis.html#cb9-11" tabindex="-1"></a><span class="do">## [1] 1</span></span>
+<span id="cb9-12"><a href="conjoint-analysis.html#cb9-12" tabindex="-1"></a><span class="fu">seq</span>(<span class="at">along=</span><span class="dv">5</span>)</span>
+<span id="cb9-13"><a href="conjoint-analysis.html#cb9-13" tabindex="-1"></a><span class="do">## [1] 1</span></span></code></pre></div>
+<ul>
+<li>標準化，讓每個類別的基準值位於0</li>
+</ul>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="conjoint-analysis.html#cb10-1" tabindex="-1"></a>standardize <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {(x <span class="sc">-</span> <span class="fu">mean</span>(x)) <span class="sc">/</span> <span class="fu">sd</span>(x)}</span>
+<span id="cb10-2"><a href="conjoint-analysis.html#cb10-2" tabindex="-1"></a>conjoint.results<span class="sc">$</span>standardized.part.worths <span class="ot">&lt;-</span> <span class="fu">lapply</span>(conjoint.results<span class="sc">$</span>part.worths,standardize)</span>
+<span id="cb10-3"><a href="conjoint-analysis.html#cb10-3" tabindex="-1"></a></span>
+<span id="cb10-4"><a href="conjoint-analysis.html#cb10-4" tabindex="-1"></a><span class="fu">head</span>(part.worths, <span class="dv">3</span>)</span></code></pre></div>
+<pre><code>## $brand
+## [1] -2.500000e-01 -6.628732e-16  2.500000e-01 -2.140445e-15
+## 
+## $startup
+## [1] -0.75 -0.75 -1.50  3.00
+## 
+## $monthly
+## [1]  -3.00  -6.25 -10.75  20.00</code></pre>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="conjoint-analysis.html#cb12-1" tabindex="-1"></a><span class="fu">head</span>(conjoint.results<span class="sc">$</span>standardized.part.worths, <span class="dv">3</span>)</span></code></pre></div>
+<pre><code>## $brand
+## [1] -1.224745e+00 -3.247402e-15  1.224745e+00 -1.048600e-14
+## 
+## $startup
+## [1] -0.3692745 -0.3692745 -0.7385489  1.4770979
+## 
+## $monthly
+## [1] -0.2188703 -0.4559797 -0.7842851  1.4591351</code></pre>
+</div>
+<div id="compute-relative-importance" class="section level3 hasAnchor" number="1.1.3">
+<h3><span class="header-section-number">1.1.3</span> Compute relative importance<a href="conjoint-analysis.html#compute-relative-importance" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<ol style="list-style-type: decimal">
+<li>計算各特徵的全距並加總</li>
+</ol>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="conjoint-analysis.html#cb14-1" tabindex="-1"></a>part.worth.ranges <span class="ot">&lt;-</span> conjoint.results<span class="sc">$</span>contrasts</span>
+<span id="cb14-2"><a href="conjoint-analysis.html#cb14-2" tabindex="-1"></a><span class="cf">for</span>(index.for.attribute <span class="cf">in</span> <span class="fu">seq</span>(<span class="at">along=</span>conjoint.results<span class="sc">$</span>contrasts)) </span>
+<span id="cb14-3"><a href="conjoint-analysis.html#cb14-3" tabindex="-1"></a>  part.worth.ranges[index.for.attribute] <span class="ot">&lt;-</span></span>
+<span id="cb14-4"><a href="conjoint-analysis.html#cb14-4" tabindex="-1"></a>  <span class="fu">dist</span>(<span class="fu">range</span>(conjoint.results<span class="sc">$</span>part.worths[index.for.attribute]))</span>
+<span id="cb14-5"><a href="conjoint-analysis.html#cb14-5" tabindex="-1"></a>conjoint.results<span class="sc">$</span>part.worth.ranges <span class="ot">&lt;-</span> part.worth.ranges</span>
+<span id="cb14-6"><a href="conjoint-analysis.html#cb14-6" tabindex="-1"></a></span>
+<span id="cb14-7"><a href="conjoint-analysis.html#cb14-7" tabindex="-1"></a>sum.part.worth.ranges <span class="ot">&lt;-</span> <span class="fu">sum</span>(<span class="fu">as.numeric</span>(conjoint.results<span class="sc">$</span>part.worth.ranges))</span></code></pre></div>
+<ol start="2" style="list-style-type: decimal">
+<li>計算各特徵的全距占所有特徵的比例</li>
+</ol>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="conjoint-analysis.html#cb15-1" tabindex="-1"></a>attribute.importance <span class="ot">&lt;-</span> conjoint.results<span class="sc">$</span>contrasts</span>
+<span id="cb15-2"><a href="conjoint-analysis.html#cb15-2" tabindex="-1"></a><span class="cf">for</span>(index.for.attribute <span class="cf">in</span> <span class="fu">seq</span>(<span class="at">along=</span>conjoint.results<span class="sc">$</span>contrasts)) </span>
+<span id="cb15-3"><a href="conjoint-analysis.html#cb15-3" tabindex="-1"></a>  attribute.importance[index.for.attribute] <span class="ot">&lt;-</span> </span>
+<span id="cb15-4"><a href="conjoint-analysis.html#cb15-4" tabindex="-1"></a>  (<span class="fu">as.numeric</span>(part.worth.ranges[index.for.attribute])<span class="sc">/</span>sum.part.worth.ranges) <span class="sc">*</span> <span class="dv">100</span></span>
+<span id="cb15-5"><a href="conjoint-analysis.html#cb15-5" tabindex="-1"></a>conjoint.results<span class="sc">$</span>attribute.importance <span class="ot">&lt;-</span> attribute.importance</span>
+<span id="cb15-6"><a href="conjoint-analysis.html#cb15-6" tabindex="-1"></a><span class="fu">data.frame</span>(<span class="at">importance=</span><span class="fu">unlist</span>(attribute.importance)) <span class="sc">|&gt;</span> knitr<span class="sc">::</span><span class="fu">kable</span>()</span></code></pre></div>
+<table>
+<thead>
+<tr class="header">
+<th align="left"></th>
+<th align="right">importance</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">brand</td>
+<td align="right">0.9569378</td>
+</tr>
+<tr class="even">
+<td align="left">startup</td>
+<td align="right">8.6124402</td>
+</tr>
+<tr class="odd">
+<td align="left">monthly</td>
+<td align="right">58.8516746</td>
+</tr>
+<tr class="even">
+<td align="left">service</td>
+<td align="right">13.3971292</td>
+</tr>
+<tr class="odd">
+<td align="left">retail</td>
+<td align="right">1.9138756</td>
+</tr>
+<tr class="even">
+<td align="left">apple</td>
+<td align="right">1.9138756</td>
+</tr>
+<tr class="odd">
+<td align="left">samsung</td>
+<td align="right">8.6124402</td>
+</tr>
+<tr class="even">
+<td align="left">google</td>
+<td align="right">5.7416268</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="output" class="section level3 hasAnchor" number="1.1.4">
+<h3><span class="header-section-number">1.1.4</span> Output<a href="conjoint-analysis.html#output" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="setting" class="section level4 hasAnchor" number="1.1.4.1">
+<h4><span class="header-section-number">1.1.4.1</span> Setting<a href="conjoint-analysis.html#setting" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<ol style="list-style-type: decimal">
+<li>排序 &amp; <span class="math inline">\(R^2\)</span></li>
+</ol>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="conjoint-analysis.html#cb16-1" tabindex="-1"></a>attribute.name <span class="ot">&lt;-</span> <span class="fu">names</span>(conjoint.results<span class="sc">$</span>contrasts)</span>
+<span id="cb16-2"><a href="conjoint-analysis.html#cb16-2" tabindex="-1"></a>attribute.importance <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(attribute.importance)</span>
+<span id="cb16-3"><a href="conjoint-analysis.html#cb16-3" tabindex="-1"></a>temp.frame <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(attribute.name,attribute.importance)</span>
+<span id="cb16-4"><a href="conjoint-analysis.html#cb16-4" tabindex="-1"></a>conjoint.results<span class="sc">$</span>ordered.attributes <span class="ot">&lt;-</span> </span>
+<span id="cb16-5"><a href="conjoint-analysis.html#cb16-5" tabindex="-1"></a>  <span class="fu">as.character</span>(temp.frame[<span class="fu">sort.list</span>(temp.frame<span class="sc">$</span>attribute.importance,<span class="at">decreasing =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb16-6"><a href="conjoint-analysis.html#cb16-6" tabindex="-1"></a>                          <span class="st">&quot;attribute.name&quot;</span>])</span>
+<span id="cb16-7"><a href="conjoint-analysis.html#cb16-7" tabindex="-1"></a><span class="co"># respondent internal consistency added to list structure</span></span>
+<span id="cb16-8"><a href="conjoint-analysis.html#cb16-8" tabindex="-1"></a>conjoint.results<span class="sc">$</span>internal.consistency <span class="ot">&lt;-</span> <span class="fu">summary</span>(main.effects.model.fit)<span class="sc">$</span>r.squared </span></code></pre></div>
+<ol start="2" style="list-style-type: decimal">
+<li>呈現位數</li>
+</ol>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="conjoint-analysis.html#cb17-1" tabindex="-1"></a>print.digits <span class="ot">&lt;-</span> <span class="dv">2</span></span>
+<span id="cb17-2"><a href="conjoint-analysis.html#cb17-2" tabindex="-1"></a><span class="cf">if</span> (print.digits <span class="sc">==</span> <span class="dv">2</span>) </span>
+<span id="cb17-3"><a href="conjoint-analysis.html#cb17-3" tabindex="-1"></a>  pretty.print <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {<span class="fu">sprintf</span>(<span class="st">&quot;%1.2f&quot;</span>,<span class="fu">round</span>(x,<span class="at">digits =</span> <span class="dv">2</span>))} </span>
+<span id="cb17-4"><a href="conjoint-analysis.html#cb17-4" tabindex="-1"></a><span class="cf">if</span> (print.digits <span class="sc">==</span> <span class="dv">3</span>) </span>
+<span id="cb17-5"><a href="conjoint-analysis.html#cb17-5" tabindex="-1"></a>  pretty.print <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {<span class="fu">sprintf</span>(<span class="st">&quot;%1.3f&quot;</span>,<span class="fu">round</span>(x,<span class="at">digits =</span> <span class="dv">3</span>))} </span></code></pre></div>
+<ol start="3" style="list-style-type: decimal">
+<li>顯示欄位名稱 (圖形用的)</li>
+</ol>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="conjoint-analysis.html#cb18-1" tabindex="-1"></a>effect.name.map <span class="ot">&lt;-</span> <span class="cf">function</span>(effect.name) { </span>
+<span id="cb18-2"><a href="conjoint-analysis.html#cb18-2" tabindex="-1"></a>  <span class="cf">if</span>(effect.name<span class="sc">==</span><span class="st">&quot;brand&quot;</span>) <span class="fu">return</span>(<span class="st">&quot;Mobile Service Provider&quot;</span>)</span>
+<span id="cb18-3"><a href="conjoint-analysis.html#cb18-3" tabindex="-1"></a>  <span class="cf">if</span>(effect.name<span class="sc">==</span><span class="st">&quot;startup&quot;</span>) <span class="fu">return</span>(<span class="st">&quot;Start-up Cost&quot;</span>)</span>
+<span id="cb18-4"><a href="conjoint-analysis.html#cb18-4" tabindex="-1"></a>  <span class="cf">if</span>(effect.name<span class="sc">==</span><span class="st">&quot;monthly&quot;</span>) <span class="fu">return</span>(<span class="st">&quot;Monthly Cost&quot;</span>)</span>
+<span id="cb18-5"><a href="conjoint-analysis.html#cb18-5" tabindex="-1"></a>  <span class="cf">if</span>(effect.name<span class="sc">==</span><span class="st">&quot;service&quot;</span>) <span class="fu">return</span>(<span class="st">&quot;Offers 4G Service&quot;</span>)</span>
+<span id="cb18-6"><a href="conjoint-analysis.html#cb18-6" tabindex="-1"></a>  <span class="cf">if</span>(effect.name<span class="sc">==</span><span class="st">&quot;retail&quot;</span>) <span class="fu">return</span>(<span class="st">&quot;Has Nearby Retail Store&quot;</span>)</span>
+<span id="cb18-7"><a href="conjoint-analysis.html#cb18-7" tabindex="-1"></a>  <span class="cf">if</span>(effect.name<span class="sc">==</span><span class="st">&quot;apple&quot;</span>) <span class="fu">return</span>(<span class="st">&quot;Sells Apple Products&quot;</span>)</span>
+<span id="cb18-8"><a href="conjoint-analysis.html#cb18-8" tabindex="-1"></a>  <span class="cf">if</span>(effect.name<span class="sc">==</span><span class="st">&quot;samsung&quot;</span>) <span class="fu">return</span>(<span class="st">&quot;Sells Samsung Products&quot;</span>)</span>
+<span id="cb18-9"><a href="conjoint-analysis.html#cb18-9" tabindex="-1"></a>  <span class="cf">if</span>(effect.name<span class="sc">==</span><span class="st">&quot;google&quot;</span>) <span class="fu">return</span>(<span class="st">&quot;Sells Google/Nexus Products&quot;</span>)</span>
+<span id="cb18-10"><a href="conjoint-analysis.html#cb18-10" tabindex="-1"></a>} </span></code></pre></div>
+<ol start="4" style="list-style-type: decimal">
+<li>options設定 (好像沒差?)</li>
+</ol>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="conjoint-analysis.html#cb19-1" tabindex="-1"></a><span class="co"># # set up sum contrasts for effects coding as needed for conjoint analysis</span></span>
+<span id="cb19-2"><a href="conjoint-analysis.html#cb19-2" tabindex="-1"></a><span class="co"># options(contrasts=c(&quot;contr.sum&quot;,&quot;contr.poly&quot;))</span></span></code></pre></div>
+</div>
+<div id="report" class="section level4 hasAnchor" number="1.1.4.2">
+<h4><span class="header-section-number">1.1.4.2</span> Report<a href="conjoint-analysis.html#report" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="conjoint-analysis.html#cb20-1" tabindex="-1"></a><span class="cf">for</span>(k <span class="cf">in</span> <span class="fu">seq</span>(<span class="at">along=</span>conjoint.results<span class="sc">$</span>ordered.attributes)) {</span>
+<span id="cb20-2"><a href="conjoint-analysis.html#cb20-2" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>,<span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>)</span>
+<span id="cb20-3"><a href="conjoint-analysis.html#cb20-3" tabindex="-1"></a>  <span class="fu">cat</span>(conjoint.results<span class="sc">$</span>ordered.attributes[k],<span class="st">&quot;Levels: &quot;</span>,</span>
+<span id="cb20-4"><a href="conjoint-analysis.html#cb20-4" tabindex="-1"></a>  <span class="fu">unlist</span>(conjoint.results<span class="sc">$</span>xlevels[conjoint.results<span class="sc">$</span>ordered.attributes[k]]))</span>
+<span id="cb20-5"><a href="conjoint-analysis.html#cb20-5" tabindex="-1"></a>  </span>
+<span id="cb20-6"><a href="conjoint-analysis.html#cb20-6" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>,<span class="st">&quot; Part-Worths:  &quot;</span>)</span>
+<span id="cb20-7"><a href="conjoint-analysis.html#cb20-7" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="fu">pretty.print</span>(<span class="fu">unlist</span>(conjoint.results<span class="sc">$</span>part.worths</span>
+<span id="cb20-8"><a href="conjoint-analysis.html#cb20-8" tabindex="-1"></a>    [conjoint.results<span class="sc">$</span>ordered.attributes[k]])))</span>
+<span id="cb20-9"><a href="conjoint-analysis.html#cb20-9" tabindex="-1"></a>    </span>
+<span id="cb20-10"><a href="conjoint-analysis.html#cb20-10" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>,<span class="st">&quot; Standardized Part-Worths:  &quot;</span>)</span>
+<span id="cb20-11"><a href="conjoint-analysis.html#cb20-11" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="fu">pretty.print</span>(<span class="fu">unlist</span>(conjoint.results<span class="sc">$</span>standardized.part.worths</span>
+<span id="cb20-12"><a href="conjoint-analysis.html#cb20-12" tabindex="-1"></a>    [conjoint.results<span class="sc">$</span>ordered.attributes[k]])))  </span>
+<span id="cb20-13"><a href="conjoint-analysis.html#cb20-13" tabindex="-1"></a>    </span>
+<span id="cb20-14"><a href="conjoint-analysis.html#cb20-14" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>,<span class="st">&quot; Attribute Importance:  &quot;</span>)</span>
+<span id="cb20-15"><a href="conjoint-analysis.html#cb20-15" tabindex="-1"></a>  <span class="fu">cat</span>(<span class="fu">pretty.print</span>(<span class="fu">unlist</span>(conjoint.results<span class="sc">$</span>attribute.importance</span>
+<span id="cb20-16"><a href="conjoint-analysis.html#cb20-16" tabindex="-1"></a>    [conjoint.results<span class="sc">$</span>ordered.attributes[k]])))</span>
+<span id="cb20-17"><a href="conjoint-analysis.html#cb20-17" tabindex="-1"></a>  }</span></code></pre></div>
+<pre><code>## 
+##  
+## monthly Levels:  &quot;$100&quot; &quot;$200&quot; &quot;$300&quot; &quot;$400&quot;
+##   Part-Worths:  -3.00 -6.25 -10.75 20.00
+##   Standardized Part-Worths:  -0.22 -0.46 -0.78 1.46
+##   Attribute Importance:  58.85
+##  
+## service Levels:  &quot;4G NO&quot; &quot;4G YES&quot;
+##   Part-Worths:  3.50 -3.50
+##   Standardized Part-Worths:  0.71 -0.71
+##   Attribute Importance:  13.40
+##  
+## startup Levels:  &quot;$100&quot; &quot;$200&quot; &quot;$300&quot; &quot;$400&quot;
+##   Part-Worths:  -0.75 -0.75 -1.50 3.00
+##   Standardized Part-Worths:  -0.37 -0.37 -0.74 1.48
+##   Attribute Importance:  8.61
+##  
+## samsung Levels:  &quot;Samsung NO&quot; &quot;Samsung YES&quot;
+##   Part-Worths:  2.25 -2.25
+##   Standardized Part-Worths:  0.71 -0.71
+##   Attribute Importance:  8.61
+##  
+## google Levels:  &quot;Nexus NO&quot; &quot;Nexus YES&quot;
+##   Part-Worths:  1.50 -1.50
+##   Standardized Part-Worths:  0.71 -0.71
+##   Attribute Importance:  5.74
+##  
+## apple Levels:  &quot;Apple NO&quot; &quot;Apple YES&quot;
+##   Part-Worths:  -0.50 0.50
+##   Standardized Part-Worths:  -0.71 0.71
+##   Attribute Importance:  1.91
+##  
+## retail Levels:  &quot;Retail NO&quot; &quot;Retail YES&quot;
+##   Part-Worths:  -0.50 0.50
+##   Standardized Part-Worths:  -0.71 0.71
+##   Attribute Importance:  1.91
+##  
+## brand Levels:  &quot;AT&amp;T&quot; &quot;T-Mobile&quot; &quot;US Cellular&quot; &quot;Verizon&quot;
+##   Part-Worths:  -0.25 -0.00 0.25 -0.00
+##   Standardized Part-Worths:  -1.22 -0.00 1.22 -0.00
+##   Attribute Importance:  0.96</code></pre>
+</div>
+<div id="plot" class="section level4 hasAnchor" number="1.1.4.3">
+<h4><span class="header-section-number">1.1.4.3</span> Plot<a href="conjoint-analysis.html#plot" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="conjoint-analysis.html#cb22-1" tabindex="-1"></a><span class="fu">source</span>(<span class="st">&quot;R/spine_chart.R&quot;</span>)</span>
+<span id="cb22-2"><a href="conjoint-analysis.html#cb22-2" tabindex="-1"></a><span class="fu">spine.chart</span>(conjoint.results)</span></code></pre></div>
+<p><img src="bookdown-RS_files/figure-html/unnamed-chunk-14-1.png" width="1152" style="display: block; margin: auto;" /></p>
+
+</div>
+</div>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="problem.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="self-learning.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": false,
+"fontsettings": {
+"theme": "night",
+"family": "sans",
+"size": 2
+},
+"edit": null,
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection",
+"scroll_highlight": true
+},
+"info": false
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

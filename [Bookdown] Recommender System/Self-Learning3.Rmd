@@ -1,0 +1,392 @@
+# Self-learning
+## \[EDA] MovieLens
+### Get data
+Download ml-latest-small.zip from the newly released MovieLens for education. Compile a dataset as the one, MovieLense.csv, used by code. 
+
+<ul><li class='downarrow'>列出資料夾中的所有`.csv`檔案，檢視`.csv`檔的欄位名稱及內容</li></ul>
+```{r}
+list.files("data/ml-latest-small")
+
+file.list <- paste0("data/ml-latest-small/", list.files("data/ml-latest-small", pattern = ".csv"))
+lapply(file.list, function(x) head(read.csv(x),1))
+```
+
+裡面會用到的是`movies.csv`和`ratings.csv`，`tag.csv`裡的tag是使用者定義的，因此不考慮；而`movies.csv`裡的genres是從**有限個數**的類別中選出來的。
+
+<ul><li class='downarrow'>
+保留`ratings.csv`中的 userId、rating，和`movies.csv`中的 title、genres，使用`merger`以movieId串聯兩個資料集
+</li></ul>
+```{r}
+rating <- read.csv("data/ml-latest-small/ratings.csv")
+movies <- read.csv("data/ml-latest-small/movies.csv")
+df.merge <- merge(rating[,-4], movies, by="movieId")
+df.merge <- df.merge[order(df.merge$userId),]
+head(df.merge, 3) |> knitr::kable(row.names = F)
+```
+
+___
+
+總共有`r length(unique(movies$movieId))`部電影，所有使用者看過的電影有`r length(unique(rating$movieId))`部，有`r length(unique(movies$movieId))-length(unique(rating$movieId))`部電影沒有被任何使用者看過
+```{r}
+library(dplyr)
+id <- unique(movies$movieId)[!(unique(movies$movieId) %in% unique(rating$movieId))]
+movies %>% filter(movieId %in% id) %>% knitr::kable()
+```
+
+____
+
+但是合併完的資料共有`r length(unique(df.merge$title))`部電影 (以標題計算)，檢視以後發現 id 個數比 title 多，表示有**標題一樣但 id 不一樣**的問題
+```{r results='hold'}
+length(unique(df.merge$movieId))
+length(unique(df.merge$title))
+```
+
+id 比 title 多了 `r length(unique(df.merge$movieId))-length(unique(df.merge$title))` 個，
+第一個方法使用基本的套件，第二個方法使用 `dplyr` 套件，兩種方法找到的不太一樣
+
+* `duplicated`會**剔除第一個然後保留重複的**，所以`!duplicated`會保留第一個
+* `dplyr`以分組後的個數來挑選
+
+```{r}
+# Method 1: base R
+test <- df.merge[!duplicated(df.merge$movieId),c("movieId","title")]
+test[duplicated(test$title),] |> knitr::kable(row.names = F)
+
+# Method 2: dplyr
+library(dplyr)
+tmp <- df.merge %>% 
+  group_by(title) %>%
+  filter(n()>1) %>%
+  select(c("movieId","title"))
+tmp %>% 
+  group_by(movieId) %>%
+  filter(n()==1) %>% 
+  knitr::kable()
+```
+
+* M1: 
+  * 顯示不同 id 但 title 相同的資料
+* M2: 
+  * 沒有"War of the Worlds (2005)"，因為第2步只保留出現過1次的，但它的兩個id都出現超過1次
+  * 有兩個"Eros (2004)"，因為兩個id都只出現一次
+```{r}
+# df.merge[df.merge$title=="Emma (1996)",]
+# df.merge[df.merge$title=="Confessions of a Dangerous Mind (2002)",]
+# df.merge[df.merge$title=="Saturn 3 (1980)",] %>% knitr::kable()
+df.merge[df.merge$title=="Eros (2004)",] %>% knitr::kable(row.names = F)
+tmp <- df.merge[df.merge$title=="War of the Worlds (2005)",] 
+tmp[order(tmp$movieId),] %>% 
+  tail(5) %>%
+  knitr::kable(row.names = F)
+```
+
+可以看到相同片名但不同id是因為類型(genres)不同
+
+___
+
+<ul><li class='downarrow'>資料轉換成矩陣</li></ul>
+***Notice***: 使用`as(df, "realRatingMatrix")`，df的欄位要**按照user, item, rating的順序**
+```{r}
+library(recommenderlab)
+df <- df.merge %>% 
+  select("userId", "title", "rating")
+ratMatr <- as(df, "realRatingMatrix")
+dim(ratMatr)
+```
+
+* 資料包含`r dim(ratMatr)[1]`個使用者、`r dim(ratMatr)[2]`部電影
+* 儲存空間
+  * data.frame: `r object.size(df)` bytes
+  * realRatingMatrix: `r object.size(ratMatr)` bytes
+  * matrix: `r object.size(as(ratMatr, "matrix"))` bytes (是realRatingMatrix的`r object.size(as(MovieLense, "matrix"))/object.size(MovieLense)`倍)
+
+### EDA
+```{r}
+slotNames(ratMatr)
+rat <- as.vector(ratMatr@data)
+```
+
+<ul><li class='downarrow'>評分為0~8，包含小數</li></ul>
+
+7跟8怎麼來的(*´･д･)?
+```{r}
+knitr::kable(list(data.frame(table(rat), row.names = NULL),
+                  data.frame(table(df$rating))),
+             caption = "Rating Matrix (左) & Raw data (右)")
+```
+
+從資料發現有些使用者對同一部影片評了兩次，另外這些電影都出現在前面提到的同名不同ID的電影裡，使用者評了兩次有可能是評了不同類型但相同片名的電影。
+
+出現7跟8可能是因為在轉換物件類型時，realRatingMatrix把同個使用者評分同一部電影的評分加總了
+```{r}
+df %>% group_by(userId, title) %>% 
+  filter(n()>1)
+```
+
+<ul><li class='downarrow'>根據文件，評分採用5星評分制，以半星為單位 (0.5 stars - 5.0 stars)，因此移除其他數值</li></ul>
+```{r}
+rat <- rat[rat %in% seq(0.5,5,by=0.5)]
+```
+
+<ul><li class='downarrow'>大部分的評分為3, 4星</li></ul>
+```{r}
+library(ggplot2)
+ggplot(data.frame(rat), aes(x=factor(rat)))+
+  geom_bar()+
+  labs(title = "Distribution of the ratings",
+       x = "Ratings")
+```
+
+<ul><li class='downarrow'>Star Wars有最高的觀看數</li></ul>
+```{r}
+views <- colCounts(ratMatr)
+tab <- data.frame(
+  movie=names(views),
+  views=views
+)
+tab <- tab[order(tab$views, decreasing = TRUE), ]
+
+ggplot(head(tab), aes(x=movie, y=views))+
+  geom_bar(stat="identity")+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  labs(title = "Number of views of the top movies")
+```
+
+### Adjust plot output
+Please sort the x-axis by views, rather than by alphabet.
+```{r}
+ggplot(head(tab), aes(x=reorder(movie,views,sum, decreasing=T), y=views))+
+  geom_bar(stat="identity")+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  labs(title = "Number of views of the top movies",
+       x="movie")
+```
+
+### Average Ratings
+<ul><li class='downarrow'>大部分電影的平均評分在3.5左右，其中有些評分為1或5，可能是因為只有少數人評分</li></ul>
+```{r}
+avg_rat <- colMeans(ratMatr)
+ggplot(data.frame(avg_rat), aes(x=avg_rat))+
+  geom_histogram()+
+  labs(title = "Distribution of the average movie rating",
+       x="Average Ratings")
+```
+
+<ul><li class='downarrow'>保留超過50和100人觀看的電影</li></ul>
+```{r}
+quantile(views, .95); quantile(views, .99)
+avg_rat_95 <- avg_rat[views > 50]
+avg_rat_99 <- avg_rat[views > 100]
+```
+
+<ul><li class='downarrow'>移除少數人觀看的電影後，大部分電影的平均評分在3.8左右</li></ul>
+```{r}
+p1 <- ggplot(data.frame(avg_rat_99), aes(x=avg_rat_99))+
+  geom_histogram()+
+  labs(title = "Top 1% views average ratings",
+       x="Average Ratings for views_per_movie > 100")
+p2 <- ggplot(data.frame(avg_rat_95), aes(x=avg_rat_95))+
+  geom_histogram()+
+  labs(title = "Top 5% views average ratings",
+       x="Average Ratings for views_per_movie > 50")
+library(gridExtra)
+grid.arrange(p1, p2, nrow=1)
+```
+
+### Rating Matrix
+<ul><li class='downarrow'>保留大多人評分的電影和評分大多電影的人</li></ul>
+```{r}
+min_movies <- quantile(rowCounts(ratMatr), 0.995)
+min_users <- quantile(colCounts(ratMatr), 0.995)
+image(ratMatr[rowCounts(ratMatr) > min_movies, colCounts(ratMatr) > min_users],
+      main = "Heatmap of the top 0.5% users and movies")
+```
+
+### Normalize
+<ul><li class='downarrow'>保留評分超過400部電影的使用者和被超過100人評分的電影</li></ul>
+```{r}
+quantile(rowCounts(ratMatr), .9)
+quantile(colCounts(ratMatr), .99)
+rat_movies <- ratMatr[rowCounts(ratMatr) > 400,
+                      colCounts(ratMatr) > 100]
+
+min_movies <- quantile(rowCounts(rat_movies), .9)
+min_users <- quantile(colCounts(rat_movies), .9)
+```
+
+<ul><li class='downarrow'>Normalize</li></ul>
+```
+normalize(x, method="center", row=TRUE)
+```
+* `method`: "center"(減平均) or "Z-score"(再除標準差)
+
+```{r}
+rat_movies_norm <- normalize(rat_movies)
+image(rat_movies_norm[rowCounts(rat_movies_norm) > min_movies,
+                      colCounts(rat_movies_norm) > min_users],
+      main = "Heatmap of the top 10% users and movies")
+```
+
+### Binarization
+<ul><li class='downarrow'>二元分類</li></ul>
+```
+binarize(ratingMatrix, minRating = n)
+```
+* `minRating`: 評分大於等於minRating的為1，其餘為0
+
+<ul><li class='downarrow'>評分4(含)以上的為1，其餘為0</li></ul>
+```{r}
+rat_movies_watched <- binarize(rat_movies, minRating = 4)
+image(rat_movies_watched[rowCounts(rat_movies) > min_movies,
+                         colCounts(rat_movies) > min_users],
+      main = "Heatmap of the top 10% users and movies")
+```
+
+______________________________
+
+## [CF] MovieLens
+```{r}
+temp=read.csv("data/MovieLense.csv")
+MovieLense=as(temp,"realRatingMatrix")
+ratings_movies <- MovieLense[rowCounts(MovieLense) > 50,
+                             colCounts(MovieLense) > 100]
+
+detail <- Recommender(data = ratings_movies, method = "IBCF") |>
+  getModel()
+sim <- detail$sim |> as.matrix()
+# sim <- ifelse(sim==0, NA, sim)
+```
+
+### Use `similarity()` to recheck [Hand-on problem 1] {#problem1}
+```{r}
+similarity_items <- similarity(ratings_movies,
+                               method = "cosine",
+                               which = "items")
+X=as.matrix(similarity_items)
+```
+
+* 避開Sim=1的部分
+* 每列取前30個
+
+```{r}
+class(X)
+X[1:3,1:3] |> pander::pander(row.names=F)
+```
+
+我們可以看到`similarity`計算出來自己跟自己的相似度為NA，因此不用擔心取前30個最相似的電影會挑到自己
+
+```{r}
+top30 <- apply(X, 1, function(x){
+  top_val <- sort(x, decreasing = T) |> head(30)
+  out <- x
+  out[!(x %in% top_val)] <- NA
+  return(out)
+}) |> t()
+
+apply(top30,1,function(x) sum(x>0, na.rm = T)) |> table()
+```
+
+確認每列都只有保留30個相似度
+
+```{r results='hold'}
+identical(top30, sim)
+top30[1:4,1:3] |> pander::pander(row.names=F)
+sim[1:4,1:3] |> pander::pander(row.names=F)
+```
+
+#### Normalize {-}
+但是和使用`Recommender`得到的相似度不一樣，從表\@ref(tab:parameter-tab)可以看到normalize預設是"center"，因此我們嘗試先把資料的平均歸到0。
+```
+normalize(x, method="center", row=TRUE)
+```
+```{r}
+center_ratings_movies <- normalize(ratings_movies)
+center_X <- similarity(center_ratings_movies,
+                       method = "cosine",
+                       which = "items") |>
+  as.matrix()
+
+center_top30 <- apply(center_X, 1, function(x){
+  top_val <- sort(x, decreasing = T) |> head(30)
+  out <- x
+  out[!(x %in% top_val)] <- NA
+  return(out)
+}) |> t()
+identical(center_top30, sim)
+```
+
+可以發現把`r class(rat_movies)`中每列都正規化到平均為0後，再計算相似度就可以得到和`Recommender`一樣的數值
+
+_____________________________________________
+
+### Similarity: try using robust statistic
+(skip)
+
+_____________________________________________
+
+### Why the following code get different results between [Hand-on problem 2]
+```{r}
+ratingTest=as(ratings_movies,"matrix")
+rating.test <- ifelse(is.na(ratingTest),0,ratingTest)
+
+# dim(rating.test) # 560 x 332
+# dim(as.matrix(detail$sim)) # 332 x 332
+# dim(sim) # 332 x 332
+
+Recom=rating.test %*% sim
+# dim(Recom) # 560 x 332
+```
+
+表\@ref(tab:self-result1)列出了上面程式碼中計算的結果，可以看到和`Recommender`推薦的結果(表\@ref(tab:IBCF-tab2))不太一樣
+```{r self-result1}
+data.frame(
+  movie = Recom[1,][order(Recom[1,], decreasing = TRUE)][1:6]
+) |> knitr::kable(caption = "前6部推薦的電影")
+```
+
+__________________________________________
+
+從[這一節](#problem1)中可以知道`Recommender`的預設是會對資料先進行正規化的，所以這邊也同樣先嘗試對`ratings_movies`正規化後得到`center_ratings_movies`
+```{r}
+ratingTest=as(center_ratings_movies,"matrix")
+norm_rating.test <- ifelse(is.na(ratingTest),0,ratingTest)
+
+new_Recom=norm_rating.test %*% sim
+```
+
+表\@ref(tab:self-result2)列出了正規化後的結果，可以看到和表\@ref(tab:self-result1)相比只有一個不同
+```{r self-result2}
+data.frame(
+  movie = new_Recom[1,][order(new_Recom[1,], decreasing = TRUE)][1:6]
+) |> knitr::kable(caption = "正規化後前6部推薦的電影")
+```
+
+_____________________________________________________
+
+從得到的`Recom`可以發現它計算了所有的評分，也就是說它把已經看過的電影也一起計算了
+```{r}
+is.na(Recom) |> table()
+
+rat.mat1 <- as(ratings_movies[1,], "matrix")
+movie1 <- rat.mat1 |> colnames()
+rat.mat1[,c("Wrong Trousers, The (1993)","Close Shave, A (1995)")]
+```
+
+我們可以看到是"Wrong Trousers, The (1993)"已經被評過分了，所以在查看時要先排除已經被看過的電影
+```{r results='hold'}
+recc1 <- Recom[1,][is.na(rat.mat1)]
+data.frame(
+  movie = recc1[order(recc1, decreasing = TRUE)][1:6]
+) |> knitr::kable(caption = "未正規化")
+
+new_recc1 <- new_Recom[1,][is.na(rat.mat1)]
+data.frame(
+  movie = new_recc1[order(new_recc1, decreasing = TRUE)][1:6]
+) |> knitr::kable(caption = "正規化")
+```
+
+兩種結果只有2部電影不同，和`Recommender`推薦相同的只有"Casablanca (1942)"和"Schindler's List (1993)"兩部
+
+_______________________________________________
+
+根據表\@ref(tab:parameter-tab)可以看到參數中還有一個$\alpha$預設為0.5，[這裡](https://stats.stackexchange.com/questions/104811/what-does-the-parameter-alpha-do-in-the-jaccard-method-for-binaryratingsmatri)提到$\alpha$被用來排除項目預測因子，以減少熱門項目的偏見，並尋找更具區別性的項目。應該是一個懲罰項的作用

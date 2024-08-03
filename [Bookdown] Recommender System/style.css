@@ -1,0 +1,148 @@
+p.caption {
+  color: #777;
+  margin-top: 10px;
+}
+p code {
+  white-space: inherit;
+}
+pre {
+  word-break: normal;
+  word-wrap: normal;
+}
+pre code {
+  white-space: inherit;
+}
+
+/*My css*/
+.book .book-body .page-wrapper .page-inner {
+  max-width: 90%;
+}
+body{
+  font-size: 16px;
+}
+h1{
+  font-size: 22px;
+}
+h2{
+  font-size: 20px;
+}
+h3{
+  font-size: 18px;
+}
+h4{
+  font-size: 16px;
+}
+ul li.downarrow {
+  list-style-type: disclosure-open;
+}
+/*ul li.downarrow:before {
+  content: '▼';
+  content: '⮟';
+  content: '🢃 ';
+}*/
+img {
+    display: block;
+    margin: 0 auto;
+}
+td[data-type="factor"] input {
+    width: 100px !important;
+}
+.huxtable {
+  margin-bottom: 1em !important;
+  margin-top: 0em !important;
+}
+
+/*light*/
+strong {
+/*  color: #7f379b;*/
+  color: #029f69;
+}
+em {
+/*  color: #0566a9;*/
+  color: #e85f28;
+}
+mark{
+  background: transparent;
+  font-style: italic;
+  color: #1fafbb;
+  padding: 10px;
+}
+li{
+  margin-top: 5px;
+}
+blockquote{
+  color: #c64343;
+}
+
+/*dark*/
+.color-theme-2 strong{
+  color: #9effde;
+}
+.color-theme-2 em{
+  color: #FFA07A;
+}
+.color-theme-2 .book-body .page-inner a {
+    color: #a4ecff !important;
+}
+.color-theme-2 mark{
+  background: transparent;
+  font-style: italic;
+  color: #ADD8E6;
+  padding: 10px;
+}
+.color-theme-2 blockquote{
+  color: #ffa2a2;
+}
+.color-theme-2 .dataTables_wrapper {
+  position: relative;
+  clear: both;
+  color: ghostwhite;
+}
+.color-theme-2 .dataTables_wrapper .dataTables_length select {
+  background: white;
+}
+
+/*colorful hr*/
+/*.hr-twill-colorful {*/
+hr {
+    border: 0;
+    padding: 3px;
+    background: linear-gradient(135deg, transparent, #ff2a2a, orange, yellow, green, #007bff, #c700c7, transparent);
+    --mask-image: repeating-linear-gradient(135deg, #000 0px, #000 1px, transparent 1px, transparent 6px);
+    -webkit-mask-image: var(--mask-image);
+}
+
+/*some header with picture*/
+div.header-moon, div.header-cat h2{
+  color: white !important;
+}
+.header-moon {
+    padding: 1px;
+    text-align: center;
+    font-family: 'MJXc-TeX-math-Iw';
+    background-image: url(https://media.tenor.com/f4GKnTi51DwAAAAC/pixel-art.gif);
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: bottom;
+}
+.header-cat{
+    padding: 1px;
+    text-align: center;
+    font-family: 'MJXc-TeX-math-Iw';
+    background-image: url(www/back1.png);
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: bottom;
+}
+.header-cat1{
+    padding: 1px;
+    text-align: center;
+    font-family: 'MJXc-TeX-math-Iw';
+    background-image: url(www/back2.png);
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: bottom;
+}

@@ -1,0 +1,86 @@
+---
+title: "testing ioslides"
+output: 
+  ioslides_presentation: 
+    widescreen: true
+    # smaller: true
+    transition: faster
+    # logo: www/logo1.jpeg
+    css: www/style.css
+    # theme: yeti
+date: "`r Sys.Date()`"
+knitr: 
+  opts_chunk: 
+    echo: false
+---
+
+# In the morning 
+
+## vertically center, text color, presenter notes {.flexbox .vcenter}
+
+center content
+<div class="red2">
+This text is red
+</div>
+
+## horizontally center
+
+<div class="centered">
+This text is centered.
+</div>
+
+## two-column layout
+
+<div class="columns-2">
+  ![](www/logo.png)
+
+  - Bullet 1
+  - Bullet 2
+  - Bullet 3
+</div>
+
+## Future Steps {#future-steps .emphasized}
+
+css
+
+- Turn off alarm
+- Get out of bed
+
+## Getting up {data-background=https://i.pinimg.com/736x/ba/94/05/ba9405b7822bc4eebad24672f802abc1.jpg data-background-size=cover}
+
+背景
+
+- Turn off alarm
+- Get out of bed
+
+## Getting up {.smaller}
+
+\{.smaller}小字
+
+- Turn off alarm
+- Get out of bed
+
+## Breakfast {.build}
+
+\{.build}按下一頁顯示內容
+
+- Eat eggs
+- Drink coffee
+
+# In the evening
+
+## Dinner
+
+- Eat spaghetti
+- Drink wine
+
+---
+
+```{r, cars, fig.cap="A scatterplot.", echo=FALSE}
+plot(cars)
+```
+
+## Going to sleep
+
+- Get in bed
+- Count sheep

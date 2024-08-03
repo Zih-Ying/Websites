@@ -1,0 +1,22 @@
+bookdown::gitbook:
+  highlight: espresso 
+  css: style.css
+  fig_caption: true
+  split_by: "chapter"
+  config:
+    toc:
+      # collapse: none
+      scroll_highlight: true
+      before: |
+        <li><a href="./">Recommender System</a></li>
+      after: |
+        <li><a href="./">by ZIH-YING, LI</a></li>
+    edit: null
+    download: null
+    # search: null
+    sharing: false
+    info: false
+    fontsettings:
+      theme: night
+    #   family: sans
+    #   size: 2

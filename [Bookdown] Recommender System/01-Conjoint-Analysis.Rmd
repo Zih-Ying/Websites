@@ -1,0 +1,201 @@
+# (PART) Conjoint Analysis {-}
+
+# Conjoint Analysis
+*聯合分析 (Conjoint Analysis)* 或稱*偏好分析*，常用於社會科學或是市場分析等，基於特徵組合(產品特色)的**排名**，可以幫助我們把特徵組合分解成每個**單獨特徵的偏好**(i.e. part-worth, 部分價值)。
+
+不只可以應用於產品 (品質 or 價格)，也可應用於服務 (良好的服務 or 較短的等待時間 or 較低的價格)。
+對於企業來說，準確了解客戶如何評價產品或服務的不同元素意味著產品或服務的部署可以變得更加容易，並且可以在更大程度上進行最佳化
+
+<br><div class="header-moon"><h2>Simple Introduction</h2></div><br>
+
+* Example  
+  有兩個mp3，分別為A: 16MB,運送時間1天；B: 64MB,運送時間1週，偏好哪一個?  
+  <div>
+    - attr. 1: memory  
+    - attr. 2: delivery  
+  </div>  
+  如果選擇A，表示更強調短運送時間；選擇B則更強調大記憶體
+  
+___
+
+* Relative importance  
+  1. 計算每個個體在各特徵下的偏好範圍(preference **range**)
+  2. 計算每個個體在各特徵下的重要比率(importance **ratio**)
+  3. 計算個特徵的平均重要性(**average** importance)
+  
+___
+
+* part-worth  
+  1. 計算各水準(level)下個體間的平均偏好(**average** preference)
+  2. **標準化**至$\mu=0$ 
+  
+___
+
+* Use linear regression  
+$$Ranking=\mu+\beta_1Attr_1+\beta_2Attr_2$$
+  - $\beta$表示part-worth，所有類別的加總須為0  
+  - if $Attr_i$ 只有兩類，則$$relative\:importance=\pm\beta_i/\sum \pm\beta_i$$
+假設$\beta_1=2$，$\beta_2=0.5$，則$\sum \pm\beta_i=4+1=5$  
+memory的relative importance$=4/5=80\%$  
+delivery的relative importance$=1/5=20\%$
+
+## Example
+### Preprocess
+1. Read data  
+```{r}
+conjoint.data.frame <- read.csv("data/mobile_services_ranking.csv")
+head(conjoint.data.frame, 3) |> knitr::kable()
+```
+
+2. Fit linear model using main effects only (no interaction terms)  
+```{r}
+main.effects.model <- {ranking ~ brand + startup + monthly + service + 
+  retail + apple + samsung + google}
+
+main.effects.model.fit <- lm(main.effects.model, data=conjoint.data.frame)
+summary(main.effects.model.fit)$coef |> round(2) |> knitr::kable()
+sum(coef(main.effects.model.fit)[-1])
+```
+
+3. Store result  
+save key list elements of the fitted model as needed for conjoint measures
+```{r}
+conjoint.results <- main.effects.model.fit[c("contrasts","xlevels","coefficients")]
+
+conjoint.results$attributes <- names(conjoint.results$contrasts)
+conjoint.results
+```
+
+### Compute part-worth
+* `last.part.worth`: $-\sum \hat{\beta}$，
+除了base類別以外的類別的係數，例如顏色分紅黃藍，base為紅色，則$\sum \hat{\beta}=$黃色加藍色的係數
+* `part.worths`: 所有類別的part-worth，加總為0
+
+```{r}
+part.worths <- conjoint.results$xlevels  # list of same structure as xlevels
+end.index.for.coefficient <- 1  # initialize skipping the intercept
+part.worth.vector <- NULL # used for accumulation of part worths
+for(index.for.attribute in seq(along=conjoint.results$contrasts)) {
+  nlevels <- length(unlist(conjoint.results$xlevels[index.for.attribute]))
+  begin.index.for.coefficient <- end.index.for.coefficient + 1
+  end.index.for.coefficient <- begin.index.for.coefficient + nlevels -2
+  last.part.worth <- -sum(conjoint.results$coefficients[begin.index.for.coefficient:end.index.for.coefficient])
+  part.worths[index.for.attribute] <- list(as.numeric(c(conjoint.results$coefficients[begin.index.for.coefficient:end.index.for.coefficient],
+                                                        last.part.worth)))
+  part.worth.vector <- c(part.worth.vector,unlist(part.worths[index.for.attribute]))    
+  } 
+conjoint.results$part.worths <- part.worths
+```
+
+* `seq(along=conjoint.results$contrasts)`  
+```{r collapse=TRUE}
+seq(c(3,4))
+seq_along(c(3,4))
+seq(along=c(3,4))
+
+seq(5)
+seq_along(5)
+seq(along=5)
+```
+
+* 標準化，讓每個類別的基準值位於0
+```{r}
+standardize <- function(x) {(x - mean(x)) / sd(x)}
+conjoint.results$standardized.part.worths <- lapply(conjoint.results$part.worths,standardize)
+
+head(part.worths, 3)
+head(conjoint.results$standardized.part.worths, 3)
+```
+
+### Compute relative importance
+1. 計算各特徵的全距並加總
+```{r}
+part.worth.ranges <- conjoint.results$contrasts
+for(index.for.attribute in seq(along=conjoint.results$contrasts)) 
+  part.worth.ranges[index.for.attribute] <-
+  dist(range(conjoint.results$part.worths[index.for.attribute]))
+conjoint.results$part.worth.ranges <- part.worth.ranges
+
+sum.part.worth.ranges <- sum(as.numeric(conjoint.results$part.worth.ranges))
+```
+
+2. 計算各特徵的全距占所有特徵的比例
+```{r}
+attribute.importance <- conjoint.results$contrasts
+for(index.for.attribute in seq(along=conjoint.results$contrasts)) 
+  attribute.importance[index.for.attribute] <- 
+  (as.numeric(part.worth.ranges[index.for.attribute])/sum.part.worth.ranges) * 100
+conjoint.results$attribute.importance <- attribute.importance
+data.frame(importance=unlist(attribute.importance)) |> knitr::kable()
+```
+
+### Output
+#### Setting
+1. 排序 & $R^2$
+```{r}
+attribute.name <- names(conjoint.results$contrasts)
+attribute.importance <- as.numeric(attribute.importance)
+temp.frame <- data.frame(attribute.name,attribute.importance)
+conjoint.results$ordered.attributes <- 
+  as.character(temp.frame[sort.list(temp.frame$attribute.importance,decreasing = TRUE),
+                          "attribute.name"])
+# respondent internal consistency added to list structure
+conjoint.results$internal.consistency <- summary(main.effects.model.fit)$r.squared 
+```
+
+2. 呈現位數
+```{r}
+print.digits <- 2
+if (print.digits == 2) 
+  pretty.print <- function(x) {sprintf("%1.2f",round(x,digits = 2))} 
+if (print.digits == 3) 
+  pretty.print <- function(x) {sprintf("%1.3f",round(x,digits = 3))} 
+```
+
+3. 顯示欄位名稱 (圖形用的)
+```{r}
+effect.name.map <- function(effect.name) { 
+  if(effect.name=="brand") return("Mobile Service Provider")
+  if(effect.name=="startup") return("Start-up Cost")
+  if(effect.name=="monthly") return("Monthly Cost")
+  if(effect.name=="service") return("Offers 4G Service")
+  if(effect.name=="retail") return("Has Nearby Retail Store")
+  if(effect.name=="apple") return("Sells Apple Products")
+  if(effect.name=="samsung") return("Sells Samsung Products")
+  if(effect.name=="google") return("Sells Google/Nexus Products")
+} 
+```
+
+4. options設定 (好像沒差?)
+```{r}
+# # set up sum contrasts for effects coding as needed for conjoint analysis
+# options(contrasts=c("contr.sum","contr.poly"))
+```
+
+#### Report
+```{r collapse=FALSE}
+for(k in seq(along=conjoint.results$ordered.attributes)) {
+  cat("\n","\n")
+  cat(conjoint.results$ordered.attributes[k],"Levels: ",
+  unlist(conjoint.results$xlevels[conjoint.results$ordered.attributes[k]]))
+  
+  cat("\n"," Part-Worths:  ")
+  cat(pretty.print(unlist(conjoint.results$part.worths
+    [conjoint.results$ordered.attributes[k]])))
+    
+  cat("\n"," Standardized Part-Worths:  ")
+  cat(pretty.print(unlist(conjoint.results$standardized.part.worths
+    [conjoint.results$ordered.attributes[k]])))  
+    
+  cat("\n"," Attribute Importance:  ")
+  cat(pretty.print(unlist(conjoint.results$attribute.importance
+    [conjoint.results$ordered.attributes[k]])))
+  }
+```
+
+#### Plot
+```{r fig.height=8}
+source("R/spine_chart.R")
+spine.chart(conjoint.results)
+```
+

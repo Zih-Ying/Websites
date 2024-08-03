@@ -1,0 +1,352 @@
+---
+title: "RS-Data Analysis"
+subtitle: "Online Retail data"
+author: 李姿穎
+output: 
+  ioslides_presentation: 
+    widescreen: true
+    smaller: true
+    transition: faster
+    css: [!expr 'system.file(package = "rmarkdown", "rmd", "h", "bootstrap", "css", "bootstrap.css")']
+---
+
+<style>
+.forceBreak { -webkit-column-break-after: always; break-after: column; }
+</style>
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  echo = FALSE,
+  warning = F,
+  message = F
+)
+df <- readRDS("data/online retail.rds")
+order <- readRDS("data/order.rds")
+customer <- readRDS("data/customer.rds")
+library(kableExtra)
+options(
+  kable_styling_full_width = T, 
+  kable_styling_latex_options="striped", 
+  kable_styling_bootstrap_options="striped"
+)
+library(ggplot2)
+library(dplyr)
+library(arules)
+library(arulesViz)
+library(recommenderlab)
+```
+
+# Data Processing {data-background=www/bg.gif data-background-size=cover} 
+## Order  
+```{r}
+head(order,3)|>kable()|>kable_styling()
+```
+
+包含`r nrow(order)`筆觀察值，`r ncol(order)`個變數
+
+<div class="columns-2">
+  - InvoiceNo: 發票號碼
+  - StockCode: 貨物編號
+  - Description: 描述
+  - Quantity: 數量
+  
+  - InvoiceDate: 發票日期
+  - UnitPrice: 單價
+  - CustomerID: 消費者ID
+  - Country: 城市
+</div>
+
+## Customer
+```{r}
+head(customer,3)|>kable()|>kable_styling()
+```
+
+包含`r nrow(customer)`筆觀察值，`r ncol(customer)`個變數
+
+<div class="columns-2">
+  - CustomerID: 消費者ID
+  - Gender: 性別
+  - Age: 年齡
+  
+  - Income: 收入
+  - Zipcode: 郵遞區號
+  - Customer Segment: 消費者分類
+</div>
+
+## Combined data
+```{r}
+head(df,3)|>kable()|>kable_styling()
+```
+
+以CustomerID合併order和customer，合併完資料包含`r nrow(df)`筆觀察值，`r ncol(df)`個變數
+
+## Check {.columns-2}
+```{r}
+tmp <- sapply(df, function(x) length(unique(x)))
+kable(
+  data.frame(var=names(tmp), val=tmp)[-c(5,7,10),],
+  col.names = c("Variable", "Number of class"), row.names = F
+)|>kable_styling(full_width = F) |>
+  row_spec(c(3,4), background = "gray", color= "white")
+```
+
+<p class="forceBreak"></p>
+
+```{r}
+summary(df[,c(5,7,10)]) |> 
+  kable() |> kable_styling(full_width = F) |>
+  remove_column(1) |>
+  column_spec(c(1,2), background = "gray", color= "white")
+```
+
+## 發現Quantity有負的
+```{r}
+df[df$CustomerID==12346,c(1:6)] %>% 
+  arrange(StockCode, InvoiceDate) |>
+  kable()|>kable_styling()
+
+df[df$CustomerID==18268,c(1:6)] %>% #15749
+  arrange(StockCode, InvoiceDate) |>
+  kable()|>kable_styling()
+
+df[df$CustomerID==18141,c(1:6)] %>% 
+  arrange(StockCode, InvoiceDate) |>
+  kable()|>kable_styling()
+```
+
+>- 退貨 (*´･д･)?
+
+## 單價小於0.01
+
+>- 猜測單價為美元，所以最小幣值為美分(0.01美元)
+
+```{r}
+tmp <- df[df$UnitPrice<0.01,c(3,4,7)]
+rownames(tmp) <- 1:nrow(tmp)
+rbind(head(tmp), tail(tmp,2)) |> kable() |>
+  kable_styling(full_width = F)
+```
+
+>- 贈品 ( •́ _ •̀)？
+
+## StockCode的個數和Description的個數不一致
+```{r}
+df[df$CustomerID==15749,c(1:6)] %>%
+  arrange(StockCode, InvoiceDate) |>
+  kable()|>kable_styling() |>
+  row_spec(9, background = "gray", color= "white")
+```
+
+
+## 移除Quantity有負的"消費者"和單價小於0.01的"交易" {.columns-2}
+```{r}
+ntmp <- df[df$Quantity<0,]
+nid <- unique(ntmp$CustomerID)
+ndf <- df[!(df$CustomerID %in% nid),]
+ndf <- ndf[!(ndf$UnitPrice<0.01),]
+```
+```{r}
+tmp <- sapply(df, function(x) length(unique(x)))
+ntmp <- sapply(ndf, function(x) length(unique(x)))
+kable(
+  data.frame(var=names(ntmp), val=ntmp, val=tmp)[-c(5:7,10),],
+  col.names = c("Variable", "Number of class (new)", "Number of class (old)"), row.names = F
+)|>kable_styling(full_width = F)
+```
+
+<p class="forceBreak"></p>
+
+- 性別: `r unique(ndf$Gender)`
+- 收入: `r unique(ndf$Income)`
+- 消費者分類: `r unique(ndf[,13])`
+
+- 發票日期: `r range(ndf$InvoiceDate)`
+
+```{r}
+summary(ndf[,c(5,7,10)]) |> kable() |>
+  kable_styling(full_width = F)
+```
+
+# Methods {data-background=www/bg.gif data-background-size=cover} 
+<ul style="color:white;">
+<li>Conjoint Analysis</li>
+<li>Association Rule</li>
+<li>Collaborative filtering</li>
+</ul>
+
+## choose method
+```{r}
+kable(
+  ndf[1,], row.names = F
+)|>kable_styling(full_width = F)
+```
+
+- Conjoint Analysis: 需要ranking，所以沒辦法做
+- Association Rule: 找出物件的組合 (以商品編號為主)
+- Collaborative filtering: 根據使用者和物品的相似性進行推薦，以有沒有買來推薦 (0/1)
+
+# Association Rule {data-background=www/bg.gif data-background-size=cover}
+## Itemfrequency Plot (以消費者ID)
+```{r}
+dat1=split(as.factor(ndf$StockCode),as.factor(ndf$CustomerID))
+ndat1 <- dat1 <- transactions(dat1)
+id2label <- function(id){
+  label <- ndf[ndf$StockCode%in%id,c(3,4)] |> unique()
+  label <- label[!duplicated(label$StockCode),]
+  return(label$Description)
+}
+ndat1@itemInfo$labels <- id2label(dat1@itemInfo$labels)
+itemFrequencyPlot(ndat1, topN=10, horiz=T)
+```
+
+## Itemfrequency Plot (以發票號碼)
+```{r}
+dat2=split(as.factor(ndf$StockCode),as.factor(ndf$InvoiceNo))
+ndat2 <- dat2 <- transactions(dat2)
+ndat2@itemInfo$labels <- id2label(dat2@itemInfo$labels)
+itemFrequencyPlot(ndat2, topN=10, horiz=T)
+```
+
+>- 多了收納袋和檯燈，少了蛋杯和儲藏罐
+
+## Rules (Apriori, Supp=0.04, Conf=0.7) {.columns-2}
+
+- 以消費者ID
+
+```{r}
+retail=apriori(dat1, 
+               parameter=list(support=0.04,confidence=0.7,maxlen=5,minlen=2),
+               control = list(verbose=F))
+DATAFRAME(retail)[,-7] |>
+  kable(digits = 2)|>kable_styling()|>
+  row_spec(c(1,2,4,5,8,9), background = "gray", color= "white")
+```
+
+<p class="forceBreak"></p>
+
+- 以發票號碼
+
+```{r}
+retail=apriori(dat2, 
+               parameter=list(support=0.02,confidence=0.7,maxlen=5,minlen=2),
+               control = list(verbose=F))
+DATAFRAME(retail)[,-7] |>
+  kable(digits = 2)|>kable_styling()|>
+  row_spec(c(1,2), background = "gray", color= "white")|>
+  row_spec(5, background = "yellow")
+```
+
+## check
+```{r}
+id <- c(22698,22697,22699, 22578,22577, 21733,"85123A", 22726, 22727)
+tmp <- sapply(id, id2label)
+kable(data.frame(code=names(tmp), discription=tmp),
+      row.names = F)|>kable_styling(full_width = F)|>
+  row_spec(c(4,5), background = "gray", color= "white")|>
+  row_spec(c(8,9), background = "yellow")
+```
+
+# Collaborative filtering {data-background=www/bg.gif data-background-size=cover}
+```{r}
+recommender_models <- recommenderRegistry$get_entries(dataType = "realRatingMatrix")
+```
+
+## Binarization
+
+- 以Quantity為評分，大於等於1為1，其餘為0
+- 保留 (中位數)
+  - 買過超過27件物品的使用者
+  - 被超過19個使用者購買過的物品
+
+```{r}
+df <- ndf[,c(1,3,5)]
+mat <- as(df, "realRatingMatrix")
+# dim(mat)
+# summary(rowCounts(mat))
+# summary(colCounts(mat))
+nmat <- mat[rowCounts(mat) > 27,
+            colCounts(mat) > 19]
+min_items <- quantile(rowCounts(nmat), 0.995)
+min_users <- quantile(colCounts(nmat), 0.995)
+
+# image(mat[rowCounts(mat) > min_items, colCounts(mat) > min_users],
+#       main = "Top 0.5% users and items")
+
+binMat <- binarize(nmat, minRating = 1)
+image(binMat[rowCounts(binMat) > min_items, colCounts(binMat) > min_users],
+      main = "Top 0.5% users and items with binarization")
+```
+
+## IBCF (method = "Jaccard") {.columns-2}
+```{r}
+# bin_model_I <- Recommender(
+#   data = binMat,
+#   method = "IBCF",
+#   parameter = list(method = "Jaccard")
+# )
+# saveRDS(bin_model_I, "data/IBCF.rds")
+bin_model_I <- readRDS("data/IBCF.rds")
+# model_details <- getModel(bin_model_I)
+recc_predicted <- predict(object = bin_model_I, 
+                          newdata = binMat,
+                          n = 6)
+recc_matrix <- sapply(recc_predicted@items, function(x){
+  colnames(binMat)[x]
+})
+
+kable(
+  sapply(recc_matrix[,1],id2label), 
+  row.names = F, col.names = "User 1",
+  caption = "推薦給第一個使用者的項目"
+)|>kable_styling(full_width = F)
+```
+
+<p class="forceBreak"></p>
+
+```{r}
+number_of_items <- factor(table(recc_matrix))
+number_of_items_top <- number_of_items |> 
+  sort(decreasing = TRUE) |>
+  head(4)
+kable(data.frame(
+  id2label(names(number_of_items_top)),
+  number_of_items_top
+), row.names = F, col.names = c("Item", "Recommend times"),
+caption = "推薦最多的前4個項目")|>kable_styling(full_width = F)
+```
+
+## Popular {.columns-2}
+```{r}
+bin_model_P <- Recommender(
+  data = binMat,
+  method = "POPULAR"
+)
+recc_predicted1 <- predict(object = bin_model_P, 
+                          newdata = binMat,
+                          n = 6)
+recc_matrix1 <- sapply(recc_predicted1@items, function(x){
+  colnames(binMat)[x]
+})
+
+kable(
+  sapply(recc_matrix1[,1],id2label), 
+  row.names = F, col.names = "User 1",
+  caption = "推薦給第一個使用者的項目"
+)|>kable_styling(full_width = F)
+```
+
+<p class="forceBreak"></p>
+
+```{r}
+number_of_items <- factor(table(recc_matrix1))
+number_of_items_top <- number_of_items |> 
+  sort(decreasing = TRUE) |>
+  head(4)
+kable(data.frame(
+  id2label(names(number_of_items_top)),
+  number_of_items_top
+), row.names = F, col.names = c("Item", "Recommend times"),
+caption = "推薦最多的前4個項目")|>kable_styling(full_width = F)
+```
+
+# Thanks {data-background=https://i.pinimg.com/originals/a7/68/76/a76876b05cc5767ce6ce5c59abceb7e4.gif data-background-size=cover}

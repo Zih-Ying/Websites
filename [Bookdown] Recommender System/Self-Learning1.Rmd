@@ -1,0 +1,151 @@
+# Self-learning
+```{r echo=FALSE}
+get_result <- function(lm_fit){
+  # store
+  conjoint.results <- lm_fit[c("contrasts","xlevels","coefficients")]
+  conjoint.results$attributes <- names(conjoint.results$contrasts)
+  
+  # part-worth
+  part.worths <- conjoint.results$xlevels  # list of same structure as xlevels
+  end.index.for.coefficient <- 1  # initialize skipping the intercept
+  part.worth.vector <- NULL # used for accumulation of part worths
+  for(index.for.attribute in seq(along=conjoint.results$contrasts)) {
+    nlevels <- length(unlist(conjoint.results$xlevels[index.for.attribute]))
+    begin.index.for.coefficient <- end.index.for.coefficient + 1
+    end.index.for.coefficient <- begin.index.for.coefficient + nlevels -2
+    last.part.worth <- -sum(conjoint.results$coefficients[begin.index.for.coefficient:end.index.for.coefficient])
+    part.worths[index.for.attribute] <- list(as.numeric(c(conjoint.results$coefficients[begin.index.for.coefficient:end.index.for.coefficient], last.part.worth)))
+    part.worth.vector <- c(part.worth.vector,unlist(part.worths[index.for.attribute])) 
+  } 
+  conjoint.results$part.worths <- part.worths
+  
+  # std part-worth
+  standardize <- function(x) {(x - mean(x)) / sd(x)}
+conjoint.results$standardized.part.worths <- 
+  lapply(conjoint.results$part.worths,standardize)
+
+  # relative importance
+  part.worth.ranges <- conjoint.results$contrasts
+  for(index.for.attribute in seq(along=conjoint.results$contrasts)) 
+    part.worth.ranges[index.for.attribute] <- dist(range(conjoint.results$part.worths[index.for.attribute]))
+  conjoint.results$part.worth.ranges <- part.worth.ranges
+  sum.part.worth.ranges <- sum(as.numeric(conjoint.results$part.worth.ranges))
+  attribute.importance <- conjoint.results$contrasts
+  for(index.for.attribute in seq(along=conjoint.results$contrasts)) 
+    attribute.importance[index.for.attribute] <- (as.numeric(part.worth.ranges[index.for.attribute])/sum.part.worth.ranges) * 100
+  conjoint.results$attribute.importance <- attribute.importance
+  
+  # order, R2
+  attribute.name <- names(conjoint.results$contrasts)
+  attribute.importance <- as.numeric(attribute.importance)
+  temp.frame <- data.frame(attribute.name,attribute.importance)
+  conjoint.results$ordered.attributes <- as.character(temp.frame[sort.list(temp.frame$attribute.importance,decreasing = TRUE),"attribute.name"])
+  # respondent internal consistency added to list structure
+  conjoint.results$internal.consistency <- summary(lm_fit)$r.squared 
+
+  return(conjoint.results)
+}
+# output setting 
+pretty.print <- function(x) {sprintf("%1.2f",round(x,digits = 2))} 
+effect.name.map <- function(effect.name) { 
+  if(effect.name=="brand") return("Mobile Service Provider")
+  if(effect.name=="startup") return("Start-up Cost")
+  if(effect.name=="monthly") return("Monthly Cost")
+  if(effect.name=="service") return("Offers 4G Service")
+  if(effect.name=="retail") return("Has Nearby Retail Store")
+  if(effect.name=="apple") return("Sells Apple Products")
+  if(effect.name=="samsung") return("Sells Samsung Products")
+  if(effect.name=="google") return("Sells Google/Nexus Products")
+}
+show_report <- function(conjoint.results){
+  for(k in seq(along=conjoint.results$ordered.attributes)) {
+  cat("\n","\n")
+  cat(conjoint.results$ordered.attributes[k],"Levels: ",
+  unlist(conjoint.results$xlevels[conjoint.results$ordered.attributes[k]]))
+  
+  cat("\n"," Part-Worths:  ")
+  cat(pretty.print(unlist(conjoint.results$part.worths
+    [conjoint.results$ordered.attributes[k]])))
+    
+  cat("\n"," Standardized Part-Worths:  ")
+  cat(pretty.print(unlist(conjoint.results$standardized.part.worths
+    [conjoint.results$ordered.attributes[k]])))  
+    
+  cat("\n"," Attribute Importance:  ")
+  cat(pretty.print(unlist(conjoint.results$attribute.importance
+    [conjoint.results$ordered.attributes[k]])))
+  }
+}
+```
+
+## Enter new ranking
+1. Enter your own rankings for the product profiles and generate conjoint measures of attribute importance and level part-worths.
+
+* 隨機分配排名
+
+```{r}
+# get data
+df <- conjoint.data.frame
+set.seed(0920)
+df$ranking <- sample(1:16)
+# head(df,3); head(conjoint.data.frame,3)
+
+# fit model
+ft <- lm(ranking~., data=df)
+```
+
+```{r fig.height=8}
+# get `conjoint.results`
+new.conjoint.results <- get_result(ft)
+# report
+show_report(new.conjoint.results)
+# plot
+par(mfrow = c(1, 2), mar=c(1,1,1,1))
+spine.chart(new.conjoint.results)
+title('New ranking')
+spine.chart(conjoint.results)
+title('Origin')
+```
+
+***Conclusion***
+
+隨機生成ranking後，最重要的變為電信商，但是重要性僅26.35%
+
+## Add interaction
+2. Beyond a linear main-effects model. See if you can build a model with interaction effects for service provider attributes.
+
+* 加入samsung和google的交互作用項
+
+```{r}
+head(conjoint.data.frame,3) |> knitr::kable()
+
+# fit model
+ft_interaction <- lm(ranking~. + samsung*google, data=conjoint.data.frame)
+# ft_interaction
+summary(ft_interaction)
+```
+
+```{r fig.height=8}
+# get `conjoint.results`
+interaction.conjoint.results <- get_result(ft_interaction)
+# report
+show_report(interaction.conjoint.results)
+# plot
+par(mfrow = c(1, 2), mar=c(1,1,1,1))
+spine.chart(interaction.conjoint.results)
+title('Add interaction')
+spine.chart(conjoint.results)
+title('Origin')
+```
+
+***Conclusion***
+
+* 加入**samsung**和**google**的交互作用項
+  * samsung的係數: $2.25\to2.5$
+  * google的係數: $1.5\to1.75$
+  * samsung*google的係數為: $-0.5$，表示當samsung和google都有代理時會降低喜好的排名
+
+## Rewrite spine_chart.R
+3. See if you can rewrite the source script spine_chart.R to generalize the spine chart with more flexibility
+
+(skip)

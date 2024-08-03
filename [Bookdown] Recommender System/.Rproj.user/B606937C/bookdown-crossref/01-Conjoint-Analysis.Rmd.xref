@@ -1,0 +1,11 @@
+h1:part-conjoint-analysis (PART) Conjoint Analysis
+h1:conjoint-analysis Conjoint Analysis
+h2:example Example
+h3:preprocess Preprocess
+h3:compute-part-worth Compute part-worth
+h3:compute-relative-importance Compute relative importance
+h3:output Output
+h4:setting Setting
+h4:report Report
+h4:plot Plot
+

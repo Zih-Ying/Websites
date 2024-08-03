@@ -1,0 +1,16 @@
+delete_merged_file: true
+language:
+  ui:
+    chapter_name: "Sec "
+book_filename: "bookdown-RS"
+rmd_files: [
+  "index.Rmd",
+  "problem.Rmd",
+  "01-Conjoint-Analysis.Rmd",
+  "Self-Learning1.Rmd",
+  "02-arules-application.Rmd",
+  "Self-Learning2.Rmd",
+  "03-Collaborative-filtering.Rmd",
+  "Self-Learning3.Rmd",
+  "Final-Project.Rmd"
+]

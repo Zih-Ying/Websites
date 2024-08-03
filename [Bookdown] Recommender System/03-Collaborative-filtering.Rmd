@@ -1,0 +1,696 @@
+# (PART) Collaborative filtering {-}
+
+# Collaborative filtering
+*Collaborative filtering (協同過濾)* 會考慮到不同使用者的資訊，其演算法基於**"使用者 (user)"和"物件 (item)"的相似性**，用於計算的資料為矩陣形式，其中列 (row) 為 user、行 (column) 為 item，對應的值為 rating。
+這個矩陣通常會是**稀疏 (sparse)** 的，尤其是物件很多的情況下，大部分使用者只會買其中幾項，因此這個矩陣會非常龐大且稀疏。
+
+協同過濾的概念很像**對遺失值進行插補**，因我我們的目的是推薦物品給還未對該物品進行評分的使用者。以電影來說，我們希望推薦使用者它還未看過但可能會感興趣的電影。
+
+<h4>訓練及測試</h4>
+通常在建模的時候會把資料分為**訓練集和測試集**來檢查模型是否有問題，但在**協同過濾中這是比較沒有必要**的。
+因為前面提到過其概念很像補遺失值，那麼就不會有只補一部份資料的情況。
+另外對協同過濾來說沒有實際的"新使用者"，因為新使用者不會有評分的資訊，就沒辦法被推薦。如果已經有評分的資訊，那不如也納進訓練裡來增加樣本，所以沒有必要再拆分資料。
+
+**預測**的結果會是使用者接受推薦與否，也就是成功或失敗，因此我們能得到一個混淆矩陣: 
+
+|     |   |   |   |
+|:---:|:-:|:-:|:-:|
+|||True||
+|||1 (Positive)|0 (Negative)|
+|Pred.|1  |TP |FP |
+|     |0  |FN |TN |
+
+我們會比較專注在**"FP"**的部分，因為預測它是1表示它和1的那群很相似，所以要推薦或是建議給它。混淆矩陣可以計算很多指標，因為我們會比較在意成功，所以**召回率**比較重要，舉例來說在路上發傳單，會專注在收了傳單且有來的人。
+
+<h4>相似性(similarity)</h4>
+* **pearson (皮爾森相關係數)**: $m_{pearson(x,y)}=\frac1n\sum(\frac{X-\bar X}{s_X})(\frac{Y-\bar Y}{s_Y})$
+* **cosine**: $m_{cosine}=\frac{X\cdot Y}{||X||\cdot||Y||}$
+* **jacard** (二元資料適合使用): $J(X,Y)=\frac{|A\cap B|}{|A\cup B|}=\frac{|A\cap B|}{|A|+|B|-|A\cap B|}$
+
+<h4>演算法</h4>
+* [Item-based collaborative filtering (IBCF)](#IBCF): 識別同個使用者購買過的物品，推薦相似的物品
+  * **根據相似矩陣**推薦項目，一旦建立了模型，就不需要訪問原始資料
+  * 對於每個項目，模型**存儲了 k 個最相似**的項目，因此一旦建立了模型，信息量就很小，這在在大量資料下是一個優勢
+* [User-based collaborative filtering (UBCF)](#UBCF): 識別相似的使用者，推薦相似使用者購買過的最高評分的物品
+  * 需要訪問**所有的資料**來進行預測，因此大資料不太合適
+  * UBCF的正確率比IBCF稍微高些，因此如果資料不是太大，UBCF是個不錯的選擇
+
+<h4>限制</h4>
+在處理新的使用者或是物品時，這個演算法會有以下的問題，以電影評分為例: 
+
+* 如果新的使用者沒有看過任何電影，IBCF和UBCF都沒辦法推薦，因為兩種演算法的預測都需要基於使用者已經評過分的資訊
+* 如果新的電影沒有被任何人觀看，那它永遠不會被推薦。
+* 該演算法僅使用評分矩陣，但有可能有其他的資訊可以改善推薦，因此有了其他新方法
+
+<h4>延伸: *Content-based filtering*</h4>
+該演算法以對**物品的描述**為開始且**不需要考慮到其他使用者**，而是推薦和使用者**過去購買的物品相似**的物品
+
+步驟: 
+
+1. 定義物品的描述
+2. 基於購買紀錄定義使用者檔案
+3. 推薦和使用者檔案相符的物品
+
+<h4>延伸: *Hybrid recommender systems*</h4>
+在很多情況下，我們會建立很多不同的模型，在機器學習中**結合不同模型的結果**通常會有較好的結果。
+可以是平行運算(每個模型分開跑，在綜合結果)或是序列運算(前一個模型的結果是後一個模型的輸入)。
+
+一個簡單的例子是協同過濾**結合有關用戶或物品的信息**。在IBCF的情況下，物品之間的距離可以同時考慮用戶的偏好和物品的描述。即使在UBCF中，用戶之間的距離也可以考慮他們的偏好和個人數據。
+
+<br><div class="header-moon"><h2>Preview</h2></div><br>
+
+1. `realRatingMatrix`類型可用的方法、`Pander`呈現矩陣
+2. `realRatingMatrix`和`Matrix`的儲存空間差異
+3. 計算相似矩陣，分為user之間和item之間
+4. `recommenderRegistry$get_entries(dataType = "realRatingMatrix")`: 顯示可用的模型
+5. EDA (Exploratory Data Analysis)
+6. Example: Movie  
+  6.1: IBCF  
+  6.2: UBCF
+
+* Note: 
+  * `recommenderlab::binarize`中的`minRating`參數設定的是被判斷是否為1的最低評分，而不是item被評分的次數。 假設`minRating=3`，則3(含)以上為1，其它為0 (範例: [Binarization])
+  
+___
+
+## Methods for "realRatingMatrix" Class
+<ul><li class='downarrow'>列出所有 S3 和 S4 generic function 可用的方法</li></ul>
+```
+methods(generic.function, class)
+```
+
+```{r results='hide', message=FALSE}
+temp=read.csv("data/MovieLense.csv") 
+
+library(recommenderlab)
+MovieLense=as(temp,"realRatingMatrix")
+DF=getData.frame(MovieLense)
+```
+```{r}
+methods_matrix <- methods(class = class(MovieLense))
+methods_matrix
+```
+
+<ul><li class='downarrow'>使用pander，以矩陣呈現</li></ul>
+1. 使用函數`pander(x = NULL, ...)`
+```{r}
+methods_to_print <- as.character(methods_matrix)
+methods_to_print <- methods_to_print[!grepl("coerce", methods_to_print)]
+methods_to_print <- gsub(",.*", "", methods_to_print, perl = TRUE)
+methods_to_print <- c(methods_to_print, "", "") # 湊齊才能用矩陣
+
+library(pander)
+pander::pander(matrix(methods_to_print, ncol = 3))
+```
+
+2. 使用`r`code chunk
+
+````default
+```{{r render=pander, results='asis'}}
+matrix(methods_to_print, ncol = 3)
+```
+````
+
+```{r render=pander, results='asis', echo=F}
+matrix(methods_to_print, ncol = 3)
+```
+
+___
+
+## Compare the storage sizes
+```{r include=FALSE}
+options(scipen = 999)
+```
+
+<ul><li class='downarrow'>回傳物件分配的空間</li></ul>
+```
+object.size(x)
+```
+
+|Class|object size (bytes)|
+|:-|:-|
+|`r class(temp)`|`r object.size(temp)`|
+|`r class(MovieLense)`|`r object.size(MovieLense)`|
+|`r class(as(MovieLense, "matrix"))`|`r object.size(as(MovieLense, "matrix"))`|
+
+可以看到`recommenderlab`的矩陣更簡潔，兩者差了`r object.size(as(MovieLense, "matrix"))/object.size(MovieLense)`倍
+  
+___
+
+## Computie Similarity Matrix
+<ul><li class='downarrow'>{recommenderlab} 計算評分的相似性</li></ul>
+```
+similarity(x, y = NULL, method = NULL, args = NULL, which = "users",
+  min_matching = 0, min_predictive = 0)
+```
+* `method`: "cosine", "pearson", "jaccard", etc.
+* `which`: 計算"users"(rows)或"items"(columns)之間的相似性
+* `min_matching`: 最小評分數的閾值
+
+<ul><li class='downarrow'>使用者相似性</li></ul>
+```{r}
+similarity_users <- similarity(MovieLense[1:5, ], method = "cosine", which = "users")
+class(similarity_users)
+similarity_users_as_matrix=as.matrix(similarity_users)
+
+similarity_users_as_matrix[nrow(similarity_users_as_matrix):1,] |> 
+  pander::pander(plain.ascii = TRUE)
+image(similarity_users_as_matrix, main = "User similarity")
+```
+
+<ul><li class='downarrow'>物品相似性</li></ul>
+```{r}
+similarity_items <- similarity(MovieLense[, 1:5], method = "cosine", which = "items")
+similarity_items_as_matrix=as.matrix(similarity_items)
+
+similarity_items_as_matrix[nrow(similarity_items_as_matrix):1,] |> 
+  pander::pander(digits = 2, plain.ascii = TRUE, split.cells=12)
+image(similarity_items_as_matrix, main = "Item similarity")
+```
+
+```{r}
+add.text <- function(simil){
+  val <- round(as.vector(simil),2)
+  tmp <- data.frame(
+    val=c(val, rep(1,5)), 
+    x=c(seq(.25,1,by=.25),seq(.25,1,by=.25)[-1],seq(.25,1,by=.25)[-(1:2)],seq(.25,1,by=.25)[-(1:3)],
+        seq(0,1,length.out=5)), 
+    y=c(rep(0,4),rep(.25,3),rep(.5,2),rep(.75,1),
+        seq(0,1,length.out=5)),
+    col=c(ifelse(val>0.97, "white", "black"), rep(1,5))
+  )
+  text(tmp$x, tmp$y, tmp$val, col=tmp$col)
+}
+par(mfrow=c(1,2), mar=c(2,2,1,1))
+image(similarity_users_as_matrix, main = "User similarity")
+add.text(similarity_users)
+image(similarity_items_as_matrix, main = "Item similarity")
+add.text(similarity_items)
+```
+
+___
+
+## Recommender Model
+```{r}
+recommender_models <- recommenderRegistry$get_entries(dataType = "realRatingMatrix")
+names(recommender_models)
+
+lapply(recommender_models, "[[", "description")
+```
+
+___
+
+<ul><li class='downarrow'>extraction function</li></ul>
+```
+"[["
+```
+```{r}
+test <- list(a=1:10,b=letters[1:10])
+test
+ "[["(test,1)
+ "["(test,1)
+```
+
+___
+
+我們只使用IBCF(item-based collaborative filtering)和UBCF(user-based collaborative filtering)
+
+<ul><li class='downarrow'>查看參數</li></ul>
+```{r}
+df_parameters <- data.frame(
+  parameter = names(recommender_models$IBCF_realRatingMatrix$parameters),
+  default = unlist(recommender_models$IBCF_realRatingMatrix$parameters),
+  row.names = NULL
+)
+df_parameters |> knitr::kable()
+```
+
+___
+
+## Exploratory Data Analysis
+```{r}
+dim(MovieLense)
+```
+
+MovieLense包含`r dim(MovieLense)[1]`個users和`r dim(MovieLense)[2]`部電影
+
+* `realRatingMatrix`屬於S4類別(class)，要用`slotNames`取得內容名稱
+```{r}
+slotNames(MovieLense)
+```
+
+* `MovieLense@data`屬於`dgCMatrix`類別，屬於稀疏數值矩陣(sparse numeric matrices) 
+```{r}
+class(MovieLense@data)
+dim(MovieLense@data)
+```
+
+<ul><li class='downarrow'>評分為整數，範圍為0~5</li></ul>
+```{r}
+vector_ratings <- as.vector(MovieLense@data)
+unique(vector_ratings) |> sort()
+
+table_ratings <- table(vector_ratings)
+df_ratings <- data.frame(
+  rating = names(table_ratings),
+  occurrences = as.vector(table_ratings)
+)
+df_ratings |> knitr::kable()
+```
+
+<ul><li class='downarrow'>評分為0表示遺失值，因此移除它</li></ul>
+```{r results='hold'}
+length(vector_ratings)
+vector_ratings <- vector_ratings[vector_ratings != 0]
+length(vector_ratings)
+```
+
+### Rating
+<ul><li class='downarrow'>大多數評分都大於2，最常見的評分為4</li></ul>
+```{r}
+library(ggplot2)
+ggplot(data.frame(vector_ratings), aes(x=factor(vector_ratings)))+
+  geom_bar()+
+  labs(title = "Distribution of the ratings",
+       x = "Ratings")
+```
+
+### Movie views
+<ul><li class='downarrow'>Star Wars有最高的觀看數</li></ul>
+```{r}
+views_per_movie <- colCounts(MovieLense)
+table_views <- data.frame(
+  movie = names(views_per_movie),
+  views = views_per_movie
+  )
+table_views <- table_views[order(table_views$views, decreasing = TRUE), ]
+
+ggplot(head(table_views), aes(x=movie, y=views))+
+  geom_bar(stat="identity")+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  labs(title = "Number of views of the top movies")
+```
+
+### Average ratings
+<ul><li class='downarrow'>大部分電影的平均評分在3左右，其中有些評分為1或5，可能是因為只有少數人評分</li></ul>
+```{r}
+average_ratings <- colMeans(MovieLense)
+ggplot(data.frame(average_ratings), aes(x=average_ratings))+
+  geom_histogram()+
+  labs(title = "Distribution of the average movie rating",
+       x="Average Ratings")
+```
+
+<ul><li class='downarrow'>因此我們應該保留大部分人都有評分的電影，保留超過100人觀看的電影，共332部</li></ul>
+```{r}
+summary(views_per_movie)
+average_ratings_relevant <- average_ratings[views_per_movie > 100]
+length(average_ratings_relevant)
+```
+
+<ul><li class='downarrow'>移除極端值後，大部分電影的平均評分在4左右</li></ul>
+```{r}
+ggplot(data.frame(average_ratings_relevant), aes(x=average_ratings_relevant))+
+  geom_histogram()+
+  labs(title = "Distribution of the relevant average ratings",
+       x="Average Ratings for views_per_movie > 100")
+```
+
+### Rating Matrix
+<ul><li class='downarrow'>保留大多人評分的電影和評分大多電影的人</li></ul>
+```{r}
+min_n_movies <- quantile(rowCounts(MovieLense), 0.99)
+min_n_users <- quantile(colCounts(MovieLense), 0.99)
+image(MovieLense[rowCounts(MovieLense) > min_n_movies,
+                 colCounts(MovieLense) > min_n_users],
+                main = "Heatmap of the top 1% users and movies")
+```
+
+### Normalize
+因為評分為1~5，圖形呈現為單一色階，因此無法明顯看出電影的好壞，我們可以考慮標準化，讓評分的範圍包含負數及正數且平均為0的資料
+
+* 太少人看的電影可能會有偏誤(bias)
+* 太少評分的使用者可能會有偏誤
+
+<ul><li class='downarrow'>保留評分超過50部電影的使用者和被超過100人評分的電影</li></ul>
+```{r}
+ratings_movies <- MovieLense[rowCounts(MovieLense) > 50,
+                             colCounts(MovieLense) > 100]
+min_movies <- quantile(rowCounts(ratings_movies), 0.98)
+min_users <- quantile(colCounts(ratings_movies), 0.98)
+image(ratings_movies[rowCounts(ratings_movies) > min_movies,
+                               colCounts(ratings_movies) > min_users],
+                main = "Heatmap of the top users and movies")
+average_ratings_per_user <- rowMeans(ratings_movies)
+qplot(average_ratings_per_user) +
+  stat_bin(binwidth = 0.1) +
+  ggtitle("Distribution of the average rating per user") + 
+  xlab("Average ratings per user")
+```
+
+<ul><li class='downarrow'>Normalize</li></ul>
+```
+normalize(x, method="center", row=TRUE)
+```
+* `method`: "center"(減平均) or "Z-score"(再除標準差)
+
+```{r}
+ratings_movies_norm <- normalize(ratings_movies)
+min_movies <- quantile(rowCounts(ratings_movies), 0.98)
+min_users <- quantile(colCounts(ratings_movies), 0.98)
+image(ratings_movies_norm[rowCounts(ratings_movies_norm) > min_movies,
+                          colCounts(ratings_movies_norm) > min_users],
+      main = "Heatmap of the top 2% users and movies")
+min_movies <- quantile(rowCounts(ratings_movies), 0.97)
+min_users <- quantile(colCounts(ratings_movies), 0.97)
+image(ratings_movies_norm[rowCounts(ratings_movies_norm) > min_movies,
+                                    colCounts(ratings_movies_norm) > min_users],
+                main = "Heatmap of the top 3% users and movies")
+```
+
+### Binarization
+```{r}
+min_movies_binary <- quantile(rowCounts(ratings_movies), 0.95)
+min_users_binary <- quantile(colCounts(ratings_movies), 0.95)
+```
+
+<ul><li class='downarrow'>評分為1(含)以上為1，其餘為0</li></ul>
+```{r}
+ratings_movies_watched <- binarize(ratings_movies, minRating = 1)
+image(ratings_movies_watched[rowCounts(ratings_movies) > min_movies_binary,
+                             colCounts(ratings_movies) > min_users_binary],
+      main = "Heatmap of the top 5% users and movies")
+```
+
+<ul><li class='downarrow'>評分為3(含)以上為1，其餘為0</li></ul>
+```{r}
+ratings_movies_good <- binarize(ratings_movies, minRating = 3)
+image(ratings_movies_good[rowCounts(ratings_movies) > min_movies_binary,
+                                    colCounts(ratings_movies) > min_users_binary],
+                main = "Heatmap of the top users and movies")
+```
+
+_____________________________
+
+## \[Rating] Example: Movie
+```{r}
+library(recommenderlab)
+library(ggplot2)
+
+temp=read.csv("data/MovieLense.csv")
+MovieLense=as(temp,"realRatingMatrix")
+ratings_movies <- MovieLense[rowCounts(MovieLense) > 50,
+                             colCounts(MovieLense) > 100]
+# ratings_movies_norm <- normalize(ratings_movies)
+dim(ratings_movies)
+```
+
+<ul><li class='downarrow'>列出兩種演算法的參數</li></ul>
+```{r parameter-tab, echo=F}
+recommender_models <- recommenderRegistry$get_entries(dataType = "realRatingMatrix")
+parI <- data.frame(
+  parameter = names(recommender_models$IBCF_realRatingMatrix$parameters),
+  default = unlist(recommender_models$IBCF_realRatingMatrix$parameters)
+)
+parU <- data.frame(
+  parameter = names(recommender_models$UBCF_realRatingMatrix$parameters),
+  default = unlist(recommender_models$UBCF_realRatingMatrix$parameters)
+)
+knitr::kable(list(parI, parU), row.names=F, caption = "兩種演算法的參數: IBCF(左) & UBCF(右)")
+```
+
+* `k`: k 個最相似的物品
+* `method`: 相似函數
+* `nn`: 相似使用者的個數
+
+```
+model = Recommender(data, method, parameter=list(k=30))
+getModel(model)
+```
+
+* 使用`getModel`取得模型的細節
+
+________________________________________
+
+### \[Rating] Item-based Collaborative Filtering {#IBCF}
+IBCF考慮使用者的購買紀錄並推薦相似的物品，其核心演算法基於下列的步驟:
+
+1. 對於每兩個物品，測量它們在接收到相似用戶評分方面的相似性
+2. 對於每個物品，識別 k 個最相似的物品
+3. 對於每個用戶，識別與該用戶購買最相似的物品
+
+#### Build model
+```{r}
+model_I <- Recommender(data = ratings_movies, method = "IBCF")
+
+model_details <- getModel(model_I)
+names(model_details) |> matrix(ncol=3) |> pander::pander()
+model_details$description
+```
+
+<ul><li class='downarrow'>sim包含相似矩陣，可以看到方陣的大小和項目數相同[(原始資料矩陣)](Example: Movie)</li></ul>
+```{r results='hold'}
+class(model_details$sim)
+dim(model_details$sim)
+```
+
+<ul><li class='downarrow'>我們可以看到很多地方等於0，因為每列只有`k=30`個物品，我們可以透過加總每列數值>0的個數來檢查</li></ul>
+```{r results='hold'}
+image(model_details$sim[1:20,1:20], 
+      main = "Heatmap of complete similiarity matrix")
+
+model_details$k
+```
+
+##### Hand-on problem 1 {-}
+```{r results='hold'}
+table(rowSums(model_details$sim > 0))
+apply(model_details$sim,1,function(x) sum(x>0)) |> table()
+```
+
+_______
+
+> 注意: **這個矩陣不是對稱的**
+
+因為每列只有前30個相似性會被保留，所以實際上每行的非空元素依賴於相應電影被包含在另一部電影的前 k 名中的次數。
+
+從圖\@ref(fig:IBCF-fig1)可以看到，有一些電影和很多其他的電影相似，表\@ref(tab:IBCF-tab1)列出了前6部和最多電影相似的電影
+```{r IBCF-fig1, fig.cap="Distribution of the column count"}
+col_sums <- colSums(model_details$sim > 0)
+DF_col_sums=as.data.frame(col_sums)
+ggplot(DF_col_sums,aes(x=col_sums)) +
+  geom_histogram()
+```
+```{r}
+which_max <- order(col_sums, decreasing = TRUE)[1:6]
+# rownames(model_details$sim)[which_max]
+```
+```{r IBCF-tab1, echo=F}
+data.frame(
+  movie = rownames(model_details$sim)[which_max],
+  col_sum = col_sums[which_max]) |> 
+  knitr::kable(caption="movies with the most elements", row.names = F)
+```
+
+#### (Predict) Recommend movies to users
+對於每個用戶，該算法提取其評分的電影。
+
+對於每部電影，從相似性矩陣開始識別所有相似的項目。
+
+然後，該算法按以下方式對每個相似的項目進行排名：
+
+1. 提取與此項目相關聯的用戶評分，該評分用作權重
+2. 提取與該項目相關聯的每個購買的相似性
+3. 將每個權重乘以相關的相似性並加總
+
+然後，該算法識別前 n 個推薦項目
+```{r}
+pred_I <- predict(object = model_I,
+                  newdata = ratings_movies,
+                  n = 6,
+                  type=c("topNList","ratings","ratingMatrix")[1])
+pred_I
+```
+
+<ul><li class='downarrow'>`pred_I`包含推薦</li></ul>
+```{r results='hold'}
+class(pred_I)
+slotNames(pred_I)
+```
+
+* `items`: 每個用戶推薦項目的索引列表
+* `itemLabels`: 項目的名稱
+* `n`: 推薦數量
+
+
+##### Hand-on problem 2 {-}
+<ul><li class='downarrow'>以使用者1為例，表\@ref(tab:IBCF-tab2)列出了推薦給使用者1的6部電影</li></ul>
+```{r eval=F}
+pred_I@items[[1]]
+pred_I@itemLabels[pred_I@items[[1]]]
+```
+```{r IBCF-tab2, echo=F}
+knitr::kable(data.frame(
+  index = pred_I@items[[1]],
+  movie = pred_I@itemLabels[pred_I@items[[1]]]
+), caption = "recommendations for the first user")
+```
+
+<ul><li class='downarrow'>我們可以建立一個各使用者的推薦矩陣，表\@ref(tab:IBCF-tab3)列出了推薦給前4個使用者的6部電影</li></ul>
+```{r}
+recc_matrix <- sapply(pred_I@items, function(x){
+  colnames(ratings_movies)[x]
+})
+dim(recc_matrix)
+```
+```{r IBCF-tab3, echo=F}
+knitr::kable(recc_matrix[, 1:4], caption = "recommendations for the first four users")
+```
+
+<ul><li class='downarrow'>接著我們可以查看最被推薦的電影，圖\@ref(fig:IBCF-fig2)顯示了各電影被推薦的次數之分布，我們可以看到大部分的電影只被推薦很少次，而少部分的電影被推薦很多次</li></ul>
+```{r IBCF-fig2, fig.cap="IBCF 推薦次數分布圖"}
+number_of_items <- factor(table(recc_matrix))
+ggplot(data.frame(x=number_of_items))+
+  geom_bar(aes(x=x))+
+  labs(x="推薦次數")
+```
+
+<ul><li class='downarrow'>接著我們來查看哪幾部電影被推薦最多次，表\@ref(tab:IBCF-tab4)列出了前4部被推薦最多次的電影</li></ul>
+```{r IBCF-tab4}
+number_of_items_top <- number_of_items |> 
+  sort(decreasing = TRUE) |>
+  head(4)
+knitr::kable(data.frame(
+  names(number_of_items_top),
+  number_of_items_top
+), row.names = F, col.names = c("Movie", "Recommend times"),
+caption = "the most popular movies")
+```
+
+________________________________________
+
+### \[Rating] User-based Collaborative Filtering {#UBCF}
+UBCF演算法步驟: 
+
+1. 測量使用者之間的相似性
+2. 識別最相似的使用者  
+  2.1. Top k: k nearest neighbors (KNN)  
+  2.2. threshold: 考慮相似性高於門檻值的使用者  
+3. 計算最相似使用者購買過的物品之評分，評分為相似使用者之評分的平均  
+  3.1. 平均  
+  3.2. 加權平均，以相似性為權重  
+  
+#### Build model
+```{r}
+model_U <- Recommender(data = ratings_movies, method = "UBCF")
+
+model_details <- getModel(model_U)
+names(model_details) |> c("","") |> matrix(ncol=3) |> pander::pander()
+```
+
+
+<ul><li class='downarrow'>`data`包含了評分矩陣，原因是UBCF需要訪問所有的資料來做預測</li></ul>
+```{r}
+model_details$data
+```
+
+#### (Predict) Recommend movies to users
+```{r}
+pred_U <- predict(object = model_U,
+                  newdata = ratings_movies,
+                  n = 6)
+pred_U
+```
+
+<ul><li class='downarrow'>表\@ref(tab:UBCF-tab1)列出了UBCF演算法推薦給前4個使用者的6部電影，IBCF推薦的見表\@ref(tab:IBCF-tab3)</li></ul>
+```{r}
+recc_matrix <- sapply(pred_U@items, function(x){
+  colnames(ratings_movies)[x]
+})
+# dim(recc_matrix)
+```
+```{r UBCF-tab1, echo=F}
+knitr::kable(recc_matrix[, 1:4], caption = "recommendations for the first four users")
+```
+
+<ul><li class='downarrow'>圖\@ref(fig:UBCF-fig1)顯示了各電影被推薦的次數之分布，和IBCF演算法的結果(圖\@ref(fig:IBCF-fig2))相比，UBCF有更長的尾巴，表示有些電影更常被推薦</li></ul>
+```{r UBCF-fig1, fig.cap="UBCF 推薦次數分布圖"}
+number_of_items <- factor(table(recc_matrix))
+ggplot(data.frame(x=number_of_items))+
+  geom_bar(aes(x=x))+
+  labs(x="推薦次數")
+```
+
+<ul><li class='downarrow'>表\@ref(tab:UBCF-tab2)列出了前4部被UBCF推薦最多次的電影，IBCF的結果見表\@ref(tab:IBCF-tab4)</li></ul>
+```{r UBCF-tab2}
+number_of_items_top <- number_of_items |> 
+  sort(decreasing = TRUE) |>
+  head(4)
+knitr::kable(data.frame(
+  names(number_of_items_top),
+  number_of_items_top
+), row.names = F, col.names = c("Movie", "Recommend times"),
+caption = "the most popular movies")
+```
+
+_____________________________
+
+## [Binary] Example: Movie
+前面我們使用了評分來建立模型，但有可能有下列的情況發生: 
+
+* 我們知道已經購買了哪些項目，但不知道它們的評分
+* 對於每個用戶，我們不知道它購買了哪些項目，但我們知道它喜歡哪些項目
+
+在這些情況下，我們可以建立一個矩陣，其值不是評分，而是0/1資料，**如果使用者購買或喜歡該物品則記為1，否則為0**。
+
+<ul><li class='downarrow'>在我們的情況中，從 `ratings_movies` 開始，我們可以建立一個 `ratings_movies_watched` 矩陣，如果用戶看了電影為 1，否則為 0。圖\@ref(fig:bin-fig1)顯示每個使用者觀看了幾部電影的分布，紅色虛線為平均，約為100部</li></ul>
+```{r bin-fig1, fig.cap="Distribution of movies by user"}
+ratings_movies_watched <- binarize(ratings_movies, minRating = 1)
+qplot(rowSums(ratings_movies_watched)) +
+  stat_bin(binwidth = 10) +
+  geom_vline(xintercept = mean(rowSums(ratings_movies_watched)),
+             col = "red", linetype = "dashed")
+```
+
+________________________________________________
+
+### [Binary] Item-based Collaborative Filtering
+表\@ref(tab:bin-IBCF-tab1)列出了IBCF在二元資料推薦給前4個使用者的結果，評分資料的結果見表\@ref(tab:IBCF-tab3)
+```{r}
+bin_model_I <- Recommender(
+  data = ratings_movies_watched,
+  method = "IBCF",
+  parameter = list(method = "Jaccard")
+)
+# model_details <- getModel(bin_model_I)
+recc_predicted <- predict(object = bin_model_I, 
+                          newdata = ratings_movies_watched,
+                          n = 6)
+recc_matrix <- sapply(recc_predicted@items, function(x){
+  colnames(ratings_movies_watched)[x]
+})
+```
+```{r bin-IBCF-tab1, echo=F}
+knitr::kable(recc_matrix[, 1:4], caption = "recommendations for the first four users")
+```
+
+________________________________________
+
+### [Binary] User-based Collaborative Filtering
+表\@ref(tab:bin-UBCF-tab1)列出了UBCF在二元資料推薦給前4個使用者的結果，評分資料的結果見表\@ref(tab:UBCF-tab1)
+```{r}
+bin_model_U <- Recommender(
+  data = ratings_movies_watched,
+  method = "UBCF",
+  parameter = list(method = "Jaccard")
+)
+recc_predicted <- predict(object = bin_model_U, 
+                          newdata = ratings_movies_watched,
+                          n = 6)
+recc_matrix <- sapply(recc_predicted@items, function(x){
+  colnames(ratings_movies_watched)[x]
+})
+```
+```{r bin-UBCF-tab1, echo=F}
+knitr::kable(recc_matrix[, 1:4], caption = "recommendations for the first four users")
+```
