@@ -1,0 +1,11 @@
+delete_merged_file: true
+language:
+  ui:
+    chapter_name: "Sec "
+book_filename: "bookdown-TS"
+# build with specific files or in a specific order
+# rmd_files: [
+#   "index.Rmd",
+#   "01-Example.Rmd"
+# ]
+ouput_dir: "docs"

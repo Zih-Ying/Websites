@@ -1,0 +1,19 @@
+--- 
+title: "Time Series"
+author: "ZIH-YING, LI"
+site: bookdown::bookdown_site
+documentclass: book
+---
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, fig.align = 'center',
+                      fig.height = 6, fig.width = 12, warning = F)
+```
+# About {-}
+
+Personal note for *Time Series* Course
+
+* Reference Book
+  * *Robert H. Shumway, David S. Stoffer*, Time series analysis and its application with R examples. 4^th^ edition.
+
+* Using package in R
+  * `astsa` package

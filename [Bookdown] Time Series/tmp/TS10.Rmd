@@ -1,0 +1,123 @@
+---
+title: "Time Series Example"
+output:
+  html_document:
+    toc: yes
+    toc_float:
+      collapsed: no
+    theme: united
+    css: style for united.css
+date: '`r Sys.Date()`'
+---
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, fig.align = 'center',
+                      fig.height = 6, fig.width = 12,
+                      results = "hold")
+```
+
+```{r}
+library(fracdiff)
+library(astsa)
+```
+
+### <mark>Example 5.1 (p.) </mark>
+```{r}
+lvarve = log(varve)-mean(log(varve))
+varve.fd = fracdiff(lvarve, nar=0, nma=0, M=30)
+varve.fd$d # = 0.3841688
+varve.fd$stderror.dpq # = 4.589514e-06 (questionable result!!)
+```
+
+```{r}
+p = rep(1,31)
+for (k in 1:30){ p[k+1] = (k-varve.fd$d)*p[k]/(k+1) }
+plot(1:30, p[-1], ylab=expression(pi(d)), xlab="Index", type="h")
+```
+
+```{r}
+res.fd = diffseries(log(varve), varve.fd$d) # frac diff resids
+res.arima = resid(arima(log(varve), order=c(1,1,1))) # arima resids
+par(mfrow=c(2,1),mar=c(4,4,1,1))
+acf(res.arima, 100, xlim=c(4,97), ylim=c(-.2,.2), main="")
+acf(res.fd, 100, xlim=c(4,97), ylim=c(-.2,.2), main="")
+```
+
+Both models are acceptable. But FI(d) is better because it requires fewer parameters. 
+
+### <mark>Example 5.3 (p.) Unit Root Test</mark>
+$$
+H_0: d=1\\
+H_1: d=0
+$$
+
+p-value $\geq0.05\Rightarrow$ need to do first-order differencing.
+
+```{r results='markup'}
+library(tseries)
+adf.test(log(varve), k=0) # DF test
+adf.test(log(varve)) # ADF test
+pp.test(log(varve)) # PP test
+```
+
+### <mark>Example 5.4 (p.) </mark>
+$$ARIMA(1,1,0) for log(gnp)$$
+
+```{r}
+u = sarima(diff(log(gnp)), 1, 0, 0)
+```
+
+
+```{r results='hide'}
+acf2(resid(u$fit)^2, 20)
+```
+
+$$
+\begin{array}{ll}
+AR(1):&X_t=\phi_0+\phi_1X_{t-1}+y_t\\
+ARCH(1):&
+\begin{array}{ll}
+y_t=\sigma_t\varepsilon_t, \varepsilon_t\stackrel{iid}{\sim}N(0,1)\\
+\sigma_t^2=\alpha_0+\alpha_1y_{t-1}^2
+\end{array}
+\end{array}
+$$
+
+```{r}
+library(fGarch)
+summary(garchFit(~arma(1,0)+garch(1,0), diff(log(gnp))))
+```
+
+the model is acceptable but not good enough
+
+### <mark>Example 5.5 (p.) </mark>
+```{r results='hide'}
+library(xts)
+djiar = diff(log(djia$Close))[-1]
+acf2(djiar) # exhibits some autocorrelation (not shown)
+acf2(djiar^2) # oozes autocorrelation (not shown)
+```
+
+$$
+\begin{array}{ll}
+AR(1):&X_t=\phi_0+\phi_1X_{t-1}+y_t\\
+GARCH(1,1):&
+\begin{array}{ll}
+y_t=\sigma_t\varepsilon_t\\
+\sigma_t^2=\alpha_0+\alpha_1y_{t-1}^2+\beta_1\sigma_{t-1}^2
+\end{array}
+\end{array}
+$$
+
+```{r}
+library(fGarch)
+summary(
+  djia.g <- garchFit(~arma(1,0)+garch(1,1), 
+                     data=djiar,
+                     cond.dist='std',
+                     trace = F)
+)
+```
+
+p-value $\geq0.05$  
+$\Rightarrow$ residuals are not autocorrelated (WN)  
+$\Rightarrow$ The model is suitable. 

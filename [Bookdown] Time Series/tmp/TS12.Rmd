@@ -1,0 +1,86 @@
+---
+title: "Time Series Example"
+output:
+  html_document:
+    toc: yes
+    toc_float:
+      collapsed: no
+    theme: united
+    css: style for united.css
+date: '`r Sys.Date()`'
+---
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, fig.align = 'center',
+                      fig.height = 6, fig.width = 12,
+                      results = "hold")
+library(astsa)
+```
+
+### <mark>Example 6.5 (p.)</mark>
+#### generate data
+```{r} 
+set.seed(1)  
+num = 50
+```
+
+$$W_t\sim N(0,1), V_t\sim N(0,1)$$
+
+```{r} 
+w = rnorm(num+1,0,1)
+v = rnorm(num,0,1)
+```
+
+$$\color{red}{\text{state Eq. : }}\mu_0=\mu_{t-1}+W_t$$
+
+$$\color{red}{\text{observe Eq. : }}y_t=\mu_t+V_t$$
+
+```{r} 
+mu = cumsum(w)  # states:  mu[0], mu[1], . . ., mu[50] 	
+y = mu[-1] + v  # obs:  y[1], . . ., y[50]
+```
+
+Predict $\mu_t$ based on $Y_s$
+
+#### filter and smooth (Ksmooth0 does both)
+```{r} 
+mu0 = 0; sigma0 = 1;  phi = 1; cQ = 1; cR = 1   
+ks = xKsmooth0(num, y, 1, mu0, sigma0, phi, cQ, cR)
+```
+
+#### pictures 
+```{r} 
+Time = 1:num; par(mfrow=c(3,1), mar=c(4,4,1,1))
+plot(Time, mu[-1], main="Prediction", ylim=c(-5,10))      
+  lines(ks$xp)
+  lines(ks$xp+2*sqrt(ks$Pp), lty="dashed", col="blue")
+  lines(ks$xp-2*sqrt(ks$Pp), lty="dashed", col="blue")
+plot(Time, mu[-1], main="Filter", ylim=c(-5,10))
+  lines(ks$xf)
+  lines(ks$xf+2*sqrt(ks$Pf), lty="dashed", col="blue")
+  lines(ks$xf-2*sqrt(ks$Pf), lty="dashed", col="blue")
+plot(Time, mu[-1],  main="Smoother", ylim=c(-5,10))
+  lines(ks$xs)
+  lines(ks$xs+2*sqrt(ks$Ps), lty="dashed", col="blue")
+  lines(ks$xs-2*sqrt(ks$Ps), lty="dashed", col="blue")
+```
+
+Prediction have wider CI, while smoother have narrower CI
+
+```{r} 
+mu[1]; ks$x0n; sqrt(ks$P0n)   # initial value info
+```
+
+In case you can't see the differences in the 3 figures for this example, try this... 
+
+Predictor, Filter, Smoother on Same Plot
+```{r} 
+plot(Time, mu[-1])
+lines(ks$xp, col=4)
+lines(ks$xf, col=3)  
+lines(ks$xs, col=2)
+abline(v=Time, lty=3, col="lightblue")
+names = c("predictor","filter","smoother")
+legend("bottomright", names, col=4:2, lty=1, bg="white")
+```
+
+Smoother don't have the sharpe peak. 

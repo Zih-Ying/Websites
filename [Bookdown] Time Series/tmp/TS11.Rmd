@@ -1,0 +1,102 @@
+---
+title: "Time Series Example"
+output:
+  html_document:
+    toc: yes
+    toc_float:
+      collapsed: no
+    theme: united
+    css: style for united.css
+date: '`r Sys.Date()`'
+---
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, fig.align = 'center',
+                      fig.height = 6, fig.width = 12,
+                      results = "hold")
+```
+
+```{r}
+library(fracdiff)
+library(astsa)
+```
+
+## Multivariate time series data
+### <mark>Example 5.8 (p.) </mark>
+* `soi.d`: $y_t$
+* `soi`: $X_t$
+* `time(soi)`: $t$
+
+$$y_t=X_t-\beta_0-\beta_1t$$
+
+```{r results='hide'}
+soi.d = resid(lm(soi~time(soi), na.action=NULL)) # detrended SOI
+acf2(soi.d)
+```
+
+$\uparrow$ PACF cut-off after lag 1 $\Rightarrow$ AR(1)
+
+$\downarrow$ Fit AR(1) model to $y_t$
+```{r}
+fit = arima(soi.d, order=c(1,0,0))
+```
+
+$\downarrow$ $\hat\phi_1$
+```{r}
+ar1 = as.numeric(coef(fit)[1]) # = 0.5875
+```
+
+* $\color{red}{\tilde y_t}$ `soi.pw` $=y_t-\hat\phi_1y_{t-1}$
+* $\color{red}{\tilde Z_t}$ `rec.fil` $=Z_t-\hat\phi_1Z_{t-1}$ 
+```{r}
+soi.pw = resid(fit)
+rec.fil = filter(rec, filter=c(1, -ar1), sides=1)
+```
+
+`ccf(x, y, ...)` $=corr(x_{t+h},y_t)$
+
+```{r}
+ccf(soi.pw, rec.fil, ylab="CCF", na.action=na.omit, panel.first=grid())
+```
+
+$\uparrow$ $X_{t-5}$ and $y_t$ are highly correlated. ($Corr(\tilde Y_{t-5}, \tilde Z_t)$) $\Rightarrow$ Use $X_{t-5}$ to predict $y_t$
+
+### <mark>Example 5.9 (p.) </mark>
+```{r}
+soi.d = resid(lm(soi~time(soi), na.action=NULL))
+```
+
+$$fish=\Big[\stackrel{Z_t}{\small\sim}\;\stackrel{Z_{t-1}}{\small\sim}\;\stackrel{y_{t-5}}{\small\sim}\Big]$$
+
+* `rec`: $Z_t$
+* `lag(rec,-1)`: $Z_{t-1}$
+* `lag(soi.d,-5)`: $y_{t-5}$, choose this because of the CCF in Example 5.8
+```{r}
+fish = ts.intersect(rec, RL1=lag(rec,-1), SL5=lag(soi.d,-5))
+```
+
+`u`: $Z_t=\beta_1 Z_{t-1}+\beta_2 y_{t-5}$
+```{r}
+(u = lm(fish[,1]~fish[,2:3], na.action=NULL))
+```
+
+`resid(u)`: $\mu_t=Z_t-\beta_1 Z_{t-1}-\beta_2 y_{t-5}$
+```{r results='hide'}
+acf2(resid(u)) # suggests ar1
+```
+
+$\uparrow$ PACF cut-off after lag 1 $\Rightarrow$ AR(1)
+
+$\downarrow$ Fit AR(1) to $\mu_t$, $\therefore\mu_t=\phi_1\mu_{t-1}+W_t$
+```{r results='hide'}
+(arx = sarima(fish[,1], 1, 0, 0, xreg=fish[,2:3])) # final model
+```
+
+$\uparrow$ The final model is not good but acceptable. 
+
+```{r}
+pred = rec + resid(arx$fit) # 1-step-ahead predictions
+ts.plot(pred, rec, col=c('gray90',1), lwd=c(7,1))
+legend("topleft", legend=c("Pred.", "True"),
+       col=c('gray90',1), lwd=c(7,1))
+```
+

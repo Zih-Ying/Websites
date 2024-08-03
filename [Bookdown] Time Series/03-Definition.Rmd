@@ -1,0 +1,318 @@
+# (PART) Definition {-}
+
+Base Definition
+====================
+
+Variance, Covariance, Correlation
+------------------------------
+<mark>\<Def\></mark> *Covariance*
+
+$$Cov(X_s, X_t)=E[(X_s-\mu_s)(X_t-\mu_t)]$$
+<mark>\<Def\></mark> *Correlation*
+
+$$Corr=\frac{Cov(X,Y)}{\sqrt{Var(X)Var(Y)}}$$
+
+* *Variance of linear combination*
+
+$$Var\left(a_0+\sum_{j=1}^pa_jX_j\right)=\sum_{j=1}^p\sum_{k=1}^pa_ja_k\cdot Cov(X_j,X_k)$$
+
+* *Covariance of linear combination*
+
+$$Cov\left(a_0+\sum_{j=1}^pa_jX_j, b_0+\sum_{k=1}^qb_kY_k\right)=\sum_{j=1}^p\sum_{k=1}^qa_jb_k\cdot Cov(X_j,Y_k)$$
+
+Uncorrelated, Independent
+------------------------------
+* r.v. with **zero correlation $\Rightarrow$ uncorrelated**
+* independent + **finite variance** $\Rightarrow$ uncorrelated
+* **uncorrelated $\nRightarrow$ independent**
+
+<mark>\<Def\></mark> *uncorrelated*
+
+$$Corr(X,Y)=0$$
+
+<mark>\<Def\></mark> *independent*
+
+$$P(X\cap Y)=P(X)P(Y)$$
+
+Autocovariance, Autocorrelation, Cross-covariance, Cross-correlation
+------------------------------
+
+### Population
+<mark>\<Def\></mark> *autocovariance* function
+
+$$Cov(X_s, X_t)= \gamma_X(s,t)=E[(X_s-\mu_s)(X_t-\mu_t)]$$
+$$measuring\:time: s,t=t_1,t_2,...$$
+
+<mark>\<Def\></mark> *autocorrelation* function (ACF)
+
+$$\rho(s,t)=\frac{\gamma(s,t)}{\sqrt{\gamma(s,s)\gamma(t,t)}}=\frac{Cov(X_s,X_t)}{\sqrt{Var(X_s)Var(X_t)}}$$
+<mark>\<Def\></mark> *cross-covariance* function
+
+$$\gamma_{XY}(s,t)=E[(X_s-\mu_{X_s})(Y_t-\mu_{Y_t})]$$
+
+<mark>\<Def\></mark> *cross-correlation* function (CCF)
+
+$$\rho_{XY}(s,t)=\frac{\gamma_{XY}(s,t)}{\sqrt{\gamma_X(s,s)\gamma_Y(t,t)}}=\frac{Cov(X_s,Y_t)}{\sqrt{Var(X_s)Var(Y_t)}}$$
+
+> Covariance: different covatiate
+> Autocovariance: same variable but at different time
+
+
+### Stationary Case
+times series $\{X_t\}$ is **stationary** 
+<ul>
+<mark>\<Def\></mark> *autocovariance* function
+$$
+\gamma(h)=Cov(X_t, X_{t+h})\\
+\color{red}{\gamma(0)=Var(X_t)}
+$$
+
+<mark>\<Def\></mark> *autocorrelation* function (ACF)
+$$
+\rho(h)=Corr(X_t, X_{t+h})=\frac{Cov(X_t, X_{t+h})}{\sqrt{Var(X_t)Var(X_{t+h})}}=\frac{\gamma(h)}{\gamma(0)}
+$$
+</ul>
+
+two times series $\{X_t\},\{Y_t\}$ are **jointly stationary** 
+<ul>
+<mark>\<Def\></mark> *cross-covariance* function
+$$
+\gamma_{XY}(h)=Cov(X_t, Y_{t+h})=E[(X_t-\mu_{X})(Y_{t+h}-\mu_{Y})]\\
+\text{ is a function only of lag h}
+$$
+
+<mark>\<Def\></mark> *cross-correlation* function (CCF)
+$$
+\rho_{XY}(h)=Corr(X_t, Y_{t+h})=\frac{\gamma_{XY}(h)}{\sqrt{\gamma_X(0)\gamma_Y(0)}}
+$$
+</ul>
+
+### Sample
+<mark>\<Def\></mark> *sample autocovariance* function
+$$
+\hat\gamma(h)=n^{-1}\sum_{t=1}^{n-h}(X_t-\bar X)(X_{t+h}-\bar X)
+$$
+
+<mark>\<Def\></mark> *sample autocorrelation* function (ACF)
+$$
+\hat\rho(h)=\frac{\hat\gamma(h)}{\hat\gamma(0)}
+$$
+
+<mark>\<Prop\></mark> *large sample* distribution of ACF
+$$
+\hat\rho_X(h)\sim N(0,\frac{1}{\sqrt{n}})\\
+\text{ if }X_t\text{ is }WN\text{ and n large}
+$$
+$H_0: \text{follow WN assumption}$
+
+* accept WN assumption, if all ACF are within $\pm1.96\times\frac{1}{\sqrt n}$
+* see the follow example \@ref(fig:acf-plot)
+```{r acf-plot, fig.cap="The ACF plot"}
+acf(diff(gtemp), 48)
+```
+
+
+<mark>\<Def\></mark> *sample cross-covariance* function
+$$
+\hat\gamma_{XY}(h)=n^{-1}\sum_{t=1}^{n-h}(X_t-\bar X)(Y_{t+h}-\bar Y)
+$$
+
+<mark>\<Def\></mark> *sample cross-correlation* function (CCF)
+$$
+\hat\rho_{XY}(h)=\frac{\hat\gamma_{XY}(h)}{\sqrt{\hat\gamma_X(0)\hat\gamma_Y(0)}}
+$$
+
+<mark>\<Prop\></mark> *large sample* distribution of CCF
+$$
+\hat\rho_{XY}(h)\sim N(0,\frac1n)\\
+\text{ if at least one process is white independent noise}
+$$
+
+Modeling dependence
+====================
+Easiest to model dependence in *stationary* case
+
+Stationary
+------------------------------
+<mark>\<Def\></mark> *stationary*: dependence does **not change with time**
+
+<mark>\<Def\></mark> *strictly stationary*
+
+$$(X_{t_1}, X_{t_2},...,X_{t_k})\overset{d}{=}(X_{t_1+h}, X_{t_2+h}, ...,X_{t_k+h})$$
+
+* **joint probability distribution** does not change with time
+* $k=1$
+
+$$identically\:distributed:\:X_1\overset{d}{=}X_2\overset{d}{=}X_3\overset{d}{=}\cdots$$
+<ul>
+  * means are all **identical** if means exist<br>
+    (rule out (排除) **trend, seasonality**)
+</ul>
+<ul>
+  * variances are all **identical** if variances exist<br>
+    (rule out **heteroskedasticity**)
+</ul>
+
+* $k=2$
+
+$$(X_t, X_s)\overset{d}{=}(X_{t+h}, X_{s+h}), \forall t, h$$
+$$Cov(X_t,X_s)=Cov(X_{t+h},X_{s+h})$$
+<ul>if variance exist</ul>
+
+* $k\geq3$, get increasingly complicated
+  * e.g. If **${X_t}$ is i.i.d.** then ${X_t}$ is strictly stationary
+* strictly stationary is a very strong assumption
+
+*****
+
+<mark>\<Def\></mark> *weakly stationary*  
+also known as **"stationary"**, "covariance stationary", "second order stationary"
+
+* $Var(X_t)<\infty$
+* $E(X_t)$ does not depend on t
+* $Cov(X_t, X_{t+h})$ does not depend on t
+  * normally depends on $h$
+
+* **first and second order moment properties** do not change with time
+  * implies **all means, variances, covariances exist**
+  * | implies means are **identical / constant** 
+    | (rule out **trend, seasonality**)
+  * | with $h=0$
+    | $Cov(X_t, X_{t+h})=Var(X_t)$
+    | implies variance are **constant** 
+    | (rule out **heteroskedasticity**)
+
+> if there is trend, seasonality or heteroskedasticity in time series, this time series is not stationary
+
+Weakly Stationary
+------------------------------
+> | need to check:
+  | 1. $Var(X_t)<\infty$
+  | 2. $E(X_t)$ does not depend on t
+  | 3. $Cov(X_t, X_{t+h})$ does not depend on t
+
+*****
+
+e.g.1: $\{X_t\}$ is strictly stationary and $Var(X_t)<\infty$ $\Rightarrow$ weakly stationary
+
+> strictly stationary $\nLeftrightarrow$ weakly stationary
+
+e.g.2: 
+<ul>
+  $\{X_t\}$ independent,  
+  $X_t\sim N(0,1)$ for t odd,  
+  $X_t=\pm1$ with prob. 0.5 for t even. (i.e. discrete uniform {-1,1})
+</ul>
+
+1. 
+$$
+E(X_t)=0 \text{ for t odd}\\
+E(X_t)=1\cdot0.5+(-1)\cdot0.5=0\text{ for t even}\\
+\therefore E(X_t)\text{ does not depend on t}
+$$
+
+2. 
+$$
+Var(X_t)=1\text{ for t odd}\\
+\begin{array}{ll}Var(X_t)&=E(X_t^2)-[E(X_t)]^2\\&=1^2\cdot0.5+(-1)^2\cdot0.5-0^2=1\text{ for t even}\end{array}\\
+\therefore Var(X_t)<\infty
+$$
+
+3. 
+$$
+Cov(X_t,X_{t+h})=\big\{\begin{array}{ll}
+1, &h=0\\
+0, &h\neq0
+\end{array}
+\text{ does not depend on t}\\
+\color{red}{\because\{X_t\}\text{ are indep. and }Var(X_t)<\infty}\\
+\therefore\{X_t\}\text{ is weakly stationary}
+$$
+
+White Noise (WN)
+------------------------------
+A sequence $\{W_t\}$ is called white noise process if each value in the sequence has 
+
+1. $E(W_t)=0$
+2. $Var(W_t)=σ^2\;\;∀t$
+3. $Cov(W_t,W_s)=0\;\;if\;\;t≠s$
+
+> Assume the error term is:
+>
+> * i.i.d. with normal distribution in regression
+> * WN in time series
+
+*****
+
+e.g.3: 
+<ul>
+  $Z_t\sim WN(0,1)$  
+  $X_t=Z_t-0.5Z_{t-1}$ MA(1)
+</ul>
+
+> MA: moving average  
+> MA(1): $X_t=Z_t+a_1Z_{t-1}$  
+> MA(2): $X_t=Z_t+a_1Z_{t-1}+a_2Z_{t-2}$
+
+1. 
+$$
+\begin{array}{ll}
+Var(X_t)&=Var(Z_t-0.5Z_{t-1})\\
+&=Var(Z_t)+(-0.5)^2Var(Z_{t-1})+2\cdot1\cdot(-0.5)\cdot Cov(Z_t,Z_{t-1})
+\color{red}{\because WN\therefore Cov(Z_t,Z_{t-1})=0}\\
+&=1+0.25+0=1.25<\infty
+\end{array}
+$$
+
+<blockquote>
+$$
+X,Y: r.v.'s \hspace{1cm} A,B: constants\\
+Var(AX+BY)=A^2Var(X)+B^2Var(Y)+2ABCov(X,Y)
+$$
+</blockquote>
+
+2. 
+$$
+\begin{array}{ll}
+E(X_t)&=E(Z_t-0.5Z_{t-1})\\
+&=E(Z_t)-0.5E(Z_{t-1})=0-0=0\text{ does not depend on t}
+\end{array}
+$$
+
+3. 
+$$
+\begin{array}{ll}
+Cov(X_t,X_{t+h})&=Cov(Z_t-0.5Z_{t-1},Z_{t+h}-0.5Z_{t+h-1})\\
+&=\Bigg\{\begin{array}{ll}
+1.25, &h=0\\
+-0.5, &h=\pm1\\
+0, &o.w.
+\end{array}\text{ does not depend on t}
+\end{array}\\
+\therefore\{X_t\}\text{ is stationary}
+$$
+
+Random Walk Process
+------------------------------
+<mark>\<Def\></mark> *random walk process*
+$$X_t=X_{t-1}+Z_t, \hspace{1cm}Z_t\sim WN(0, \sigma^2)$$
+
+* $X_t$: price on time $t$
+* $X_{t-1}$: price on time $t-1$
+* $Z_t=X_t-X_{t-1}$
+  * If $Z_t>0$, price $\uparrow$
+  * If $Z_t<0$, price $\downarrow$
+
+*****
+
+Assume $X_0=0$
+$$
+\begin{array}{ll}
+Var(X_t)&=Var(X_{t-1}+Z_t)\\
+&=Var[(X_{t-2}+Z_{t-1})+Z_t]\\
+&\vdots\\
+&=Var(X_0+Z_1+Z_2+\cdots+Z_t)\\
+&=Var\left(\sum_{j=1}^{t}Z_j\right)=\sum_{j=1}^{t}Var(Z_j)=t\cdot\sigma^2\text{ depends on t}
+\end{array}\\
+\therefore\{X_t\}\text{ is stationary}
+$$

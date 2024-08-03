@@ -1,0 +1,140 @@
+---
+title: "Time Series Example"
+output:
+  html_document:
+    toc: yes
+    toc_float:
+      collapsed: no
+    theme: united
+    css: style for united.css
+date: '`r Sys.Date()`'
+---
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, fig.align = 'center',
+                      fig.height = 6, fig.width = 12,
+                      results = "hold")
+library(astsa)
+```
+
+### <mark>Example 4.14 (p.) No Taper</mark>
+$\downarrow$ Smooth data
+```{r}
+soi.ave = mvspec(soi, kernel('daniell',4))
+abline(v=c(.25,1,2,3), lty=2)
+soi.ave$bandwidth # = 0.225
+```
+
+* bandwidth: the range of the curve
+  * $=\sigma^2$ in Gaussian kernel
+
+$\downarrow I(\omega_j)$
+```{r}
+df = soi.ave$df # df = 16.9875 (returned values)
+U = qchisq(.025, df) # U = 7.555916
+L = qchisq(.975, df) # L = 30.17425
+```
+```{r}
+soi.ave$spec[10] # 0.0495202
+soi.ave$spec[40] # 0.1190800
+```
+
+$\downarrow$ intervals
+
+the CI is smaller than CI in example 4.13
+```{r}
+df*soi.ave$spec[10]/L # 0.0278789
+df*soi.ave$spec[10]/U # 0.1113333
+```
+```{r}
+df*soi.ave$spec[40]/L # 0.0670396
+df*soi.ave$spec[40]/U # 0.2677201
+```
+
+### <mark>Example 4.16 (p.) Taper=0.1</mark>
+```{r}
+kernel("modified.daniell", c(3,3))
+plot(kernel("modified.daniell", c(3,3)))
+```
+```{r}
+k = kernel("modified.daniell", c(3,3))
+soi.smo = mvspec(soi, kernel=k, taper=.1, log="no")
+abline(v=c(.25,1), lty=2)
+```
+```{r}
+df = soi.smo$df # df = 17.42618
+soi.smo$bandwidth # B = 0.2308103
+```
+```{r}
+soi.smo = mvspec(soi, taper=.1, spans=c(7,7))
+```
+
+### <mark>Example 4.18 (p.)</mark>
+```{r}
+spaic = spec.ar(soi, log="no") # min AIC spec
+abline(v=frequency(soi)*1/52, lty=3) # El Nino peak
+```
+
+$\downarrow$ Fit AR(1), AR(2), ..., AR(30)
+
+AR(15) is selected. 
+```{r}
+(soi.ar = ar(soi, order.max=30)) # estimates and AICs
+
+plot(1:30, soi.ar$aic[-1], type="o") # plot AICs
+```
+
+$\downarrow$ the minimum AIC/BIC specifies the best model
+```{r}
+n = length(soi)
+AIC = rep(0, 30) -> AICc -> BIC
+for (k in 1:30){
+sigma2 = ar(soi, order=k, aic=FALSE)$var.pred
+BIC[k] = log(sigma2) + (k*log(n)/n)
+AICc[k] = log(sigma2) + ((n+k)/(n-k-2))
+AIC[k] = log(sigma2) + ((n+2*k)/n) }
+IC = cbind(AIC, BIC+1)
+ts.plot(IC, type="o", xlab="p -> AR(p)", ylab="AIC / BIC")
+```
+
+**Remember residual diagnostic**
+
+### <mark>Example 4.22 (p.)</mark>
+$\downarrow$ compare raw data, first diff. and kernel weights
+```{r}
+par(mfrow=c(3,1), mar=c(3,3,1,1), mgp=c(1.6,.6,0))
+plot(soi) # plot data
+plot(diff(soi)) # plot first difference
+k = kernel("modified.daniell", 6) # filter weights
+plot(soif <- kernapply(soi, k)) # plot 12 month filter
+```
+
+$\downarrow$ spectral analysis
+```{r}
+spectrum(soif, spans=9, log="no")
+abline(v=12/52, lty="dashed")
+```
+
+$\downarrow$ frequency responses
+
+```{r}
+par(mfrow=c(2,1), mar=c(3,3,1,1), mgp=c(1.6,.6,0))
+w = seq(0, .5, by=.01)
+FRdiff = abs(1-exp(2i*pi*w))^2
+plot(w, FRdiff, type='l', xlab='frequency')
+u = cos(2*pi*w)+cos(4*pi*w)+cos(6*pi*w)+cos(8*pi*w)+cos(10*pi*w)
+FRma = ((1 + cos(12*pi*w) + 2*u)/12)^2
+plot(w, FRma, type='l', xlab='frequency')
+```
+
+$\rightarrow$ UP: FRdiff
+$$
+\Psi(B)=1-B\\
+PTF=\big|\Psi(e^{i\omega})\big|^2=\big|1-e^{i\omega}\big|^2
+$$
+
+$\rightarrow$ DOWN: FRma
+$$
+MA(1)\\
+\Psi(B)=1+\theta B\\
+f(\omega)=1+2\theta\cdot cos\theta+\theta^2=\big|\Psi(e^{i\omega})\big|^2
+$$

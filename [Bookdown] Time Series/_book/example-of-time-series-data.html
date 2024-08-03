@@ -1,0 +1,1716 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Sec 1 Example of Time Series Data | Time Series</title>
+  <meta name="description" content="Sec 1 Example of Time Series Data | Time Series" />
+  <meta name="generator" content="bookdown 0.35 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Sec 1 Example of Time Series Data | Time Series" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Sec 1 Example of Time Series Data | Time Series" />
+  
+  
+  
+
+<meta name="author" content="ZIH-YING, LI" />
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="index.html"/>
+
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    background-color: #2a211c;
+    color: #bdae9d;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #bdae9d;  padding-left: 4px; }
+div.sourceCode
+  { color: #bdae9d; background-color: #2a211c; }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ffff00; } /* Alert */
+code span.an { color: #0066ff; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { } /* Attribute */
+code span.bn { color: #44aa43; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #43a8ed; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #049b0a; } /* Char */
+code span.cn { } /* Constant */
+code span.co { color: #0066ff; font-weight: bold; font-style: italic; } /* Comment */
+code span.do { color: #0066ff; font-style: italic; } /* Documentation */
+code span.dt { text-decoration: underline; } /* DataType */
+code span.dv { color: #44aa43; } /* DecVal */
+code span.er { color: #ffff00; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #44aa43; } /* Float */
+code span.fu { color: #ff9358; font-weight: bold; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #0066ff; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #43a8ed; font-weight: bold; } /* Keyword */
+code span.op { } /* Operator */
+code span.pp { font-weight: bold; } /* Preprocessor */
+code span.sc { color: #049b0a; } /* SpecialChar */
+code span.ss { color: #049b0a; } /* SpecialString */
+code span.st { color: #049b0a; } /* String */
+code span.va { } /* Variable */
+code span.vs { color: #049b0a; } /* VerbatimString */
+code span.wa { color: #ffff00; font-weight: bold; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Time Series</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>About</a></li>
+<li class="part"><span><b>I Example</b></span></li>
+<li class="chapter" data-level="1" data-path="example-of-time-series-data.html"><a href="example-of-time-series-data.html"><i class="fa fa-check"></i><b>1</b> Example of Time Series Data</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="example-of-time-series-data.html"><a href="example-of-time-series-data.html#characteristics-of-time-series"><i class="fa fa-check"></i><b>1.1</b> Characteristics of Time Series</a>
+<ul>
+<li class="chapter" data-level="1.1.1" data-path="example-of-time-series-data.html"><a href="example-of-time-series-data.html#practical-data"><i class="fa fa-check"></i><b>1.1.1</b> Practical data</a></li>
+<li class="chapter" data-level="1.1.2" data-path="example-of-time-series-data.html"><a href="example-of-time-series-data.html#white-noise-wn"><i class="fa fa-check"></i><b>1.1.2</b> White Noise (WN)</a></li>
+<li class="chapter" data-level="1.1.3" data-path="example-of-time-series-data.html"><a href="example-of-time-series-data.html#random-walk"><i class="fa fa-check"></i><b>1.1.3</b> Random Walk</a></li>
+<li class="chapter" data-level="1.1.4" data-path="example-of-time-series-data.html"><a href="example-of-time-series-data.html#noise-influence-periodic"><i class="fa fa-check"></i><b>1.1.4</b> Noise influence periodic</a></li>
+<li class="chapter" data-level="1.1.5" data-path="example-of-time-series-data.html"><a href="example-of-time-series-data.html#how-lag-influence-plot"><i class="fa fa-check"></i><b>1.1.5</b> How lag influence plot</a></li>
+</ul></li>
+<li class="chapter" data-level="1.2" data-path="example-of-time-series-data.html"><a href="example-of-time-series-data.html#explore-data"><i class="fa fa-check"></i><b>1.2</b> Explore Data</a>
+<ul>
+<li class="chapter" data-level="1.2.1" data-path="example-of-time-series-data.html"><a href="example-of-time-series-data.html#estimate-a-linear-trend"><i class="fa fa-check"></i><b>1.2.1</b> Estimate a linear trend</a></li>
+<li class="chapter" data-level="1.2.2" data-path="example-of-time-series-data.html"><a href="example-of-time-series-data.html#detrend-and-differencing"><i class="fa fa-check"></i><b>1.2.2</b> Detrend and Differencing</a></li>
+<li class="chapter" data-level="1.2.3" data-path="example-of-time-series-data.html"><a href="example-of-time-series-data.html#smoothing"><i class="fa fa-check"></i><b>1.2.3</b> Smoothing</a></li>
+</ul></li>
+<li class="chapter" data-level="1.3" data-path="example-of-time-series-data.html"><a href="example-of-time-series-data.html#time-series-model"><i class="fa fa-check"></i><b>1.3</b> Time Series model</a>
+<ul>
+<li class="chapter" data-level="1.3.1" data-path="example-of-time-series-data.html"><a href="example-of-time-series-data.html#behavior-of-the-acf-and-pacf-for-arma-models"><i class="fa fa-check"></i><b>1.3.1</b> Behavior of the ACF and PACF for ARMA models</a></li>
+</ul></li>
+<li class="chapter" data-level="1.4" data-path="example-of-time-series-data.html"><a href="example-of-time-series-data.html#fit-model-with-different-method"><i class="fa fa-check"></i><b>1.4</b> Fit model with different method</a>
+<ul>
+<li class="chapter" data-level="1.4.1" data-path="example-of-time-series-data.html"><a href="example-of-time-series-data.html#preliminary-analysis"><i class="fa fa-check"></i><b>1.4.1</b> Preliminary Analysis</a></li>
+<li class="chapter" data-level="1.4.2" data-path="example-of-time-series-data.html"><a href="example-of-time-series-data.html#fit-ar2-model-to-recruitment-series"><i class="fa fa-check"></i><b>1.4.2</b> Fit AR(2) model to Recruitment Series</a></li>
+<li class="chapter" data-level="1.4.3" data-path="example-of-time-series-data.html"><a href="example-of-time-series-data.html#compare-ar2-models-coef.-estimated-by-ols-yw-and-mle"><i class="fa fa-check"></i><b>1.4.3</b> compare AR(2) model’s coef. estimated by OLS, YW, and MLE</a></li>
+</ul></li>
+<li class="chapter" data-level="1.5" data-path="example-of-time-series-data.html"><a href="example-of-time-series-data.html#analysis-of-gnp-data"><i class="fa fa-check"></i><b>1.5</b> Analysis of GNP Data</a>
+<ul>
+<li class="chapter" data-level="1.5.1" data-path="example-of-time-series-data.html"><a href="example-of-time-series-data.html#diagnostics"><i class="fa fa-check"></i><b>1.5.1</b> Diagnostics</a></li>
+<li class="chapter" data-level="1.5.2" data-path="example-of-time-series-data.html"><a href="example-of-time-series-data.html#model-selection"><i class="fa fa-check"></i><b>1.5.2</b> model selection</a></li>
+</ul></li>
+<li class="chapter" data-level="1.6" data-path="example-of-time-series-data.html"><a href="example-of-time-series-data.html#model-diagnostics"><i class="fa fa-check"></i><b>1.6</b> Model Diagnostics</a></li>
+<li class="chapter" data-level="1.7" data-path="example-of-time-series-data.html"><a href="example-of-time-series-data.html#regression-with-autocorrelated-errors"><i class="fa fa-check"></i><b>1.7</b> Regression with Autocorrelated Errors</a></li>
+<li class="chapter" data-level="1.8" data-path="example-of-time-series-data.html"><a href="example-of-time-series-data.html#multiplicative-seasonal-arima-models"><i class="fa fa-check"></i><b>1.8</b> Multiplicative Seasonal ARIMA Models</a></li>
+<li class="chapter" data-level="1.9" data-path="example-of-time-series-data.html"><a href="example-of-time-series-data.html#periodogram"><i class="fa fa-check"></i><b>1.9</b> Periodogram</a></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="./">by ZIH-YING, LI</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Time Series</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="example-of-time-series-data" class="section level1 hasAnchor" number="1">
+<h1><span class="header-section-number">Sec 1</span> Example of Time Series Data<a href="example-of-time-series-data.html#example-of-time-series-data" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="example-of-time-series-data.html#cb1-1" tabindex="-1"></a><span class="fu">library</span>(astsa)</span></code></pre></div>
+<div id="characteristics-of-time-series" class="section level2 hasAnchor" number="1.1">
+<h2><span class="header-section-number">1.1</span> Characteristics of Time Series<a href="example-of-time-series-data.html#characteristics-of-time-series" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="practical-data" class="section level3 hasAnchor" number="1.1.1">
+<h3><span class="header-section-number">1.1.1</span> Practical data<a href="example-of-time-series-data.html#practical-data" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>判斷以下範例為何不是 (weakly) stationary</p>
+<p><mark>Example 1.1 (p.2)</mark></p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="example-of-time-series-data.html#cb2-1" tabindex="-1"></a><span class="fu">plot</span>(jj, <span class="at">type=</span><span class="st">&quot;o&quot;</span>, <span class="at">ylab=</span><span class="st">&quot;Quarterly Earnings per Share&quot;</span>)</span></code></pre></div>
+<p><img src="bookdown-TS_files/figure-html/unnamed-chunk-3-1.png" width="1152" style="display: block; margin: auto;" /></p>
+<form name="form_12967" onsubmit="return validate_form_12967()" method="post">
+<input type="checkbox" id="answer_12967_1" value="trend"/>
+<label>trend</label>
+<br/>
+<input type="checkbox" id="answer_12967_2" value="seasonality"/>
+<label>seasonality</label>
+<br/>
+<input type="checkbox" id="answer_12967_3" value="heteroskedasticity"/>
+<label>heteroskedasticity</label>
+<br/>
+<input type="submit" value="check"/>
+<div id="result_12967"></div>
+</form>
+<script>function validate_form_12967() {var text; var x1 = document.getElementById('answer_12967_1'); var x2 = document.getElementById('answer_12967_2'); var x3 = document.getElementById('answer_12967_3'); if (x1.checked == true&x2.checked == true&x3.checked == true){text = 'Correct';} else {text = '<strong>NOPE!</strong>';} document.getElementById('result_12967').innerHTML = text; evaluate_final_score(); return false;}function evaluate_final_score(){
+         element = document.getElementById('checkdown_final_score');
+         if(element === null){return false;} else {var element, text, res1;res1 = document.getElementById('result_12967').innerText == 'Correct';text = res1;element.innerHTML = text;
+         return false;
+         }}</script>
+<hr>
+<p><mark>Example 1.2 (p.3)</mark></p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="example-of-time-series-data.html#cb3-1" tabindex="-1"></a><span class="fu">plot</span>(globtemp, <span class="at">type=</span><span class="st">&quot;o&quot;</span>, <span class="at">ylab=</span><span class="st">&quot;Global Temperature Deviations&quot;</span>)</span></code></pre></div>
+<p><img src="bookdown-TS_files/figure-html/unnamed-chunk-5-1.png" width="1152" style="display: block; margin: auto;" /></p>
+<form name="form_30815" onsubmit="return validate_form_30815()" method="post">
+<input type="checkbox" id="answer_30815_1" value="trend"/>
+<label>trend</label>
+<br/>
+<input type="checkbox" id="answer_30815_2" value="seasonality"/>
+<label>seasonality</label>
+<br/>
+<input type="checkbox" id="answer_30815_3" value="heteroskedasticity"/>
+<label>heteroskedasticity</label>
+<br/>
+<input type="submit" value="check"/>
+<div id="result_30815"></div>
+</form>
+<script>function validate_form_30815() {var text; var x1 = document.getElementById('answer_30815_1'); var x2 = document.getElementById('answer_30815_2'); var x3 = document.getElementById('answer_30815_3'); if (x1.checked == true&x2.checked == false&x3.checked == false){text = 'Correct';} else {text = '<strong>NOPE!</strong>';} document.getElementById('result_30815').innerHTML = text; evaluate_final_score(); return false;}function evaluate_final_score(){
+         element = document.getElementById('checkdown_final_score');
+         if(element === null){return false;} else {var element, text, res1, res2;res1 = document.getElementById('result_12967').innerText == 'Correct'; res2 = document.getElementById('result_30815').innerText == 'Correct';text = res1 + res2;element.innerHTML = text;
+         return false;
+         }}</script>
+<hr>
+<p><mark>Example 1.3 (p.3) Voice record</mark></p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="example-of-time-series-data.html#cb4-1" tabindex="-1"></a><span class="fu">plot</span>(speech)</span></code></pre></div>
+<p><img src="bookdown-TS_files/figure-html/unnamed-chunk-7-1.png" width="1152" style="display: block; margin: auto;" /></p>
+<form name="form_12605" onsubmit="return validate_form_12605()" method="post">
+<input type="checkbox" id="answer_12605_1" value="trend"/>
+<label>trend</label>
+<br/>
+<input type="checkbox" id="answer_12605_2" value="seasonality"/>
+<label>seasonality</label>
+<br/>
+<input type="checkbox" id="answer_12605_3" value="heteroskedasticity"/>
+<label>heteroskedasticity</label>
+<br/>
+<input type="submit" value="check"/>
+<div id="result_12605"></div>
+</form>
+<script>function validate_form_12605() {var text; var x1 = document.getElementById('answer_12605_1'); var x2 = document.getElementById('answer_12605_2'); var x3 = document.getElementById('answer_12605_3'); if (x1.checked == false&x2.checked == true&x3.checked == false){text = 'Correct';} else {text = '<strong>NOPE!</strong>';} document.getElementById('result_12605').innerHTML = text; evaluate_final_score(); return false;}function evaluate_final_score(){
+         element = document.getElementById('checkdown_final_score');
+         if(element === null){return false;} else {var element, text, res1, res2, res3;res1 = document.getElementById('result_12967').innerText == 'Correct'; res2 = document.getElementById('result_30815').innerText == 'Correct'; res3 = document.getElementById('result_12605').innerText == 'Correct';text = res1 + res2 + res3;element.innerHTML = text;
+         return false;
+         }}</script>
+<hr>
+<p><mark>Example 1.5 (p.5)</mark></p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="example-of-time-series-data.html#cb5-1" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">1</span>)) <span class="co"># set up the graphics</span></span>
+<span id="cb5-2"><a href="example-of-time-series-data.html#cb5-2" tabindex="-1"></a><span class="fu">plot</span>(soi, <span class="at">ylab=</span><span class="st">&quot;&quot;</span>, <span class="at">xlab=</span><span class="st">&quot;&quot;</span>, <span class="at">main=</span><span class="st">&quot;Southern Oscillation Index</span><span class="sc">\n</span><span class="st">index of ocean ccurrent 洋流&quot;</span>)</span>
+<span id="cb5-3"><a href="example-of-time-series-data.html#cb5-3" tabindex="-1"></a><span class="fu">plot</span>(rec, <span class="at">ylab=</span><span class="st">&quot;&quot;</span>, <span class="at">xlab=</span><span class="st">&quot;&quot;</span>, <span class="at">main=</span><span class="st">&quot;Recruitment</span><span class="sc">\n</span><span class="st">index of fish amount&quot;</span>)</span></code></pre></div>
+<p><img src="bookdown-TS_files/figure-html/unnamed-chunk-9-1.png" width="1152" style="display: block; margin: auto;" /></p>
+<form name="form_90498" onsubmit="return validate_form_90498()" method="post">
+<input type="checkbox" id="answer_90498_1" value="trend"/>
+<label>trend</label>
+<br/>
+<input type="checkbox" id="answer_90498_2" value="seasonality"/>
+<label>seasonality</label>
+<br/>
+<input type="checkbox" id="answer_90498_3" value="heteroskedasticity"/>
+<label>heteroskedasticity</label>
+<br/>
+<input type="submit" value="check"/>
+<div id="result_90498"></div>
+</form>
+<script>function validate_form_90498() {var text; var x1 = document.getElementById('answer_90498_1'); var x2 = document.getElementById('answer_90498_2'); var x3 = document.getElementById('answer_90498_3'); if (x1.checked == false&x2.checked == true&x3.checked == false){text = 'Correct';} else {text = '<strong>NOPE!</strong>';} document.getElementById('result_90498').innerHTML = text; evaluate_final_score(); return false;}function evaluate_final_score(){
+         element = document.getElementById('checkdown_final_score');
+         if(element === null){return false;} else {var element, text, res1, res2, res3, res4;res1 = document.getElementById('result_12967').innerText == 'Correct'; res2 = document.getElementById('result_30815').innerText == 'Correct'; res3 = document.getElementById('result_12605').innerText == 'Correct'; res4 = document.getElementById('result_90498').innerText == 'Correct';text = res1 + res2 + res3 + res4;element.innerHTML = text;
+         return false;
+         }}</script>
+<hr>
+<p><mark>Example 1.6 (p.5) MRI data</mark></p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="example-of-time-series-data.html#cb6-1" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">1</span>))</span>
+<span id="cb6-2"><a href="example-of-time-series-data.html#cb6-2" tabindex="-1"></a><span class="fu">ts.plot</span>(fmri1[,<span class="dv">2</span><span class="sc">:</span><span class="dv">5</span>], <span class="at">col=</span><span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>, <span class="at">ylab=</span><span class="st">&quot;BOLD&quot;</span>, <span class="at">main=</span><span class="st">&quot;Cortex&quot;</span>)</span>
+<span id="cb6-3"><a href="example-of-time-series-data.html#cb6-3" tabindex="-1"></a><span class="fu">ts.plot</span>(fmri1[,<span class="dv">6</span><span class="sc">:</span><span class="dv">9</span>], <span class="at">col=</span><span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>, <span class="at">ylab=</span><span class="st">&quot;BOLD&quot;</span>, <span class="at">main=</span><span class="st">&quot;Thalamus &amp; Cerebellum&quot;</span>)</span>
+<span id="cb6-4"><a href="example-of-time-series-data.html#cb6-4" tabindex="-1"></a><span class="fu">mtext</span>(<span class="st">&quot;Time (1 pt = 2 sec)&quot;</span>,<span class="at">side =</span> <span class="dv">1</span>,<span class="at">line =</span> <span class="dv">2</span>)</span></code></pre></div>
+<p><img src="bookdown-TS_files/figure-html/unnamed-chunk-11-1.png" width="1152" style="display: block; margin: auto;" /></p>
+<form name="form_30323" onsubmit="return validate_form_30323()" method="post">
+<input type="checkbox" id="answer_30323_1" value="trend"/>
+<label>trend</label>
+<br/>
+<input type="checkbox" id="answer_30323_2" value="seasonality"/>
+<label>seasonality</label>
+<br/>
+<input type="checkbox" id="answer_30323_3" value="heteroskedasticity"/>
+<label>heteroskedasticity</label>
+<br/>
+<input type="submit" value="check"/>
+<div id="result_30323"></div>
+</form>
+<script>function validate_form_30323() {var text; var x1 = document.getElementById('answer_30323_1'); var x2 = document.getElementById('answer_30323_2'); var x3 = document.getElementById('answer_30323_3'); if (x1.checked == false&x2.checked == true&x3.checked == false){text = 'Correct';} else {text = '<strong>NOPE!</strong>';} document.getElementById('result_30323').innerHTML = text; evaluate_final_score(); return false;}function evaluate_final_score(){
+         element = document.getElementById('checkdown_final_score');
+         if(element === null){return false;} else {var element, text, res1, res2, res3, res4, res5;res1 = document.getElementById('result_12967').innerText == 'Correct'; res2 = document.getElementById('result_30815').innerText == 'Correct'; res3 = document.getElementById('result_12605').innerText == 'Correct'; res4 = document.getElementById('result_90498').innerText == 'Correct'; res5 = document.getElementById('result_30323').innerText == 'Correct';text = res1 + res2 + res3 + res4 + res5;element.innerHTML = text;
+         return false;
+         }}</script>
+<hr>
+<p><mark>Example 1.7 (p.6)</mark></p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="example-of-time-series-data.html#cb7-1" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">1</span>))</span>
+<span id="cb7-2"><a href="example-of-time-series-data.html#cb7-2" tabindex="-1"></a><span class="fu">plot</span>(EQ5, <span class="at">main=</span><span class="st">&quot;Earthquake&quot;</span>)</span>
+<span id="cb7-3"><a href="example-of-time-series-data.html#cb7-3" tabindex="-1"></a><span class="fu">plot</span>(EXP6, <span class="at">main=</span><span class="st">&quot;Explosion&quot;</span>)</span></code></pre></div>
+<p><img src="bookdown-TS_files/figure-html/unnamed-chunk-13-1.png" width="1152" style="display: block; margin: auto;" /></p>
+<form name="form_24034" onsubmit="return validate_form_24034()" method="post">
+<input type="checkbox" id="answer_24034_1" value="trend"/>
+<label>trend</label>
+<br/>
+<input type="checkbox" id="answer_24034_2" value="seasonality"/>
+<label>seasonality</label>
+<br/>
+<input type="checkbox" id="answer_24034_3" value="heteroskedasticity"/>
+<label>heteroskedasticity</label>
+<br/>
+<input type="submit" value="check"/>
+<div id="result_24034"></div>
+</form>
+<script>function validate_form_24034() {var text; var x1 = document.getElementById('answer_24034_1'); var x2 = document.getElementById('answer_24034_2'); var x3 = document.getElementById('answer_24034_3'); if (x1.checked == false&x2.checked == false&x3.checked == true){text = 'Correct';} else {text = '<strong>NOPE!</strong>';} document.getElementById('result_24034').innerHTML = text; evaluate_final_score(); return false;}function evaluate_final_score(){
+         element = document.getElementById('checkdown_final_score');
+         if(element === null){return false;} else {var element, text, res1, res2, res3, res4, res5, res6;res1 = document.getElementById('result_12967').innerText == 'Correct'; res2 = document.getElementById('result_30815').innerText == 'Correct'; res3 = document.getElementById('result_12605').innerText == 'Correct'; res4 = document.getElementById('result_90498').innerText == 'Correct'; res5 = document.getElementById('result_30323').innerText == 'Correct'; res6 = document.getElementById('result_24034').innerText == 'Correct';text = res1 + res2 + res3 + res4 + res5 + res6;element.innerHTML = text;
+         return false;
+         }}</script>
+<hr>
+</div>
+<div id="white-noise-wn" class="section level3 hasAnchor" number="1.1.2">
+<h3><span class="header-section-number">1.1.2</span> White Noise (WN)<a href="example-of-time-series-data.html#white-noise-wn" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p><mark>Example 1.9 (p.10)</mark></p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="example-of-time-series-data.html#cb8-1" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">0921</span>)</span>
+<span id="cb8-2"><a href="example-of-time-series-data.html#cb8-2" tabindex="-1"></a>w <span class="ot">=</span> <span class="fu">rnorm</span>(<span class="dv">500</span>,<span class="dv">0</span>,<span class="dv">1</span>) <span class="co"># 500 N(0,1) variates</span></span>
+<span id="cb8-3"><a href="example-of-time-series-data.html#cb8-3" tabindex="-1"></a>v <span class="ot">=</span> <span class="fu">filter</span>(w, <span class="at">sides=</span><span class="dv">2</span>, <span class="at">filter=</span><span class="fu">rep</span>(<span class="dv">1</span><span class="sc">/</span><span class="dv">3</span>,<span class="dv">3</span>)) <span class="co"># moving average</span></span>
+<span id="cb8-4"><a href="example-of-time-series-data.html#cb8-4" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">1</span>))</span>
+<span id="cb8-5"><a href="example-of-time-series-data.html#cb8-5" tabindex="-1"></a><span class="fu">plot.ts</span>(w, <span class="at">main=</span><span class="st">&quot;white noise&quot;</span>)</span>
+<span id="cb8-6"><a href="example-of-time-series-data.html#cb8-6" tabindex="-1"></a><span class="fu">plot.ts</span>(v, <span class="at">ylim=</span><span class="fu">c</span>(<span class="sc">-</span><span class="dv">3</span>,<span class="dv">3</span>), <span class="at">main=</span><span class="st">&quot;moving average&quot;</span>)</span></code></pre></div>
+<p><img src="bookdown-TS_files/figure-html/unnamed-chunk-15-1.png" width="1152" style="display: block; margin: auto;" />
+<span class="math display">\[W_t\sim N(0,1)\]</span></p>
+<ul>
+<li>sides=2, center at lag 0</li>
+</ul>
+<p><span class="math display">\[V_t=\frac1 3(W_{t-1}+W_t+W_{t+1})\]</span></p>
+<ul>
+<li>sides=1, for past value only</li>
+</ul>
+<span class="math display">\[V_t=\frac1 3(W_t+W_{t-1}+W_{t-2})\]</span>
+<hr>
+<p><mark>Example 1.10 (p.11)</mark></p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="example-of-time-series-data.html#cb9-1" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">0921</span>)</span>
+<span id="cb9-2"><a href="example-of-time-series-data.html#cb9-2" tabindex="-1"></a>w <span class="ot">=</span> <span class="fu">rnorm</span>(<span class="dv">550</span>,<span class="dv">0</span>,<span class="dv">1</span>) <span class="co"># 50 extra to avoid startup problems</span></span>
+<span id="cb9-3"><a href="example-of-time-series-data.html#cb9-3" tabindex="-1"></a>x <span class="ot">=</span> <span class="fu">filter</span>(w, <span class="at">filter=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="sc">-</span>.<span class="dv">9</span>), <span class="at">method=</span><span class="st">&quot;recursive&quot;</span>)[<span class="sc">-</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">50</span>)] <span class="co"># remove first 50</span></span>
+<span id="cb9-4"><a href="example-of-time-series-data.html#cb9-4" tabindex="-1"></a><span class="fu">plot.ts</span>(x, <span class="at">main=</span><span class="st">&quot;autoregression&quot;</span>)</span></code></pre></div>
+<p><img src="bookdown-TS_files/figure-html/unnamed-chunk-16-1.png" width="1152" style="display: block; margin: auto;" />
+<span class="math display">\[W_t\sim N(0,1)\]</span>
+<span class="math inline">\(X_t=W_t-0.9W_{t-1}\)</span> (default sides=1)</p>
+<span class="math inline">\(X_t\)</span> and <span class="math inline">\(X_{t+1}\)</span> are <strong>negatively</strong> correlated, means when<br />
+
+<div>
+<ul>
+<li><span class="math inline">\(X_t\uparrow\:\Rightarrow X_{t+1}\downarrow\)</span><br />
+</li>
+<li><span class="math inline">\(X_t\downarrow\:\Rightarrow X_{t+1}\uparrow\)</span><br />
+</li>
+</ul>
+</div>
+<hr>
+</div>
+<div id="random-walk" class="section level3 hasAnchor" number="1.1.3">
+<h3><span class="header-section-number">1.1.3</span> Random Walk<a href="example-of-time-series-data.html#random-walk" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p><mark>Example 1.11 (p.11)</mark></p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="example-of-time-series-data.html#cb10-1" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">154</span>) <span class="co"># so you can reproduce the results</span></span>
+<span id="cb10-2"><a href="example-of-time-series-data.html#cb10-2" tabindex="-1"></a>w <span class="ot">=</span> <span class="fu">rnorm</span>(<span class="dv">200</span>,<span class="dv">0</span>,<span class="dv">1</span>); x <span class="ot">=</span> <span class="fu">cumsum</span>(w) <span class="co"># two commands in one line</span></span>
+<span id="cb10-3"><a href="example-of-time-series-data.html#cb10-3" tabindex="-1"></a>wd <span class="ot">=</span> w <span class="sc">+</span>.<span class="dv">2</span>; xd <span class="ot">=</span> <span class="fu">cumsum</span>(wd)</span>
+<span id="cb10-4"><a href="example-of-time-series-data.html#cb10-4" tabindex="-1"></a><span class="fu">plot.ts</span>(xd, <span class="at">ylim=</span><span class="fu">c</span>(<span class="sc">-</span><span class="dv">5</span>,<span class="dv">55</span>), <span class="at">main=</span><span class="st">&quot;random walk&quot;</span>)</span>
+<span id="cb10-5"><a href="example-of-time-series-data.html#cb10-5" tabindex="-1"></a><span class="fu">lines</span>(x, <span class="at">col=</span><span class="dv">2</span>)</span>
+<span id="cb10-6"><a href="example-of-time-series-data.html#cb10-6" tabindex="-1"></a><span class="fu">lines</span>(.<span class="dv">2</span><span class="sc">*</span><span class="dv">1</span><span class="sc">:</span><span class="dv">200</span>,<span class="at">lty=</span><span class="st">&quot;dashed&quot;</span>)</span>
+<span id="cb10-7"><a href="example-of-time-series-data.html#cb10-7" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">&#39;topleft&#39;</span>, <span class="at">col=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">1</span>), <span class="at">lty=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">2</span>), </span>
+<span id="cb10-8"><a href="example-of-time-series-data.html#cb10-8" tabindex="-1"></a>       <span class="at">legend =</span> <span class="fu">c</span>(<span class="fu">expression</span>(X[d]),<span class="fu">expression</span>(X[t]),<span class="fu">expression</span>(<span class="fu">E</span>(X[t]))))</span></code></pre></div>
+<p><img src="bookdown-TS_files/figure-html/unnamed-chunk-17-1.png" width="1152" style="display: block; margin: auto;" />
+<span class="math inline">\(X_t\)</span> is not stationary, <span class="math inline">\(\because Var(X_t)\)</span> depends on t.</p>
+<p><span class="math inline">\(X_d\)</span> is not stationary, <span class="math inline">\(\because E(X_d)\)</span> depends on t.</p>
+<ul>
+<li><span class="math inline">\(W_t\sim N(0,1)\)</span></li>
+<li><span class="math inline">\(X_t=W_1+W_2+...+W_t\)</span>
+<ul>
+<li><span class="math inline">\(Var(X_t)=Var(W_1)+Var(W_2)+...+Var(W_t)=1\cdot t=t\)</span></li>
+</ul></li>
+<li><span class="math inline">\(W_d=W_t+0.2\)</span></li>
+<li><span class="math inline">\(X_d=\sum W_d=\sum W_t+0.2\cdot t\)</span>
+<ul>
+<li><span class="math inline">\(E(X_d)=0.2\cdot t\)</span></li>
+</ul></li>
+</ul>
+<blockquote>
+<div class="line-block"><span class="math inline">\(E(aX+b)=aE(X)+b\)</span><br />
+<span class="math inline">\(Var(aX+b)=a^2Var(X)\)</span></div>
+</blockquote>
+<hr>
+</div>
+<div id="noise-influence-periodic" class="section level3 hasAnchor" number="1.1.4">
+<h3><span class="header-section-number">1.1.4</span> Noise influence periodic<a href="example-of-time-series-data.html#noise-influence-periodic" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p><mark>Example 1.12 (p.12)</mark></p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="example-of-time-series-data.html#cb11-1" tabindex="-1"></a>cs <span class="ot">=</span> <span class="dv">2</span><span class="sc">*</span><span class="fu">cos</span>(<span class="dv">2</span><span class="sc">*</span>pi<span class="sc">*</span><span class="dv">1</span><span class="sc">:</span><span class="dv">500</span><span class="sc">/</span><span class="dv">50</span> <span class="sc">+</span> .<span class="dv">6</span><span class="sc">*</span>pi); w <span class="ot">=</span> <span class="fu">rnorm</span>(<span class="dv">500</span>,<span class="dv">0</span>,<span class="dv">1</span>)</span>
+<span id="cb11-2"><a href="example-of-time-series-data.html#cb11-2" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">3</span>,<span class="dv">1</span>), <span class="at">mar=</span><span class="fu">c</span>(<span class="dv">3</span>,<span class="dv">2</span>,<span class="dv">2</span>,<span class="dv">1</span>), <span class="at">cex.main=</span><span class="fl">1.5</span>)         <span class="co"># help(par) for info</span></span>
+<span id="cb11-3"><a href="example-of-time-series-data.html#cb11-3" tabindex="-1"></a><span class="fu">plot.ts</span>(cs, <span class="at">main=</span><span class="fu">expression</span>(x[t]<span class="sc">==</span><span class="dv">2</span><span class="sc">*</span><span class="fu">cos</span>(<span class="dv">2</span><span class="sc">*</span>pi<span class="sc">*</span>t<span class="sc">/</span><span class="dv">50</span><span class="fl">+.6</span><span class="sc">*</span>pi)))</span>
+<span id="cb11-4"><a href="example-of-time-series-data.html#cb11-4" tabindex="-1"></a><span class="fu">plot.ts</span>(cs<span class="sc">+</span>w, <span class="at">main=</span><span class="fu">expression</span>(x[t]<span class="sc">==</span><span class="dv">2</span><span class="sc">*</span><span class="fu">cos</span>(<span class="dv">2</span><span class="sc">*</span>pi<span class="sc">*</span>t<span class="sc">/</span><span class="dv">50</span><span class="fl">+.6</span><span class="sc">*</span>pi) <span class="sc">+</span> <span class="fu">N</span>(<span class="dv">0</span>,<span class="dv">1</span>)))</span>
+<span id="cb11-5"><a href="example-of-time-series-data.html#cb11-5" tabindex="-1"></a><span class="fu">plot.ts</span>(cs<span class="sc">+</span><span class="dv">5</span><span class="sc">*</span>w, <span class="at">main=</span><span class="fu">expression</span>(x[t]<span class="sc">==</span><span class="dv">2</span><span class="sc">*</span><span class="fu">cos</span>(<span class="dv">2</span><span class="sc">*</span>pi<span class="sc">*</span>t<span class="sc">/</span><span class="dv">50</span><span class="fl">+.6</span><span class="sc">*</span>pi) <span class="sc">+</span> <span class="fu">N</span>(<span class="dv">0</span>,<span class="dv">25</span>)))</span></code></pre></div>
+<p><img src="bookdown-TS_files/figure-html/unnamed-chunk-18-1.png" width="1152" style="display: block; margin: auto;" />
+The periodic behavior became less obvious when the noise is large.</p>
+<hr>
+</div>
+<div id="how-lag-influence-plot" class="section level3 hasAnchor" number="1.1.5">
+<h3><span class="header-section-number">1.1.5</span> How lag influence plot<a href="example-of-time-series-data.html#how-lag-influence-plot" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p><mark>Example 1.24 (p.24)</mark>
+<span class="math display">\[y_t=Ax_{t-l}+w_t\]</span></p>
+<ul>
+<li><span class="math inline">\(l&gt;0\)</span>, <span class="math inline">\(x_t\)</span> <strong>lead</strong> <span class="math inline">\(y_t\)</span>
+<ul>
+<li><span class="math inline">\(y_t=x_{t-1}+w_t\)</span></li>
+<li><span class="math inline">\(x\)</span> lead <span class="math inline">\(y\)</span></li>
+</ul></li>
+<li><span class="math inline">\(l&lt;0\)</span>, <span class="math inline">\(x_t\)</span> <strong>lag</strong> <span class="math inline">\(y_t\)</span>
+<ul>
+<li><span class="math inline">\(y_t=x_{t+1}+w_t\)</span></li>
+<li><span class="math inline">\(x\)</span> lag <span class="math inline">\(y\)</span></li>
+</ul></li>
+</ul>
+<p>Assume <span class="math inline">\(w_t\)</span> is uncorrelated with <span class="math inline">\(x_t\)</span>, the cross-covariance function is <span class="math display">\[\gamma_{yx}(h)=cov(y_{t+h},x_t)=cov(Ax_{t+h-l}+w_{t+h},x_t)\\=cov(Ax_{t+h-l},x_t)=A\gamma_x(h-l)\]</span></p>
+<p>When <span class="math inline">\(h=l\)</span>, <span class="math inline">\(\gamma_{yx}(h)=\gamma_x(0)\)</span></p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="example-of-time-series-data.html#cb12-1" tabindex="-1"></a>x <span class="ot">=</span> <span class="fu">rnorm</span>(<span class="dv">100</span>)</span>
+<span id="cb12-2"><a href="example-of-time-series-data.html#cb12-2" tabindex="-1"></a>y <span class="ot">=</span> <span class="fu">lag</span>(x, <span class="sc">-</span><span class="dv">5</span>) <span class="sc">+</span> <span class="fu">rnorm</span>(<span class="dv">100</span>)</span>
+<span id="cb12-3"><a href="example-of-time-series-data.html#cb12-3" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">1</span>))</span>
+<span id="cb12-4"><a href="example-of-time-series-data.html#cb12-4" tabindex="-1"></a>ccf <span class="ot">&lt;-</span> <span class="fu">ccf</span>(y, x, <span class="at">type=</span><span class="st">&#39;covariance&#39;</span>, </span>
+<span id="cb12-5"><a href="example-of-time-series-data.html#cb12-5" tabindex="-1"></a>           <span class="at">ylab=</span><span class="st">&#39;CCovF&#39;</span>, <span class="at">xlab=</span><span class="st">&#39;lag h&#39;</span>, <span class="at">main=</span><span class="fu">expression</span>(<span class="fu">paste</span>(<span class="st">&#39;l=5 with&#39;</span>, <span class="fu">hat</span>(gamma)[yx](h))))</span></code></pre></div>
+<p><img src="bookdown-TS_files/figure-html/unnamed-chunk-19-1.png" width="1152" style="display: block; margin: auto;" /></p>
+<ul>
+<li><span class="math inline">\(X\sim N(0,1)\)</span></li>
+<li><span class="math inline">\(y_t=X_{t-5}+W_t, W_t\sim N(0,1)\)</span></li>
+<li><span class="math inline">\(\require{enclose} \enclose{horizontalstrike}{Corr(y_t, X_{t+h})=\big\{\substack{1,\:h=5\\0,\:o.w.}}\)</span></li>
+<li><span class="math inline">\(l=5\to\gamma_{yx}(h)=\gamma_x(h-5)\)</span>
+<ul>
+<li><span class="math inline">\(lag\:h=5 \to\gamma_{yx}(5)=\gamma_x(0)=variance(X)=1\)</span></li>
+<li><span class="math inline">\(y_{t+h}=Ax_{t+h-5}+w_{t+h}\)</span>
+<ul>
+<li><span class="math inline">\(i=|h-l|=|h-5|\)</span></li>
+<li><span class="math inline">\(h&gt;5\to\gamma_{yx}(h)=cov(Ax_{t+i},x_t)\to x\:leads\)</span></li>
+<li><span class="math inline">\(h&lt;5\to\gamma_{yx}(h)=cov(Ax_{t-i},x_t)\to y\:leads\)</span></li>
+</ul></li>
+</ul></li>
+</ul>
+<hr>
+<p><mark>Example 1.25 (p.28)</mark></p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="example-of-time-series-data.html#cb13-1" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>))</span>
+<span id="cb13-2"><a href="example-of-time-series-data.html#cb13-2" tabindex="-1"></a>r <span class="ot">=</span> <span class="fu">round</span>(<span class="fu">acf</span>(soi, <span class="dv">6</span>, <span class="at">plot=</span><span class="cn">FALSE</span>)<span class="sc">$</span>acf[<span class="sc">-</span><span class="dv">1</span>], <span class="dv">3</span>)</span>
+<span id="cb13-3"><a href="example-of-time-series-data.html#cb13-3" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">lag</span>(soi,<span class="sc">-</span><span class="dv">1</span>), soi, <span class="at">ylab=</span><span class="fu">expression</span>(X[t]), <span class="at">xlab=</span><span class="fu">expression</span>(X[t<span class="dv">-1</span>]))</span>
+<span id="cb13-4"><a href="example-of-time-series-data.html#cb13-4" tabindex="-1"></a><span class="fu">arrows</span>(<span class="sc">-</span><span class="dv">1</span>,<span class="sc">-</span><span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>, <span class="at">col=</span><span class="dv">2</span>, <span class="at">angle =</span> <span class="dv">15</span>, <span class="at">lwd=</span><span class="dv">5</span>)</span>
+<span id="cb13-5"><a href="example-of-time-series-data.html#cb13-5" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">&#39;topleft&#39;</span>, <span class="at">legend=</span>r[<span class="dv">1</span>])</span>
+<span id="cb13-6"><a href="example-of-time-series-data.html#cb13-6" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">lag</span>(soi,<span class="sc">-</span><span class="dv">6</span>), soi, <span class="at">ylab=</span><span class="fu">expression</span>(X[t]), <span class="at">xlab=</span><span class="fu">expression</span>(X[t<span class="dv">-6</span>]))</span>
+<span id="cb13-7"><a href="example-of-time-series-data.html#cb13-7" tabindex="-1"></a><span class="fu">arrows</span>(<span class="sc">-</span><span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="sc">-</span><span class="dv">1</span>, <span class="at">col=</span><span class="dv">2</span>, <span class="at">angle =</span> <span class="dv">15</span>, <span class="at">lwd=</span><span class="dv">5</span>)</span>
+<span id="cb13-8"><a href="example-of-time-series-data.html#cb13-8" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">&#39;topleft&#39;</span>, <span class="at">legend=</span>r[<span class="dv">6</span>])</span></code></pre></div>
+<p><img src="bookdown-TS_files/figure-html/unnamed-chunk-20-1.png" width="1152" style="display: block; margin: auto;" /></p>
+<hr />
+</div>
+</div>
+<div id="explore-data" class="section level2 hasAnchor" number="1.2">
+<h2><span class="header-section-number">1.2</span> Explore Data<a href="example-of-time-series-data.html#explore-data" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="estimate-a-linear-trend" class="section level3 hasAnchor" number="1.2.1">
+<h3><span class="header-section-number">1.2.1</span> Estimate a linear trend<a href="example-of-time-series-data.html#estimate-a-linear-trend" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p><mark>Example 2.1 (p.45)</mark>
+<span class="math display">\[x_t=a+b\cdot t+W_t\]</span></p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="example-of-time-series-data.html#cb14-1" tabindex="-1"></a><span class="fu">summary</span>(fit <span class="ot">&lt;-</span> <span class="fu">lm</span>(chicken<span class="sc">~</span><span class="fu">time</span>(chicken)))</span></code></pre></div>
+<pre><code>## 
+## Call:
+## lm(formula = chicken ~ time(chicken))
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -8.7411 -3.4730  0.8251  2.7738 11.5804 
+## 
+## Coefficients:
+##                 Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)   -7.131e+03  1.624e+02  -43.91   &lt;2e-16 ***
+## time(chicken)  3.592e+00  8.084e-02   44.43   &lt;2e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 4.696 on 178 degrees of freedom
+## Multiple R-squared:  0.9173, Adjusted R-squared:  0.9168 
+## F-statistic:  1974 on 1 and 178 DF,  p-value: &lt; 2.2e-16</code></pre>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="example-of-time-series-data.html#cb16-1" tabindex="-1"></a><span class="fu">plot</span>(chicken, <span class="at">type=</span><span class="st">&quot;o&quot;</span>,<span class="at">ylab=</span><span class="st">&quot;cents per pound&quot;</span>)</span>
+<span id="cb16-2"><a href="example-of-time-series-data.html#cb16-2" tabindex="-1"></a><span class="fu">abline</span>(fit, <span class="at">lwd=</span><span class="dv">2</span>, <span class="at">col=</span><span class="dv">2</span>) <span class="co"># add regression line to the plot</span></span>
+<span id="cb16-3"><a href="example-of-time-series-data.html#cb16-3" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">&#39;topleft&#39;</span>, <span class="fu">expression</span>(a<span class="sc">+</span>bt), <span class="at">lwd=</span><span class="dv">2</span>, <span class="at">col=</span><span class="dv">2</span>)</span></code></pre></div>
+<p><img src="bookdown-TS_files/figure-html/unnamed-chunk-21-1.png" width="1152" style="display: block; margin: auto;" /></p>
+<hr>
+</div>
+<div id="detrend-and-differencing" class="section level3 hasAnchor" number="1.2.2">
+<h3><span class="header-section-number">1.2.2</span> Detrend and Differencing<a href="example-of-time-series-data.html#detrend-and-differencing" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p><mark>Example 2.4 and 2.5 (p.54, 58)</mark>
+<span class="math display">\[x_t=a+b\cdot t+W_t\]</span></p>
+<ul>
+<li>detrended: <span class="math inline">\(X_t-a-b\cdot t\)</span></li>
+<li>first difference: <span class="math inline">\(\nabla X_t=X_t-X_{t-1}\)</span></li>
+</ul>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="example-of-time-series-data.html#cb17-1" tabindex="-1"></a>fit <span class="ot">=</span> <span class="fu">lm</span>(chicken<span class="sc">~</span><span class="fu">time</span>(chicken), <span class="at">na.action=</span><span class="cn">NULL</span>) <span class="co"># regress chicken on time</span></span>
+<span id="cb17-2"><a href="example-of-time-series-data.html#cb17-2" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">1</span>), <span class="at">mar=</span><span class="fu">c</span>(<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">2</span>,<span class="dv">1</span>))</span>
+<span id="cb17-3"><a href="example-of-time-series-data.html#cb17-3" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">resid</span>(fit), <span class="at">type=</span><span class="st">&quot;o&quot;</span>, <span class="at">main=</span><span class="st">&quot;detrended&quot;</span>)</span>
+<span id="cb17-4"><a href="example-of-time-series-data.html#cb17-4" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">diff</span>(chicken), <span class="at">type=</span><span class="st">&quot;o&quot;</span>, <span class="at">main=</span><span class="st">&quot;first difference&quot;</span>)</span></code></pre></div>
+<p><img src="bookdown-TS_files/figure-html/unnamed-chunk-22-1.png" width="1152" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="example-of-time-series-data.html#cb18-1" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">3</span>,<span class="dv">1</span>), <span class="at">mar=</span><span class="fu">c</span>(<span class="dv">4</span>,<span class="dv">3</span>,<span class="dv">3</span>,<span class="dv">1</span>)) <span class="co"># plot ACFs</span></span>
+<span id="cb18-2"><a href="example-of-time-series-data.html#cb18-2" tabindex="-1"></a><span class="fu">acf</span>(chicken, <span class="dv">48</span>, <span class="at">main=</span><span class="st">&quot;chicken&quot;</span>)</span>
+<span id="cb18-3"><a href="example-of-time-series-data.html#cb18-3" tabindex="-1"></a><span class="fu">acf</span>(<span class="fu">resid</span>(fit), <span class="dv">48</span>, <span class="at">main=</span><span class="st">&quot;detrended&quot;</span>)</span>
+<span id="cb18-4"><a href="example-of-time-series-data.html#cb18-4" tabindex="-1"></a><span class="fu">acf</span>(<span class="fu">diff</span>(chicken), <span class="dv">48</span>, <span class="at">main=</span><span class="st">&quot;first difference&quot;</span>)</span></code></pre></div>
+<p><img src="bookdown-TS_files/figure-html/unnamed-chunk-22-2.png" width="1152" style="display: block; margin: auto;" /></p>
+<ul>
+<li>first difference does better than regression</li>
+<li>ACF of stationary process decays fast to zero</li>
+</ul>
+<hr>
+<p><mark>Example 2.6 (p.58)</mark></p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="example-of-time-series-data.html#cb19-1" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">1</span>), <span class="at">mar=</span><span class="fu">c</span>(<span class="dv">4</span>,<span class="dv">4</span>,<span class="dv">3</span>,<span class="dv">1</span>))</span>
+<span id="cb19-2"><a href="example-of-time-series-data.html#cb19-2" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">diff</span>(globtemp), <span class="at">type=</span><span class="st">&quot;o&quot;</span>)</span>
+<span id="cb19-3"><a href="example-of-time-series-data.html#cb19-3" tabindex="-1"></a><span class="fu">mean</span>(<span class="fu">diff</span>(globtemp)) <span class="co"># drift estimate = .008</span></span></code></pre></div>
+<pre><code>## [1] 0.007925926</code></pre>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="example-of-time-series-data.html#cb21-1" tabindex="-1"></a><span class="fu">acf</span>(<span class="fu">diff</span>(gtemp), <span class="dv">48</span>)</span></code></pre></div>
+<p><img src="bookdown-TS_files/figure-html/unnamed-chunk-23-1.png" width="1152" style="display: block; margin: auto;" /></p>
+<ul>
+<li>look stationary after first-order differencing</li>
+</ul>
+<hr>
+</div>
+<div id="smoothing" class="section level3 hasAnchor" number="1.2.3">
+<h3><span class="header-section-number">1.2.3</span> Smoothing<a href="example-of-time-series-data.html#smoothing" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p><mark>Example 2.13 (p.67) lowess</mark></p>
+<ul>
+<li><code>lowess(x, y = NULL, f = 2/3)</code>
+<ul>
+<li><code>f</code>: the smoother span (band width)</li>
+</ul></li>
+</ul>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="example-of-time-series-data.html#cb22-1" tabindex="-1"></a><span class="fu">plot</span>(soi)</span>
+<span id="cb22-2"><a href="example-of-time-series-data.html#cb22-2" tabindex="-1"></a><span class="fu">lines</span>(<span class="fu">lowess</span>(soi, <span class="at">f=</span>.<span class="dv">05</span>), <span class="at">lwd=</span><span class="dv">2</span>, <span class="at">col=</span><span class="dv">4</span>) <span class="co"># El Nino cycle</span></span>
+<span id="cb22-3"><a href="example-of-time-series-data.html#cb22-3" tabindex="-1"></a><span class="fu">lines</span>(<span class="fu">lowess</span>(soi), <span class="at">lty=</span><span class="dv">2</span>, <span class="at">lwd=</span><span class="dv">2</span>, <span class="at">col=</span><span class="dv">2</span>) <span class="co"># trend (with default span)</span></span>
+<span id="cb22-4"><a href="example-of-time-series-data.html#cb22-4" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">&#39;topright&#39;</span>, <span class="fu">c</span>(<span class="st">&#39;seasonality&#39;</span>,<span class="st">&#39;trend&#39;</span>), <span class="at">col=</span><span class="fu">c</span>(<span class="dv">4</span>,<span class="dv">2</span>), <span class="at">lty=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>), <span class="at">lwd=</span><span class="dv">2</span>)</span></code></pre></div>
+<p><img src="bookdown-TS_files/figure-html/unnamed-chunk-24-1.png" width="1152" style="display: block; margin: auto;" /></p>
+<ul>
+<li>seasonality: small band width</li>
+<li>trend: large band width</li>
+</ul>
+<hr>
+<p><mark>Example 2.14 (p.68) smooth.spline</mark></p>
+<ul>
+<li><code>smooth.spline(x, y, spar = NULL)</code>
+<ul>
+<li><code>x</code>: predictor</li>
+<li><code>y</code>: response</li>
+<li><code>spar</code>: smoothing parameter, typically (but not necessarily) in (0,1]</li>
+</ul></li>
+</ul>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="example-of-time-series-data.html#cb23-1" tabindex="-1"></a><span class="fu">plot</span>(soi)</span>
+<span id="cb23-2"><a href="example-of-time-series-data.html#cb23-2" tabindex="-1"></a><span class="fu">lines</span>(<span class="fu">smooth.spline</span>(<span class="fu">time</span>(soi), soi, <span class="at">spar=</span>.<span class="dv">5</span>), <span class="at">lwd=</span><span class="dv">2</span>, <span class="at">col=</span><span class="dv">4</span>)</span>
+<span id="cb23-3"><a href="example-of-time-series-data.html#cb23-3" tabindex="-1"></a><span class="fu">lines</span>(<span class="fu">smooth.spline</span>(<span class="fu">time</span>(soi), soi, <span class="at">spar=</span> <span class="dv">1</span>), <span class="at">lty=</span><span class="dv">2</span>, <span class="at">lwd=</span><span class="dv">2</span>, <span class="at">col=</span><span class="dv">2</span>)</span>
+<span id="cb23-4"><a href="example-of-time-series-data.html#cb23-4" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">&#39;topright&#39;</span>, <span class="fu">c</span>(<span class="st">&#39;seasonality&#39;</span>,<span class="st">&#39;trend&#39;</span>), <span class="at">col=</span><span class="fu">c</span>(<span class="dv">4</span>,<span class="dv">2</span>), <span class="at">lty=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>), <span class="at">lwd=</span><span class="dv">2</span>)</span></code></pre></div>
+<p><img src="bookdown-TS_files/figure-html/unnamed-chunk-25-1.png" width="1152" style="display: block; margin: auto;" /></p>
+<hr>
+</div>
+</div>
+<div id="time-series-model" class="section level2 hasAnchor" number="1.3">
+<h2><span class="header-section-number">1.3</span> Time Series model<a href="example-of-time-series-data.html#time-series-model" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p><mark>Example 3.2 (p.78) AR(1)</mark></p>
+<ul>
+<li><code>arima.sim</code>: Simulate from an ARIMA model.
+<ul>
+<li><code>order</code>: <code>c(p, d, q)</code> <span class="math inline">\(\to\)</span> AR order, degree of differencing, MA order.</li>
+<li>ARIMA(0,0,0) is white noise.</li>
+</ul></li>
+<li>If AR(2) <span class="math inline">\(\to\)</span> <code>order=c(2,0,0), ar=c(.5, .1)</code></li>
+</ul>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="example-of-time-series-data.html#cb24-1" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">1</span>), <span class="at">mar=</span><span class="fu">c</span>(<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">2</span>,<span class="dv">1</span>))</span>
+<span id="cb24-2"><a href="example-of-time-series-data.html#cb24-2" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">arima.sim</span>(<span class="fu">list</span>(<span class="at">order=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">0</span>), <span class="at">ar=</span>.<span class="dv">9</span>), <span class="at">n=</span><span class="dv">100</span>), <span class="at">ylab=</span><span class="st">&quot;x&quot;</span>,</span>
+<span id="cb24-3"><a href="example-of-time-series-data.html#cb24-3" tabindex="-1"></a>     <span class="at">main=</span>(<span class="fu">expression</span>(<span class="fu">AR</span>(<span class="dv">1</span>)<span class="sc">~</span><span class="er">~~</span>phi<span class="sc">==+</span>.<span class="dv">9</span>)))</span>
+<span id="cb24-4"><a href="example-of-time-series-data.html#cb24-4" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">arima.sim</span>(<span class="fu">list</span>(<span class="at">order=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">0</span>), <span class="at">ar=</span><span class="sc">-</span>.<span class="dv">9</span>), <span class="at">n=</span><span class="dv">100</span>), <span class="at">ylab=</span><span class="st">&quot;x&quot;</span>,</span>
+<span id="cb24-5"><a href="example-of-time-series-data.html#cb24-5" tabindex="-1"></a>     <span class="at">main=</span>(<span class="fu">expression</span>(<span class="fu">AR</span>(<span class="dv">1</span>)<span class="sc">~</span><span class="er">~~</span>phi<span class="sc">==-</span>.<span class="dv">9</span>)))</span></code></pre></div>
+<p><img src="bookdown-TS_files/figure-html/unnamed-chunk-26-1.png" width="1152" style="display: block; margin: auto;" /></p>
+<table>
+<colgroup>
+<col width="50%" />
+<col width="50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">top</th>
+<th align="left">bottom</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"><span class="math inline">\(\rho(h)=\color{red}{(0.9)}^h, h\geq0\)</span></td>
+<td align="left"><span class="math inline">\(\rho(h)=\color{red}{(-0.9)}^h, h\geq0\)</span></td>
+</tr>
+<tr class="even">
+<td align="left">positively correlated</td>
+<td align="left">negatively correlated</td>
+</tr>
+<tr class="odd">
+<td align="left">look like trend</td>
+<td align="left">fluctuate rapidly</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<p><mark>Example 3.5 (p.82) MA</mark>
+MA(1) model <span class="math inline">\(x_t=w_t+\theta w_{t-1}\)</span>
+<span class="math display">\[
+E(x_t)=0\\
+\gamma(h)=\Bigg\{\begin{array}{ll}
+(1+\theta^2)\sigma^2_w,&amp;h=0\\
+\theta\sigma^2_w,&amp;h=1\\
+0,&amp;h&gt;1
+\end{array}\\
+\rho(h)=\Big\{\begin{array}{ll}
+\frac{\theta}{1+\theta^2},&amp;h=1\\
+0,&amp;h&gt;1
+\end{array}
+\]</span></p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="example-of-time-series-data.html#cb25-1" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">1</span>), <span class="at">mar=</span><span class="fu">c</span>(<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">2</span>,<span class="dv">1</span>))</span>
+<span id="cb25-2"><a href="example-of-time-series-data.html#cb25-2" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">arima.sim</span>(<span class="fu">list</span>(<span class="at">order=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">1</span>), <span class="at">ma=</span>.<span class="dv">9</span>), <span class="at">n=</span><span class="dv">100</span>), <span class="at">ylab=</span><span class="st">&quot;x&quot;</span>,</span>
+<span id="cb25-3"><a href="example-of-time-series-data.html#cb25-3" tabindex="-1"></a>     <span class="at">main=</span>(<span class="fu">expression</span>(<span class="fu">MA</span>(<span class="dv">1</span>)<span class="sc">~</span><span class="er">~~</span>theta<span class="sc">==+</span>.<span class="dv">5</span>)))</span>
+<span id="cb25-4"><a href="example-of-time-series-data.html#cb25-4" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">arima.sim</span>(<span class="fu">list</span>(<span class="at">order=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">1</span>), <span class="at">ma=</span><span class="sc">-</span>.<span class="dv">9</span>), <span class="at">n=</span><span class="dv">100</span>), <span class="at">ylab=</span><span class="st">&quot;x&quot;</span>,</span>
+<span id="cb25-5"><a href="example-of-time-series-data.html#cb25-5" tabindex="-1"></a>     <span class="at">main=</span>(<span class="fu">expression</span>(<span class="fu">MA</span>(<span class="dv">1</span>)<span class="sc">~</span><span class="er">~~</span>theta<span class="sc">==-</span>.<span class="dv">5</span>)))</span></code></pre></div>
+<p><img src="bookdown-TS_files/figure-html/unnamed-chunk-27-1.png" width="1152" style="display: block; margin: auto;" /></p>
+<table>
+<colgroup>
+<col width="50%" />
+<col width="50%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">top</th>
+<th align="left">bottom</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"><span class="math inline">\(\theta=0.5\Rightarrow x_t, x_{t-1}\)</span> are positively correlated</td>
+<td align="left"><span class="math inline">\(\theta=-0.5\Rightarrow x_t, x_{t-1}\)</span> are negatively correlated</td>
+</tr>
+<tr class="even">
+<td align="left"><span class="math inline">\(\rho(1)=\frac{0.5}{1+0.5^2}=0.4\Rightarrow\)</span> weak dependence</td>
+<td align="left"></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>The series for which <span class="math inline">\(\theta=0.5\)</span> is smoother than the series for <span class="math inline">\(\theta=-0.5\)</span>.</li>
+</ul>
+<hr />
+<p><mark>Example 3.7 (p.84) parameter redundency</mark>
+If we were unaware of parameter redundancy, we might claim the
+data are correlated when in fact they are not</p>
+<p><span class="math display">\[
+X_t\sim N(5,1),\text{ fit ARIMA(1,1) to X}\\
+X_t=\phi X_{t-1}+W_t+\theta W_{t-1}
+\]</span></p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="example-of-time-series-data.html#cb26-1" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">8675309</span>)</span>
+<span id="cb26-2"><a href="example-of-time-series-data.html#cb26-2" tabindex="-1"></a>x <span class="ot">=</span> <span class="fu">rnorm</span>(<span class="dv">150</span>, <span class="at">mean=</span><span class="dv">5</span>) <span class="co"># generate iid N(5,1)s</span></span>
+<span id="cb26-3"><a href="example-of-time-series-data.html#cb26-3" tabindex="-1"></a>out <span class="ot">&lt;-</span> <span class="fu">arima</span>(x, <span class="at">order=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">1</span>)); out <span class="co"># estimation</span></span></code></pre></div>
+<pre><code>## 
+## Call:
+## arima(x = x, order = c(1, 0, 1))
+## 
+## Coefficients:
+##           ar1     ma1  intercept
+##       -0.9595  0.9527     5.0462
+## s.e.   0.1688  0.1750     0.0727
+## 
+## sigma^2 estimated as 0.7986:  log likelihood = -195.98,  aic = 399.96</code></pre>
+<ul>
+<li><span class="math inline">\(\phi=\)</span> -0.96, <span class="math inline">\(\theta=\)</span> 0.95</li>
+<li><span class="math inline">\((1+0.96B)X_t=(1+0.95B)W_t\)</span></li>
+</ul>
+<hr />
+<p><mark>Example 3.8 (p.86) ARMA to MA</mark></p>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="example-of-time-series-data.html#cb28-1" tabindex="-1"></a><span class="fu">ARMAtoMA</span>(<span class="at">ar =</span> .<span class="dv">9</span>, <span class="at">ma =</span> .<span class="dv">5</span>, <span class="dv">10</span>) <span class="co"># for a list</span></span></code></pre></div>
+<pre><code>##  [1] 1.4000000 1.2600000 1.1340000 1.0206000 0.9185400 0.8266860 0.7440174
+##  [8] 0.6696157 0.6026541 0.5423887</code></pre>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="example-of-time-series-data.html#cb30-1" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">ARMAtoMA</span>(<span class="at">ar =</span> .<span class="dv">9</span>, <span class="at">ma =</span> .<span class="dv">5</span>, <span class="dv">10</span>), </span>
+<span id="cb30-2"><a href="example-of-time-series-data.html#cb30-2" tabindex="-1"></a>     <span class="at">ylab =</span> <span class="fu">expression</span>(psi [j]))</span></code></pre></div>
+<p><img src="bookdown-TS_files/figure-html/unnamed-chunk-29-1.png" width="1152" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="example-of-time-series-data.html#cb31-1" tabindex="-1"></a><span class="fu">ARMAtoMA</span>(<span class="at">ar =</span> <span class="sc">-</span>.<span class="dv">5</span>, <span class="at">ma =</span> <span class="sc">-</span>.<span class="dv">9</span>, <span class="dv">10</span>) <span class="co"># first 10 pi-weights</span></span></code></pre></div>
+<pre><code>##  [1] -1.400000000  0.700000000 -0.350000000  0.175000000 -0.087500000
+##  [6]  0.043750000 -0.021875000  0.010937500 -0.005468750  0.002734375</code></pre>
+<hr />
+<p><mark>Example 3.11 (p.92) AR(2)</mark></p>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="example-of-time-series-data.html#cb33-1" tabindex="-1"></a>z <span class="ot">=</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="sc">-</span><span class="fl">1.5</span>,.<span class="dv">75</span>) <span class="co"># coefficients of the polynomial</span></span>
+<span id="cb33-2"><a href="example-of-time-series-data.html#cb33-2" tabindex="-1"></a>(<span class="at">a =</span> <span class="fu">polyroot</span>(z)[<span class="dv">1</span>]) <span class="co"># = 1+0.57735i,print one root = 1 + i/sqrt(3)</span></span></code></pre></div>
+<pre><code>## [1] 1+0.57735i</code></pre>
+<ul>
+<li><code>polyroot</code>: 解根</li>
+</ul>
+<p><span class="math display">\[f(x)=1-1.5x+0.75x^2\]</span></p>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="example-of-time-series-data.html#cb35-1" tabindex="-1"></a>arg <span class="ot">=</span> <span class="fu">Arg</span>(a)<span class="sc">/</span>(<span class="dv">2</span><span class="sc">*</span>pi) <span class="co"># arg in cycles/pt</span></span>
+<span id="cb35-2"><a href="example-of-time-series-data.html#cb35-2" tabindex="-1"></a><span class="dv">1</span><span class="sc">/</span>arg <span class="co"># =12,the period</span></span></code></pre></div>
+<pre><code>## [1] 12</code></pre>
+<p><span class="math display">\[
+z=x+iy\\
+r=\sqrt{x^2+y^2}\\
+\phi=Arg(z)\\
+x=r\cdot cos(\phi),\;y=r\cdot sin(\phi)
+\]</span></p>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="example-of-time-series-data.html#cb37-1" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">90210</span>)</span>
+<span id="cb37-2"><a href="example-of-time-series-data.html#cb37-2" tabindex="-1"></a>ar2 <span class="ot">=</span> <span class="fu">arima.sim</span>(<span class="fu">list</span>(<span class="at">order=</span><span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">0</span>,<span class="dv">0</span>), <span class="at">ar=</span><span class="fu">c</span>(<span class="fl">1.5</span>,<span class="sc">-</span>.<span class="dv">75</span>)), <span class="at">n =</span> <span class="dv">144</span>)  <span class="co"># simulated data</span></span>
+<span id="cb37-3"><a href="example-of-time-series-data.html#cb37-3" tabindex="-1"></a><span class="fu">plot</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">144</span><span class="sc">/</span><span class="dv">12</span>,ar2,<span class="at">type=</span><span class="st">&quot;l&quot;</span>,<span class="at">xlab=</span><span class="st">&quot;Time (one unit = 12 obs)&quot;</span>)</span>
+<span id="cb37-4"><a href="example-of-time-series-data.html#cb37-4" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">v=</span><span class="dv">0</span><span class="sc">:</span><span class="dv">12</span>, <span class="at">lty=</span><span class="st">&quot;dotted&quot;</span>,<span class="at">lwd=</span><span class="dv">2</span>)</span></code></pre></div>
+<p><img src="bookdown-TS_files/figure-html/unnamed-chunk-32-1.png" width="1152" style="display: block; margin: auto;" /></p>
+<p><span class="math display">\[X_t=1.5X_{t-1}-0.75X_{t-2}+W_t\]</span></p>
+<ul>
+<li>has seasonality with period <span class="math inline">\(d=12\)</span></li>
+<li>AR(2) process is not stationary</li>
+<li>MA(q) process is always stationary</li>
+</ul>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="example-of-time-series-data.html#cb38-1" tabindex="-1"></a>ACF <span class="ot">=</span> <span class="fu">ARMAacf</span>(<span class="at">ar=</span><span class="fu">c</span>(<span class="fl">1.5</span>,<span class="sc">-</span>.<span class="dv">75</span>), <span class="at">ma=</span><span class="dv">0</span>, <span class="dv">50</span>) <span class="co"># theoretical</span></span>
+<span id="cb38-2"><a href="example-of-time-series-data.html#cb38-2" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">1</span>), <span class="at">mar=</span><span class="fu">c</span>(<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">3</span>,<span class="dv">1</span>))</span>
+<span id="cb38-3"><a href="example-of-time-series-data.html#cb38-3" tabindex="-1"></a><span class="fu">plot</span>(ACF, <span class="at">type=</span><span class="st">&quot;h&quot;</span>, <span class="at">xlab=</span><span class="st">&quot;lag&quot;</span>, <span class="at">main=</span><span class="st">&quot;theoretical ACF&quot;</span>)</span>
+<span id="cb38-4"><a href="example-of-time-series-data.html#cb38-4" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">h=</span><span class="dv">0</span>)</span>
+<span id="cb38-5"><a href="example-of-time-series-data.html#cb38-5" tabindex="-1"></a><span class="fu">acf</span>(ar2, <span class="at">lag.max =</span> <span class="dv">50</span>, <span class="at">main=</span><span class="st">&quot;sample ACF&quot;</span>)</span></code></pre></div>
+<p><img src="bookdown-TS_files/figure-html/unnamed-chunk-33-1.png" width="1152" style="display: block; margin: auto;" /></p>
+<ul>
+<li><code>ARMAacf</code>: theoretical ACF (when model is given)</li>
+<li><code>acf</code>: sample ACF (when data is given)</li>
+<li>ACF has periodic pattern</li>
+</ul>
+<hr />
+<p><mark>Example 3.16 (p.98) PACF of AR(p)</mark></p>
+<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="example-of-time-series-data.html#cb39-1" tabindex="-1"></a>ar2.acf <span class="ot">=</span> <span class="fu">ARMAacf</span>(<span class="at">ar=</span><span class="fu">c</span>(<span class="fl">1.5</span>,<span class="sc">-</span>.<span class="dv">75</span>), <span class="at">ma=</span><span class="dv">0</span>, <span class="dv">24</span>)[<span class="sc">-</span><span class="dv">1</span>]</span>
+<span id="cb39-2"><a href="example-of-time-series-data.html#cb39-2" tabindex="-1"></a>ar2.pacf <span class="ot">=</span> <span class="fu">ARMAacf</span>(<span class="at">ar=</span><span class="fu">c</span>(<span class="fl">1.5</span>,<span class="sc">-</span>.<span class="dv">75</span>), <span class="at">ma=</span><span class="dv">0</span>, <span class="dv">24</span>, <span class="at">pacf=</span><span class="cn">TRUE</span>)</span>
+<span id="cb39-3"><a href="example-of-time-series-data.html#cb39-3" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>), <span class="at">mar=</span><span class="fu">c</span>(<span class="dv">4</span>,<span class="dv">4</span>,<span class="dv">1</span>,<span class="dv">1</span>))</span>
+<span id="cb39-4"><a href="example-of-time-series-data.html#cb39-4" tabindex="-1"></a><span class="fu">plot</span>(ar2.acf, <span class="at">type=</span><span class="st">&quot;h&quot;</span>, <span class="at">xlab=</span><span class="st">&quot;lag&quot;</span>); <span class="fu">abline</span>(<span class="at">h=</span><span class="dv">0</span>)</span>
+<span id="cb39-5"><a href="example-of-time-series-data.html#cb39-5" tabindex="-1"></a><span class="fu">plot</span>(ar2.pacf, <span class="at">type=</span><span class="st">&quot;h&quot;</span>, <span class="at">xlab=</span><span class="st">&quot;lag&quot;</span>)</span>
+<span id="cb39-6"><a href="example-of-time-series-data.html#cb39-6" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">h=</span><span class="dv">0</span>); <span class="fu">axis</span>(<span class="dv">1</span>, <span class="at">at=</span><span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>))</span></code></pre></div>
+<p><img src="bookdown-TS_files/figure-html/unnamed-chunk-34-1.png" width="1152" style="display: block; margin: auto;" /></p>
+<ul>
+<li>PACF: cut off after lag 2</li>
+</ul>
+<hr />
+<p><mark>Example 3.29 (p.115) Simulate 50 obs. from MA(1) with <span class="math inline">\(\theta_1=0.9\)</span></mark></p>
+<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="example-of-time-series-data.html#cb40-1" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">2</span>)</span>
+<span id="cb40-2"><a href="example-of-time-series-data.html#cb40-2" tabindex="-1"></a>ma1 <span class="ot">=</span> <span class="fu">arima.sim</span>(<span class="fu">list</span>(<span class="at">order =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">1</span>), <span class="at">ma =</span> <span class="fl">0.9</span>), <span class="at">n =</span> <span class="dv">50</span>)</span>
+<span id="cb40-3"><a href="example-of-time-series-data.html#cb40-3" tabindex="-1"></a><span class="fu">acf</span>(ma1, <span class="at">plot=</span><span class="cn">FALSE</span>)[<span class="dv">1</span>] <span class="co"># = .507 (lag 1 sample ACF)</span></span></code></pre></div>
+<pre><code>## 
+## Autocorrelations of series &#39;ma1&#39;, by lag
+## 
+##     1 
+## 0.507</code></pre>
+<ul>
+<li>True ACF: <span class="math inline">\(\rho(1)=\frac{\theta_1}{1+\theta_1^2}=\)</span> 0.4972376</li>
+</ul>
+<hr />
+<div id="behavior-of-the-acf-and-pacf-for-arma-models" class="section level3 hasAnchor" number="1.3.1">
+<h3><span class="header-section-number">1.3.1</span> Behavior of the ACF and PACF for ARMA models<a href="example-of-time-series-data.html#behavior-of-the-acf-and-pacf-for-arma-models" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<table>
+<thead>
+<tr class="header">
+<th align="left"></th>
+<th align="left">AR(p)</th>
+<th align="left">MA(q)</th>
+<th align="left">ARMA(p, q)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">ACF</td>
+<td align="left">Tails off</td>
+<td align="left">Cuts off after lag q</td>
+<td align="left">Tails off</td>
+</tr>
+<tr class="even">
+<td align="left">PACF</td>
+<td align="left">Cuts off after lag p</td>
+<td align="left">Tails off</td>
+<td align="left">Tails off</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="fit-model-with-different-method" class="section level2 hasAnchor" number="1.4">
+<h2><span class="header-section-number">1.4</span> Fit model with different method<a href="example-of-time-series-data.html#fit-model-with-different-method" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>在對資料進行建模前，可以用ACF, PACF初步分析，判斷p, q需要選多少</p>
+<div id="preliminary-analysis" class="section level3 hasAnchor" number="1.4.1">
+<h3><span class="header-section-number">1.4.1</span> Preliminary Analysis<a href="example-of-time-series-data.html#preliminary-analysis" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p><mark>Example 3.18 (p.99) Preliminary Analysis of the Recruitment Series</mark></p>
+<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb42-1"><a href="example-of-time-series-data.html#cb42-1" tabindex="-1"></a>value <span class="ot">&lt;-</span> <span class="fu">acf2</span>(rec, <span class="dv">48</span>) <span class="co"># will produce values and a graphic</span></span></code></pre></div>
+<p><img src="bookdown-TS_files/figure-html/unnamed-chunk-36-1.png" width="1152" style="display: block; margin: auto;" /></p>
+<ul>
+<li>ACF decay very fast <span class="math inline">\(\to\)</span> stationary</li>
+<li>PACF cut-off after lag 2 (its PACF <span class="math inline">\(\approx\)</span> 0 after lag 2) <span class="math inline">\(\to\)</span> AR(2) is suitable for the data</li>
+</ul>
+<table>
+<colgroup>
+<col width="5%" />
+<col width="5%" />
+<col width="6%" />
+<col width="6%" />
+<col width="6%" />
+<col width="5%" />
+<col width="6%" />
+<col width="6%" />
+<col width="5%" />
+<col width="5%" />
+<col width="6%" />
+<col width="6%" />
+<col width="6%" />
+<col width="6%" />
+<col width="6%" />
+<col width="6%" />
+<col width="6%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left"></th>
+<th align="right">1</th>
+<th align="right">2</th>
+<th align="right">3</th>
+<th align="right">4</th>
+<th align="right">5</th>
+<th align="right">6</th>
+<th align="right">7</th>
+<th align="right">8</th>
+<th align="right">9</th>
+<th align="right">10</th>
+<th align="right">11</th>
+<th align="right">12</th>
+<th align="right">13</th>
+<th align="right">14</th>
+<th align="right">15</th>
+<th align="right">16</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">ACF</td>
+<td align="right">0.92</td>
+<td align="right">0.78</td>
+<td align="right">0.63</td>
+<td align="right">0.48</td>
+<td align="right">0.36</td>
+<td align="right">0.26</td>
+<td align="right">0.18</td>
+<td align="right">0.13</td>
+<td align="right">0.09</td>
+<td align="right">0.07</td>
+<td align="right">0.06</td>
+<td align="right">0.02</td>
+<td align="right">-0.04</td>
+<td align="right">-0.12</td>
+<td align="right">-0.19</td>
+<td align="right">-0.24</td>
+</tr>
+<tr class="even">
+<td align="left">PACF</td>
+<td align="right">0.92</td>
+<td align="right">-0.44</td>
+<td align="right">-0.05</td>
+<td align="right">-0.02</td>
+<td align="right">0.07</td>
+<td align="right">-0.03</td>
+<td align="right">-0.03</td>
+<td align="right">0.04</td>
+<td align="right">0.05</td>
+<td align="right">-0.02</td>
+<td align="right">-0.05</td>
+<td align="right">-0.14</td>
+<td align="right">-0.15</td>
+<td align="right">-0.05</td>
+<td align="right">0.05</td>
+<td align="right">0.01</td>
+</tr>
+</tbody>
+</table>
+<table style="width:100%;">
+<colgroup>
+<col width="4%" />
+<col width="5%" />
+<col width="5%" />
+<col width="5%" />
+<col width="5%" />
+<col width="5%" />
+<col width="5%" />
+<col width="5%" />
+<col width="5%" />
+<col width="5%" />
+<col width="5%" />
+<col width="5%" />
+<col width="5%" />
+<col width="5%" />
+<col width="5%" />
+<col width="5%" />
+<col width="5%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left"></th>
+<th align="right">17</th>
+<th align="right">18</th>
+<th align="right">19</th>
+<th align="right">20</th>
+<th align="right">21</th>
+<th align="right">22</th>
+<th align="right">23</th>
+<th align="right">24</th>
+<th align="right">25</th>
+<th align="right">26</th>
+<th align="right">27</th>
+<th align="right">28</th>
+<th align="right">29</th>
+<th align="right">30</th>
+<th align="right">31</th>
+<th align="right">32</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">ACF</td>
+<td align="right">-0.27</td>
+<td align="right">-0.27</td>
+<td align="right">-0.24</td>
+<td align="right">-0.19</td>
+<td align="right">-0.11</td>
+<td align="right">-0.03</td>
+<td align="right">0.03</td>
+<td align="right">0.06</td>
+<td align="right">0.06</td>
+<td align="right">0.02</td>
+<td align="right">-0.02</td>
+<td align="right">-0.06</td>
+<td align="right">-0.09</td>
+<td align="right">-0.12</td>
+<td align="right">-0.13</td>
+<td align="right">-0.11</td>
+</tr>
+<tr class="even">
+<td align="left">PACF</td>
+<td align="right">0.01</td>
+<td align="right">0.02</td>
+<td align="right">0.09</td>
+<td align="right">0.11</td>
+<td align="right">0.03</td>
+<td align="right">-0.03</td>
+<td align="right">-0.01</td>
+<td align="right">-0.07</td>
+<td align="right">-0.12</td>
+<td align="right">-0.03</td>
+<td align="right">0.05</td>
+<td align="right">-0.08</td>
+<td align="right">-0.04</td>
+<td align="right">-0.03</td>
+<td align="right">0.06</td>
+<td align="right">0.05</td>
+</tr>
+</tbody>
+</table>
+<table style="width:100%;">
+<colgroup>
+<col width="5%" />
+<col width="6%" />
+<col width="5%" />
+<col width="6%" />
+<col width="6%" />
+<col width="6%" />
+<col width="6%" />
+<col width="5%" />
+<col width="6%" />
+<col width="6%" />
+<col width="6%" />
+<col width="6%" />
+<col width="5%" />
+<col width="5%" />
+<col width="5%" />
+<col width="5%" />
+<col width="6%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left"></th>
+<th align="right">33</th>
+<th align="right">34</th>
+<th align="right">35</th>
+<th align="right">36</th>
+<th align="right">37</th>
+<th align="right">38</th>
+<th align="right">39</th>
+<th align="right">40</th>
+<th align="right">41</th>
+<th align="right">42</th>
+<th align="right">43</th>
+<th align="right">44</th>
+<th align="right">45</th>
+<th align="right">46</th>
+<th align="right">47</th>
+<th align="right">48</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">ACF</td>
+<td align="right">-0.05</td>
+<td align="right">0.02</td>
+<td align="right">0.08</td>
+<td align="right">0.12</td>
+<td align="right">0.10</td>
+<td align="right">0.06</td>
+<td align="right">0.01</td>
+<td align="right">-0.02</td>
+<td align="right">-0.03</td>
+<td align="right">-0.03</td>
+<td align="right">-0.02</td>
+<td align="right">0.01</td>
+<td align="right">0.06</td>
+<td align="right">0.12</td>
+<td align="right">0.17</td>
+<td align="right">0.20</td>
+</tr>
+<tr class="even">
+<td align="left">PACF</td>
+<td align="right">0.15</td>
+<td align="right">0.09</td>
+<td align="right">-0.04</td>
+<td align="right">-0.10</td>
+<td align="right">-0.09</td>
+<td align="right">-0.02</td>
+<td align="right">0.05</td>
+<td align="right">0.08</td>
+<td align="right">-0.02</td>
+<td align="right">-0.01</td>
+<td align="right">-0.02</td>
+<td align="right">0.05</td>
+<td align="right">0.01</td>
+<td align="right">0.05</td>
+<td align="right">0.08</td>
+<td align="right">-0.04</td>
+</tr>
+</tbody>
+</table>
+<hr />
+</div>
+<div id="fit-ar2-model-to-recruitment-series" class="section level3 hasAnchor" number="1.4.2">
+<h3><span class="header-section-number">1.4.2</span> Fit AR(2) model to Recruitment Series<a href="example-of-time-series-data.html#fit-ar2-model-to-recruitment-series" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p><mark>Example 3.25 (p.110) Fit AR(2) to rec data by OLS</mark></p>
+<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb43-1"><a href="example-of-time-series-data.html#cb43-1" tabindex="-1"></a>regr <span class="ot">=</span> <span class="fu">ar.ols</span>(rec, <span class="at">order=</span><span class="dv">2</span>, <span class="at">demean=</span><span class="cn">FALSE</span>, <span class="at">intercept=</span><span class="cn">TRUE</span>)</span>
+<span id="cb43-2"><a href="example-of-time-series-data.html#cb43-2" tabindex="-1"></a>fore <span class="ot">=</span> <span class="fu">predict</span>(regr, <span class="at">n.ahead=</span><span class="dv">24</span>)</span>
+<span id="cb43-3"><a href="example-of-time-series-data.html#cb43-3" tabindex="-1"></a><span class="fu">ts.plot</span>(rec, fore<span class="sc">$</span>pred, <span class="at">col=</span><span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>, <span class="at">xlim=</span><span class="fu">c</span>(<span class="dv">1980</span>,<span class="dv">1990</span>), <span class="at">ylab=</span><span class="st">&quot;Recruitment&quot;</span>)</span>
+<span id="cb43-4"><a href="example-of-time-series-data.html#cb43-4" tabindex="-1"></a></span>
+<span id="cb43-5"><a href="example-of-time-series-data.html#cb43-5" tabindex="-1"></a><span class="co"># 95% CI</span></span>
+<span id="cb43-6"><a href="example-of-time-series-data.html#cb43-6" tabindex="-1"></a>U <span class="ot">=</span> fore<span class="sc">$</span>pred<span class="fl">+1.96</span><span class="sc">*</span>fore<span class="sc">$</span>se; L <span class="ot">=</span> fore<span class="sc">$</span>pred<span class="fl">-1.96</span><span class="sc">*</span>fore<span class="sc">$</span>se</span>
+<span id="cb43-7"><a href="example-of-time-series-data.html#cb43-7" tabindex="-1"></a>xx <span class="ot">=</span> <span class="fu">c</span>(<span class="fu">time</span>(U), <span class="fu">rev</span>(<span class="fu">time</span>(U))); yy <span class="ot">=</span> <span class="fu">c</span>(L, <span class="fu">rev</span>(U))</span>
+<span id="cb43-8"><a href="example-of-time-series-data.html#cb43-8" tabindex="-1"></a><span class="fu">polygon</span>(xx, yy, <span class="at">border =</span> <span class="dv">8</span>, <span class="at">col =</span> <span class="fu">gray</span>(.<span class="dv">6</span>, <span class="at">alpha =</span> .<span class="dv">2</span>))</span>
+<span id="cb43-9"><a href="example-of-time-series-data.html#cb43-9" tabindex="-1"></a><span class="fu">lines</span>(fore<span class="sc">$</span>pred, <span class="at">type=</span><span class="st">&quot;p&quot;</span>, <span class="at">col=</span><span class="dv">2</span>)</span></code></pre></div>
+<p><img src="bookdown-TS_files/figure-html/unnamed-chunk-38-1.png" width="1152" style="display: block; margin: auto;" /></p>
+<p><mark>Example 3.28 (p.115) Fit AR(2) to rec data by Yule-Walker</mark></p>
+<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb44-1"><a href="example-of-time-series-data.html#cb44-1" tabindex="-1"></a>rec.yw <span class="ot">=</span> <span class="fu">ar.yw</span>(rec, <span class="at">order=</span><span class="dv">2</span>)</span>
+<span id="cb44-2"><a href="example-of-time-series-data.html#cb44-2" tabindex="-1"></a>rec.yw<span class="sc">$</span>x.mean <span class="co"># = 62.26278 (mean estimate)</span></span>
+<span id="cb44-3"><a href="example-of-time-series-data.html#cb44-3" tabindex="-1"></a>rec.yw<span class="sc">$</span>ar <span class="co"># = 1.3315874, -.4445447 (coefficient estimates)</span></span>
+<span id="cb44-4"><a href="example-of-time-series-data.html#cb44-4" tabindex="-1"></a><span class="fu">sqrt</span>(<span class="fu">diag</span>(rec.yw<span class="sc">$</span>asy.var.coef)) <span class="co"># = .04222637, .04222637 (standard errors)</span></span>
+<span id="cb44-5"><a href="example-of-time-series-data.html#cb44-5" tabindex="-1"></a>rec.yw<span class="sc">$</span>var.pred <span class="co"># = 94.79912 (error variance estimate)</span></span></code></pre></div>
+<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb45-1"><a href="example-of-time-series-data.html#cb45-1" tabindex="-1"></a>rec.pr <span class="ot">=</span> <span class="fu">predict</span>(rec.yw, <span class="at">n.ahead=</span><span class="dv">24</span>)</span>
+<span id="cb45-2"><a href="example-of-time-series-data.html#cb45-2" tabindex="-1"></a><span class="co"># 95% CI</span></span>
+<span id="cb45-3"><a href="example-of-time-series-data.html#cb45-3" tabindex="-1"></a>U<span class="ot">=</span>rec.pr<span class="sc">$</span>pred<span class="fl">+1.96</span><span class="sc">*</span>rec.pr<span class="sc">$</span>se</span>
+<span id="cb45-4"><a href="example-of-time-series-data.html#cb45-4" tabindex="-1"></a>L<span class="ot">=</span>rec.pr<span class="sc">$</span>pred<span class="fl">-1.96</span><span class="sc">*</span>rec.pr<span class="sc">$</span>se</span>
+<span id="cb45-5"><a href="example-of-time-series-data.html#cb45-5" tabindex="-1"></a>minx<span class="ot">=</span><span class="fu">min</span>(rec,L);maxx<span class="ot">=</span><span class="fu">max</span>(rec,U)</span>
+<span id="cb45-6"><a href="example-of-time-series-data.html#cb45-6" tabindex="-1"></a><span class="fu">ts.plot</span>(rec, rec.pr<span class="sc">$</span>pred, <span class="at">xlim=</span><span class="fu">c</span>(<span class="dv">1980</span>,<span class="dv">1990</span>),<span class="at">ylim=</span><span class="fu">c</span>(minx,maxx))</span>
+<span id="cb45-7"><a href="example-of-time-series-data.html#cb45-7" tabindex="-1"></a><span class="fu">lines</span>(rec.pr<span class="sc">$</span>pred,<span class="at">col=</span><span class="st">&quot;red&quot;</span>,<span class="at">type=</span><span class="st">&quot;o&quot;</span>)</span>
+<span id="cb45-8"><a href="example-of-time-series-data.html#cb45-8" tabindex="-1"></a><span class="fu">lines</span>(U, <span class="at">col=</span><span class="st">&quot;blue&quot;</span>, <span class="at">lty=</span><span class="st">&quot;dashed&quot;</span>)</span>
+<span id="cb45-9"><a href="example-of-time-series-data.html#cb45-9" tabindex="-1"></a><span class="fu">lines</span>(L, <span class="at">col=</span><span class="st">&quot;blue&quot;</span>, <span class="at">lty=</span><span class="st">&quot;dashed&quot;</span>)</span></code></pre></div>
+<p><img src="bookdown-TS_files/figure-html/unnamed-chunk-40-1.png" width="1152" style="display: block; margin: auto;" /></p>
+<p><mark>Example 3.31 (p.120) Fit AR(2) to rec data by MLE</mark></p>
+<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb46-1"><a href="example-of-time-series-data.html#cb46-1" tabindex="-1"></a>rec.mle <span class="ot">=</span> <span class="fu">ar.mle</span>(rec, <span class="at">order=</span><span class="dv">2</span>)</span>
+<span id="cb46-2"><a href="example-of-time-series-data.html#cb46-2" tabindex="-1"></a>rec.mle<span class="sc">$</span>x.mean <span class="co"># 62.26</span></span>
+<span id="cb46-3"><a href="example-of-time-series-data.html#cb46-3" tabindex="-1"></a>rec.mle<span class="sc">$</span>ar <span class="co"># 1.35, -.46</span></span>
+<span id="cb46-4"><a href="example-of-time-series-data.html#cb46-4" tabindex="-1"></a><span class="fu">sqrt</span>(<span class="fu">diag</span>(rec.mle<span class="sc">$</span>asy.var.coef)) <span class="co"># .04, .04</span></span>
+<span id="cb46-5"><a href="example-of-time-series-data.html#cb46-5" tabindex="-1"></a>rec.mle<span class="sc">$</span>var.pred <span class="co"># 89.34</span></span></code></pre></div>
+</div>
+<div id="compare-ar2-models-coef.-estimated-by-ols-yw-and-mle" class="section level3 hasAnchor" number="1.4.3">
+<h3><span class="header-section-number">1.4.3</span> compare AR(2) model’s coef. estimated by OLS, YW, and MLE<a href="example-of-time-series-data.html#compare-ar2-models-coef.-estimated-by-ols-yw-and-mle" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<table>
+<thead>
+<tr class="header">
+<th align="left">OLS</th>
+<th align="left">YW</th>
+<th align="left">MLE</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">1.354, -0.463</td>
+<td align="left">1.332, -0.445</td>
+<td align="left">1.351, -0.461</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>Its coefficient estimator is similar</li>
+</ul>
+<hr />
+</div>
+</div>
+<div id="analysis-of-gnp-data" class="section level2 hasAnchor" number="1.5">
+<h2><span class="header-section-number">1.5</span> Analysis of GNP Data<a href="example-of-time-series-data.html#analysis-of-gnp-data" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p><mark>Example 3.39, 3.40 (p.136, 139)</mark></p>
+<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="example-of-time-series-data.html#cb47-1" tabindex="-1"></a><span class="fu">plot</span>(gnp)</span></code></pre></div>
+<p><img src="bookdown-TS_files/figure-html/unnamed-chunk-42-1.png" width="1152" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb48-1"><a href="example-of-time-series-data.html#cb48-1" tabindex="-1"></a>val <span class="ot">&lt;-</span> <span class="fu">acf2</span>(gnp, <span class="dv">50</span>)</span></code></pre></div>
+<p><img src="bookdown-TS_files/figure-html/unnamed-chunk-42-2.png" width="1152" style="display: block; margin: auto;" /></p>
+<ul>
+<li>ACF looks not stationary</li>
+</ul>
+<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb49-1"><a href="example-of-time-series-data.html#cb49-1" tabindex="-1"></a>gnpgr <span class="ot">=</span> <span class="fu">diff</span>(<span class="fu">log</span>(gnp)) <span class="co"># growth rate</span></span></code></pre></div>
+<ul>
+<li><span class="math inline">\(diff(log(X_t))=logX_t-logX_{t-1}=log\frac{X_t}{X_{t-1}}, \;growth\)</span>
+<ul>
+<li><span class="math inline">\(diff(log(X_t))&gt;0, \uparrow\)</span></li>
+<li><span class="math inline">\(diff(log(X_t))&lt;0, \downarrow\)</span></li>
+</ul></li>
+</ul>
+<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb50-1"><a href="example-of-time-series-data.html#cb50-1" tabindex="-1"></a><span class="fu">plot</span>(gnpgr, <span class="at">ylab=</span><span class="st">&quot;GNP growth rate&quot;</span>, <span class="at">lwd=</span><span class="dv">2</span>)</span>
+<span id="cb50-2"><a href="example-of-time-series-data.html#cb50-2" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">h=</span><span class="fu">mean</span>(gnpgr), <span class="at">lty=</span><span class="dv">2</span>, <span class="at">col=</span><span class="dv">2</span>, <span class="at">lwd=</span><span class="dv">2</span>)</span>
+<span id="cb50-3"><a href="example-of-time-series-data.html#cb50-3" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">&quot;topright&quot;</span>, <span class="at">legend =</span> <span class="st">&quot;average growth rate&quot;</span>, <span class="at">lty=</span><span class="dv">2</span>, <span class="at">lwd=</span><span class="dv">2</span>, <span class="at">col=</span><span class="dv">2</span>)</span></code></pre></div>
+<p><img src="bookdown-TS_files/figure-html/unnamed-chunk-44-1.png" width="1152" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb51-1"><a href="example-of-time-series-data.html#cb51-1" tabindex="-1"></a>val <span class="ot">&lt;-</span> <span class="fu">acf2</span>(gnpgr, <span class="dv">24</span>)</span></code></pre></div>
+<p><img src="bookdown-TS_files/figure-html/unnamed-chunk-44-2.png" width="1152" style="display: block; margin: auto;" /></p>
+<ul>
+<li>ACF cut-off after lag 2 <span class="math inline">\(\Rightarrow\)</span> MA(2)</li>
+<li>PACF cut-off after lag 1 <span class="math inline">\(\Rightarrow\)</span> AR(1)</li>
+</ul>
+<table>
+<colgroup>
+<col width="6%" />
+<col width="6%" />
+<col width="6%" />
+<col width="8%" />
+<col width="8%" />
+<col width="8%" />
+<col width="8%" />
+<col width="8%" />
+<col width="8%" />
+<col width="6%" />
+<col width="6%" />
+<col width="8%" />
+<col width="8%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left"></th>
+<th align="right">1</th>
+<th align="right">2</th>
+<th align="right">3</th>
+<th align="right">4</th>
+<th align="right">5</th>
+<th align="right">6</th>
+<th align="right">7</th>
+<th align="right">8</th>
+<th align="right">9</th>
+<th align="right">10</th>
+<th align="right">11</th>
+<th align="right">12</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">ACF</td>
+<td align="right">0.35</td>
+<td align="right">0.19</td>
+<td align="right">-0.01</td>
+<td align="right">-0.12</td>
+<td align="right">-0.17</td>
+<td align="right">-0.11</td>
+<td align="right">-0.09</td>
+<td align="right">-0.04</td>
+<td align="right">0.04</td>
+<td align="right">0.05</td>
+<td align="right">0.03</td>
+<td align="right">-0.12</td>
+</tr>
+<tr class="even">
+<td align="left">PACF</td>
+<td align="right">0.35</td>
+<td align="right">0.08</td>
+<td align="right">-0.11</td>
+<td align="right">-0.12</td>
+<td align="right">-0.09</td>
+<td align="right">0.01</td>
+<td align="right">-0.03</td>
+<td align="right">-0.02</td>
+<td align="right">0.05</td>
+<td align="right">0.01</td>
+<td align="right">-0.03</td>
+<td align="right">-0.17</td>
+</tr>
+</tbody>
+</table>
+<table>
+<colgroup>
+<col width="6%" />
+<col width="8%" />
+<col width="8%" />
+<col width="8%" />
+<col width="6%" />
+<col width="6%" />
+<col width="6%" />
+<col width="8%" />
+<col width="6%" />
+<col width="8%" />
+<col width="8%" />
+<col width="8%" />
+<col width="8%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left"></th>
+<th align="right">13</th>
+<th align="right">14</th>
+<th align="right">15</th>
+<th align="right">16</th>
+<th align="right">17</th>
+<th align="right">18</th>
+<th align="right">19</th>
+<th align="right">20</th>
+<th align="right">21</th>
+<th align="right">22</th>
+<th align="right">23</th>
+<th align="right">24</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">ACF</td>
+<td align="right">-0.13</td>
+<td align="right">-0.10</td>
+<td align="right">-0.11</td>
+<td align="right">0.05</td>
+<td align="right">0.07</td>
+<td align="right">0.10</td>
+<td align="right">0.06</td>
+<td align="right">0.07</td>
+<td align="right">-0.09</td>
+<td align="right">-0.05</td>
+<td align="right">-0.10</td>
+<td align="right">-0.05</td>
+</tr>
+<tr class="even">
+<td align="left">PACF</td>
+<td align="right">-0.06</td>
+<td align="right">0.02</td>
+<td align="right">-0.06</td>
+<td align="right">0.10</td>
+<td align="right">0.00</td>
+<td align="right">0.02</td>
+<td align="right">-0.04</td>
+<td align="right">0.01</td>
+<td align="right">-0.11</td>
+<td align="right">0.03</td>
+<td align="right">-0.03</td>
+<td align="right">0.00</td>
+</tr>
+</tbody>
+</table>
+<div id="diagnostics" class="section level3 hasAnchor" number="1.5.1">
+<h3><span class="header-section-number">1.5.1</span> Diagnostics<a href="example-of-time-series-data.html#diagnostics" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb52-1"><a href="example-of-time-series-data.html#cb52-1" tabindex="-1"></a>out1 <span class="ot">&lt;-</span> <span class="fu">sarima</span>(gnpgr, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>) <span class="co"># AR(1)</span></span></code></pre></div>
+<p><img src="bookdown-TS_files/figure-html/unnamed-chunk-46-1.png" width="1152" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb53-1"><a href="example-of-time-series-data.html#cb53-1" tabindex="-1"></a>out2 <span class="ot">&lt;-</span> <span class="fu">sarima</span>(gnpgr, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">2</span>) <span class="co"># MA(2)</span></span></code></pre></div>
+<p><img src="bookdown-TS_files/figure-html/unnamed-chunk-46-2.png" width="1152" style="display: block; margin: auto;" /></p>
+<ul>
+<li>In Ljung-Box statistic, both model’s p-value&gt;0.05, <span class="math inline">\(\therefore\)</span> AR(1) is suitable for <code>gnpgr</code></li>
+</ul>
+<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb54-1"><a href="example-of-time-series-data.html#cb54-1" tabindex="-1"></a><span class="fu">ARMAtoMA</span>(<span class="at">ar=</span>.<span class="dv">35</span>, <span class="at">ma=</span><span class="dv">0</span>, <span class="dv">10</span>) <span class="co"># prints psi-weights</span></span></code></pre></div>
+<pre><code>##  [1] 3.500000e-01 1.225000e-01 4.287500e-02 1.500625e-02 5.252187e-03
+##  [6] 1.838266e-03 6.433930e-04 2.251875e-04 7.881564e-05 2.758547e-05</code></pre>
+</div>
+<div id="model-selection" class="section level3 hasAnchor" number="1.5.2">
+<h3><span class="header-section-number">1.5.2</span> model selection<a href="example-of-time-series-data.html#model-selection" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Both AR(1) and MA(2) are suitable. Then, which one is better?</p>
+<ul>
+<li>Use AIC, AICC or BIC, <em>the smaller the better</em>.</li>
+</ul>
+<table>
+<thead>
+<tr class="header">
+<th align="left">model</th>
+<th align="left">AIC</th>
+<th align="left">AICc</th>
+<th align="left">BIC</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">AR(1)</td>
+<td align="left">-6.44694</td>
+<td align="left">-6.4466932</td>
+<td align="left">-6.4009579</td>
+</tr>
+<tr class="even">
+<td align="left">MA(2)</td>
+<td align="left">-6.4501328</td>
+<td align="left">-6.4496369</td>
+<td align="left">-6.3888233</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>Since MA(2) model’s AIC, AICC and BIC are smaller than AR(1) model’s, MA(2) is better.</li>
+</ul>
+<hr />
+</div>
+</div>
+<div id="model-diagnostics" class="section level2 hasAnchor" number="1.6">
+<h2><span class="header-section-number">1.6</span> Model Diagnostics<a href="example-of-time-series-data.html#model-diagnostics" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p><mark>Example 3.41 (p.140) Diagnostics for the Glacial Varve Series</mark></p>
+<div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb56-1"><a href="example-of-time-series-data.html#cb56-1" tabindex="-1"></a><span class="fu">sarima</span>(<span class="fu">log</span>(varve), <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="at">no.constant=</span><span class="cn">TRUE</span>) <span class="co"># ARIMA(0,1,1)</span></span></code></pre></div>
+<p><img src="bookdown-TS_files/figure-html/unnamed-chunk-48-1.png" width="1152" style="display: block; margin: auto;" /></p>
+<ul>
+<li>ACF outside the CI, and p-value$$0.05, <span class="math inline">\(\therefore\)</span> ARIMA(0,1,1) is not suitable for <code>log(varve)</code></li>
+</ul>
+<div class="sourceCode" id="cb57"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb57-1"><a href="example-of-time-series-data.html#cb57-1" tabindex="-1"></a><span class="fu">sarima</span>(<span class="fu">log</span>(varve), <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="at">no.constant=</span><span class="cn">TRUE</span>) <span class="co"># ARIMA(1,1,1)</span></span></code></pre></div>
+<p><img src="bookdown-TS_files/figure-html/unnamed-chunk-49-1.png" width="1152" style="display: block; margin: auto;" /></p>
+<ul>
+<li>all ACF inside the CI, and all p-value above 0.05, <span class="math inline">\(\therefore\)</span> ARIMA(1,1,1) is suitable for <code>log(varve)</code>.</li>
+</ul>
+<hr />
+</div>
+<div id="regression-with-autocorrelated-errors" class="section level2 hasAnchor" number="1.7">
+<h2><span class="header-section-number">1.7</span> Regression with Autocorrelated Errors<a href="example-of-time-series-data.html#regression-with-autocorrelated-errors" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p><mark>Example 3.44 (p.144) Mortality, Temperature and Pollution</mark></p>
+<ul>
+<li>配適模型查看溫度(temperature)、顆粒物水平(particulate levels)與心血管死亡率(cardiovascular mortality)的關係</li>
+</ul>
+<p><span class="math display">\[M_t=\beta_1+\beta_2t+\beta_3T_t+\beta_4T^2_t+\beta_5P_t+x_t\]</span></p>
+<div class="sourceCode" id="cb58"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb58-1"><a href="example-of-time-series-data.html#cb58-1" tabindex="-1"></a>trend <span class="ot">=</span> <span class="fu">time</span>(cmort); temp <span class="ot">=</span> tempr <span class="sc">-</span> <span class="fu">mean</span>(tempr); temp2 <span class="ot">=</span> temp<span class="sc">^</span><span class="dv">2</span></span>
+<span id="cb58-2"><a href="example-of-time-series-data.html#cb58-2" tabindex="-1"></a>fit <span class="ot">&lt;-</span> <span class="fu">lm</span>(cmort<span class="sc">~</span>trend <span class="sc">+</span> temp <span class="sc">+</span> temp2 <span class="sc">+</span> part, <span class="at">na.action=</span><span class="cn">NULL</span>)</span>
+<span id="cb58-3"><a href="example-of-time-series-data.html#cb58-3" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">summary</span>(fit)<span class="sc">$</span>coef, <span class="dv">3</span>) <span class="sc">|&gt;</span> knitr<span class="sc">::</span><span class="fu">kable</span>()</span></code></pre></div>
+<table>
+<thead>
+<tr class="header">
+<th align="left"></th>
+<th align="right">Estimate</th>
+<th align="right">Std. Error</th>
+<th align="right">t value</th>
+<th align="right">Pr(&gt;|t|)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">(Intercept)</td>
+<td align="right">2831.490</td>
+<td align="right">199.557</td>
+<td align="right">14.189</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">trend</td>
+<td align="right">-1.396</td>
+<td align="right">0.101</td>
+<td align="right">-13.820</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">temp</td>
+<td align="right">-0.472</td>
+<td align="right">0.032</td>
+<td align="right">-14.941</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">temp2</td>
+<td align="right">0.023</td>
+<td align="right">0.003</td>
+<td align="right">7.990</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">part</td>
+<td align="right">0.255</td>
+<td align="right">0.019</td>
+<td align="right">13.541</td>
+<td align="right">0</td>
+</tr>
+</tbody>
+</table>
+<div class="sourceCode" id="cb59"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb59-1"><a href="example-of-time-series-data.html#cb59-1" tabindex="-1"></a><span class="fu">acf2</span>(<span class="fu">resid</span>(fit), <span class="dv">52</span>) <span class="co"># implies AR2</span></span></code></pre></div>
+<p><img src="bookdown-TS_files/figure-html/unnamed-chunk-51-1.png" width="1152" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb60"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb60-1"><a href="example-of-time-series-data.html#cb60-1" tabindex="-1"></a><span class="fu">sarima</span>(cmort, <span class="dv">2</span>,<span class="dv">0</span>,<span class="dv">0</span>, <span class="at">xreg=</span><span class="fu">cbind</span>(trend,temp,temp2,part))</span></code></pre></div>
+<p><img src="bookdown-TS_files/figure-html/unnamed-chunk-51-2.png" width="1152" style="display: block; margin: auto;" /></p>
+<ul>
+<li>ACF outside the CI, but the p-value are above 0.05, <span class="math inline">\(\therefore\)</span> AR(2) is not good enough for <code>cmort</code>.</li>
+</ul>
+<hr />
+<p><mark>Example 3.45 (p.145) Regression with Lagged Variables</mark></p>
+<p><span class="math display">\[R_t=\beta_0+\beta_1S_{t−6}+\beta_2D_{t−6}+\beta_3D_{t−6}S_{t−6}+wt\]</span></p>
+<div class="sourceCode" id="cb61"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb61-1"><a href="example-of-time-series-data.html#cb61-1" tabindex="-1"></a>dummy <span class="ot">=</span> <span class="fu">ifelse</span>(soi<span class="sc">&lt;</span><span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>)</span>
+<span id="cb61-2"><a href="example-of-time-series-data.html#cb61-2" tabindex="-1"></a>fish <span class="ot">=</span> <span class="fu">ts.intersect</span>(rec, <span class="at">soiL6=</span><span class="fu">lag</span>(soi,<span class="sc">-</span><span class="dv">6</span>), <span class="at">dL6=</span><span class="fu">lag</span>(dummy,<span class="sc">-</span><span class="dv">6</span>), <span class="at">dframe=</span><span class="cn">TRUE</span>)</span>
+<span id="cb61-3"><a href="example-of-time-series-data.html#cb61-3" tabindex="-1"></a>fit <span class="ot">&lt;-</span> <span class="fu">lm</span>(rec <span class="sc">~</span> soiL6<span class="sc">*</span>dL6, <span class="at">data=</span>fish, <span class="at">na.action=</span><span class="cn">NULL</span>)</span>
+<span id="cb61-4"><a href="example-of-time-series-data.html#cb61-4" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">summary</span>(fit)<span class="sc">$</span>coef, <span class="dv">3</span>) <span class="sc">|&gt;</span> knitr<span class="sc">::</span><span class="fu">kable</span>()</span></code></pre></div>
+<table>
+<thead>
+<tr class="header">
+<th align="left"></th>
+<th align="right">Estimate</th>
+<th align="right">Std. Error</th>
+<th align="right">t value</th>
+<th align="right">Pr(&gt;|t|)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">(Intercept)</td>
+<td align="right">74.479</td>
+<td align="right">2.865</td>
+<td align="right">25.998</td>
+<td align="right">0.000</td>
+</tr>
+<tr class="even">
+<td align="left">soiL6</td>
+<td align="right">-15.358</td>
+<td align="right">7.401</td>
+<td align="right">-2.075</td>
+<td align="right">0.039</td>
+</tr>
+<tr class="odd">
+<td align="left">dL6</td>
+<td align="right">-1.139</td>
+<td align="right">3.711</td>
+<td align="right">-0.307</td>
+<td align="right">0.759</td>
+</tr>
+<tr class="even">
+<td align="left">soiL6:dL6</td>
+<td align="right">-51.244</td>
+<td align="right">9.523</td>
+<td align="right">-5.381</td>
+<td align="right">0.000</td>
+</tr>
+</tbody>
+</table>
+<div class="sourceCode" id="cb62"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb62-1"><a href="example-of-time-series-data.html#cb62-1" tabindex="-1"></a><span class="fu">attach</span>(fish)</span></code></pre></div>
+<pre><code>## The following object is masked from package:astsa:
+## 
+##     rec</code></pre>
+<div class="sourceCode" id="cb64"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb64-1"><a href="example-of-time-series-data.html#cb64-1" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">resid</span>(fit))</span></code></pre></div>
+<p><img src="bookdown-TS_files/figure-html/unnamed-chunk-52-1.png" width="1152" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb65"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb65-1"><a href="example-of-time-series-data.html#cb65-1" tabindex="-1"></a><span class="fu">acf2</span>(<span class="fu">resid</span>(fit)) <span class="co"># indicates AR(2)</span></span></code></pre></div>
+<p><img src="bookdown-TS_files/figure-html/unnamed-chunk-53-1.png" width="1152" style="display: block; margin: auto;" /></p>
+<div class="sourceCode" id="cb66"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb66-1"><a href="example-of-time-series-data.html#cb66-1" tabindex="-1"></a>intract <span class="ot">=</span> soiL6<span class="sc">*</span>dL6 <span class="co"># interaction term</span></span>
+<span id="cb66-2"><a href="example-of-time-series-data.html#cb66-2" tabindex="-1"></a><span class="fu">sarima</span>(rec,<span class="dv">2</span>,<span class="dv">0</span>,<span class="dv">0</span>, <span class="at">xreg =</span> <span class="fu">cbind</span>(soiL6, dL6, intract))</span></code></pre></div>
+<p><img src="bookdown-TS_files/figure-html/unnamed-chunk-53-2.png" width="1152" style="display: block; margin: auto;" /></p>
+<ul>
+<li>ACF outside the CI, and the p-value are below 0.05, <span class="math inline">\(\therefore\)</span> AR(2) is not suitable.</li>
+</ul>
+<hr />
+</div>
+<div id="multiplicative-seasonal-arima-models" class="section level2 hasAnchor" number="1.8">
+<h2><span class="header-section-number">1.8</span> Multiplicative Seasonal ARIMA Models<a href="example-of-time-series-data.html#multiplicative-seasonal-arima-models" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<ul>
+<li>先一階差分再看季節性
+<del>* 季節性資料優先處理季節性，再看需不需要差分</del></li>
+</ul>
+<p><mark>Example 3.46 (p.146) A Seasonal AR Series</mark></p>
+<p><span class="math display">\[(1 − 0.9\cdot B^{12})x_t = w_t\]</span></p>
+<div class="sourceCode" id="cb67"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb67-1"><a href="example-of-time-series-data.html#cb67-1" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">666</span>)</span>
+<span id="cb67-2"><a href="example-of-time-series-data.html#cb67-2" tabindex="-1"></a>phi <span class="ot">=</span> <span class="fu">c</span>(<span class="fu">rep</span>(<span class="dv">0</span>,<span class="dv">11</span>),.<span class="dv">9</span>)</span>
+<span id="cb67-3"><a href="example-of-time-series-data.html#cb67-3" tabindex="-1"></a>sAR <span class="ot">=</span> <span class="fu">arima.sim</span>(<span class="fu">list</span>(<span class="at">order=</span><span class="fu">c</span>(<span class="dv">12</span>,<span class="dv">0</span>,<span class="dv">0</span>), <span class="at">ar=</span>phi), <span class="at">n=</span><span class="dv">37</span>)</span>
+<span id="cb67-4"><a href="example-of-time-series-data.html#cb67-4" tabindex="-1"></a>sAR <span class="ot">=</span> <span class="fu">ts</span>(sAR, <span class="at">freq=</span><span class="dv">12</span>)</span>
+<span id="cb67-5"><a href="example-of-time-series-data.html#cb67-5" tabindex="-1"></a><span class="fu">layout</span>(<span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">2</span>, <span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">3</span>), <span class="at">nc=</span><span class="dv">2</span>))</span>
+<span id="cb67-6"><a href="example-of-time-series-data.html#cb67-6" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mar=</span><span class="fu">c</span>(<span class="dv">3</span>,<span class="dv">3</span>,<span class="dv">2</span>,<span class="dv">1</span>), <span class="at">mgp=</span><span class="fu">c</span>(<span class="fl">1.6</span>,.<span class="dv">6</span>,<span class="dv">0</span>))</span>
+<span id="cb67-7"><a href="example-of-time-series-data.html#cb67-7" tabindex="-1"></a><span class="fu">plot</span>(sAR, <span class="at">axes=</span><span class="cn">FALSE</span>, <span class="at">main=</span><span class="st">&#39;seasonal AR(1)&#39;</span>, <span class="at">xlab=</span><span class="st">&quot;year&quot;</span>, <span class="at">type=</span><span class="st">&#39;c&#39;</span>)</span>
+<span id="cb67-8"><a href="example-of-time-series-data.html#cb67-8" tabindex="-1"></a>Months <span class="ot">=</span> <span class="fu">c</span>(<span class="st">&quot;J&quot;</span>,<span class="st">&quot;F&quot;</span>,<span class="st">&quot;M&quot;</span>,<span class="st">&quot;A&quot;</span>,<span class="st">&quot;M&quot;</span>,<span class="st">&quot;J&quot;</span>,<span class="st">&quot;J&quot;</span>,<span class="st">&quot;A&quot;</span>,<span class="st">&quot;S&quot;</span>,<span class="st">&quot;O&quot;</span>,<span class="st">&quot;N&quot;</span>,<span class="st">&quot;D&quot;</span>)</span>
+<span id="cb67-9"><a href="example-of-time-series-data.html#cb67-9" tabindex="-1"></a><span class="fu">points</span>(sAR, <span class="at">pch=</span>Months, <span class="at">cex=</span><span class="fl">1.25</span>, <span class="at">font=</span><span class="dv">4</span>, <span class="at">col=</span><span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>)</span>
+<span id="cb67-10"><a href="example-of-time-series-data.html#cb67-10" tabindex="-1"></a><span class="fu">axis</span>(<span class="dv">1</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>); <span class="fu">abline</span>(<span class="at">v=</span><span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>, <span class="at">lty=</span><span class="dv">2</span>, <span class="at">col=</span><span class="fu">gray</span>(.<span class="dv">7</span>))</span>
+<span id="cb67-11"><a href="example-of-time-series-data.html#cb67-11" tabindex="-1"></a><span class="fu">axis</span>(<span class="dv">2</span>); <span class="fu">box</span>()</span>
+<span id="cb67-12"><a href="example-of-time-series-data.html#cb67-12" tabindex="-1"></a>ACF <span class="ot">=</span> <span class="fu">ARMAacf</span>(<span class="at">ar=</span>phi, <span class="at">ma=</span><span class="dv">0</span>, <span class="dv">100</span>)</span>
+<span id="cb67-13"><a href="example-of-time-series-data.html#cb67-13" tabindex="-1"></a>PACF <span class="ot">=</span> <span class="fu">ARMAacf</span>(<span class="at">ar=</span>phi, <span class="at">ma=</span><span class="dv">0</span>, <span class="dv">100</span>, <span class="at">pacf=</span><span class="cn">TRUE</span>)</span>
+<span id="cb67-14"><a href="example-of-time-series-data.html#cb67-14" tabindex="-1"></a><span class="fu">plot</span>(ACF,<span class="at">type=</span><span class="st">&quot;h&quot;</span>, <span class="at">xlab=</span><span class="st">&quot;LAG&quot;</span>, <span class="at">ylim=</span><span class="fu">c</span>(<span class="sc">-</span>.<span class="dv">1</span>,<span class="dv">1</span>)); <span class="fu">abline</span>(<span class="at">h=</span><span class="dv">0</span>)</span>
+<span id="cb67-15"><a href="example-of-time-series-data.html#cb67-15" tabindex="-1"></a><span class="fu">plot</span>(PACF, <span class="at">type=</span><span class="st">&quot;h&quot;</span>, <span class="at">xlab=</span><span class="st">&quot;LAG&quot;</span>, <span class="at">ylim=</span><span class="fu">c</span>(<span class="sc">-</span>.<span class="dv">1</span>,<span class="dv">1</span>)); <span class="fu">abline</span>(<span class="at">h=</span><span class="dv">0</span>)</span></code></pre></div>
+<p><img src="bookdown-TS_files/figure-html/unnamed-chunk-54-1.png" width="1152" style="display: block; margin: auto;" /></p>
+<ul>
+<li>Theoretical ACF tails off at lag 12, 24, 36, …</li>
+<li>Theoretical PACF cut-off at lag 12</li>
+</ul>
+<div class="sourceCode" id="cb68"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb68-1"><a href="example-of-time-series-data.html#cb68-1" tabindex="-1"></a><span class="fu">acf2</span>(sAR, <span class="at">max.lag =</span> <span class="dv">35</span>)</span></code></pre></div>
+<p><img src="bookdown-TS_files/figure-html/unnamed-chunk-55-1.png" width="1152" style="display: block; margin: auto;" /></p>
+<ul>
+<li>Those patterns are also observed in the sample ACF and PACF.</li>
+</ul>
+<hr />
+<p><mark>Example 3.47 (p.145) seasonal ARMA</mark></p>
+<p><span class="math display">\[X_t-.8X_{t-12}=W_t-.5W_{t-1}\]</span></p>
+<div class="sourceCode" id="cb69"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb69-1"><a href="example-of-time-series-data.html#cb69-1" tabindex="-1"></a>phi <span class="ot">=</span> <span class="fu">c</span>(<span class="fu">rep</span>(<span class="dv">0</span>,<span class="dv">11</span>),.<span class="dv">8</span>)</span>
+<span id="cb69-2"><a href="example-of-time-series-data.html#cb69-2" tabindex="-1"></a>ACF <span class="ot">=</span> <span class="fu">ARMAacf</span>(<span class="at">ar=</span>phi, <span class="at">ma=</span><span class="sc">-</span>.<span class="dv">5</span>, <span class="dv">50</span>)[<span class="sc">-</span><span class="dv">1</span>] <span class="co"># [-1] removes 0 lag</span></span>
+<span id="cb69-3"><a href="example-of-time-series-data.html#cb69-3" tabindex="-1"></a>PACF <span class="ot">=</span> <span class="fu">ARMAacf</span>(<span class="at">ar=</span>phi, <span class="at">ma=</span><span class="sc">-</span>.<span class="dv">5</span>, <span class="dv">50</span>, <span class="at">pacf=</span><span class="cn">TRUE</span>)</span>
+<span id="cb69-4"><a href="example-of-time-series-data.html#cb69-4" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>))</span>
+<span id="cb69-5"><a href="example-of-time-series-data.html#cb69-5" tabindex="-1"></a><span class="fu">plot</span>(ACF, <span class="at">type=</span><span class="st">&quot;h&quot;</span>, <span class="at">xlab=</span><span class="st">&quot;LAG&quot;</span>, <span class="at">ylim=</span><span class="fu">c</span>(<span class="sc">-</span>.<span class="dv">4</span>,.<span class="dv">8</span>)); <span class="fu">abline</span>(<span class="at">h=</span><span class="dv">0</span>)</span>
+<span id="cb69-6"><a href="example-of-time-series-data.html#cb69-6" tabindex="-1"></a><span class="fu">axis</span>(<span class="dv">1</span>, <span class="at">at=</span><span class="dv">0</span><span class="sc">:</span><span class="dv">50</span>, <span class="at">label=</span>F); <span class="fu">axis</span>(<span class="dv">1</span>, <span class="at">at=</span><span class="fu">seq</span>(<span class="dv">0</span>,<span class="dv">50</span>,<span class="at">by=</span><span class="dv">10</span>), <span class="at">lwd=</span><span class="dv">2</span>)</span>
+<span id="cb69-7"><a href="example-of-time-series-data.html#cb69-7" tabindex="-1"></a><span class="fu">plot</span>(PACF, <span class="at">type=</span><span class="st">&quot;h&quot;</span>, <span class="at">xlab=</span><span class="st">&quot;LAG&quot;</span>, <span class="at">ylim=</span><span class="fu">c</span>(<span class="sc">-</span>.<span class="dv">4</span>,.<span class="dv">8</span>)); <span class="fu">abline</span>(<span class="at">h=</span><span class="dv">0</span>)</span>
+<span id="cb69-8"><a href="example-of-time-series-data.html#cb69-8" tabindex="-1"></a><span class="fu">axis</span>(<span class="dv">1</span>, <span class="at">at=</span><span class="dv">0</span><span class="sc">:</span><span class="dv">50</span>, <span class="at">label=</span>F); <span class="fu">axis</span>(<span class="dv">1</span>, <span class="at">at=</span><span class="fu">seq</span>(<span class="dv">0</span>,<span class="dv">50</span>,<span class="at">by=</span><span class="dv">10</span>), <span class="at">lwd=</span><span class="dv">2</span>)</span></code></pre></div>
+<p><img src="bookdown-TS_files/figure-html/unnamed-chunk-56-1.png" width="1152" style="display: block; margin: auto;" /></p>
+<ul>
+<li>PACF cut-off at lag 12, so <span class="math inline">\(AR(1)_{12}\)</span> is suitable.</li>
+<li>ACF cut-off at lag 1, so <span class="math inline">\(MA(1)\)</span> is suitable.</li>
+</ul>
+<hr />
+</div>
+<div id="periodogram" class="section level2 hasAnchor" number="1.9">
+<h2><span class="header-section-number">1.9</span> Periodogram<a href="example-of-time-series-data.html#periodogram" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p><mark>Example 4.1 (p.167) A Periodic Series</mark></p>
+<div class="sourceCode" id="cb70"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb70-1"><a href="example-of-time-series-data.html#cb70-1" tabindex="-1"></a>x1 <span class="ot">=</span> <span class="dv">2</span><span class="sc">*</span><span class="fu">cos</span>(<span class="dv">2</span><span class="sc">*</span>pi<span class="sc">*</span><span class="dv">1</span><span class="sc">:</span><span class="dv">100</span><span class="sc">*</span><span class="dv">6</span><span class="sc">/</span><span class="dv">100</span>) <span class="sc">+</span> <span class="dv">3</span><span class="sc">*</span><span class="fu">sin</span>(<span class="dv">2</span><span class="sc">*</span>pi<span class="sc">*</span><span class="dv">1</span><span class="sc">:</span><span class="dv">100</span><span class="sc">*</span><span class="dv">6</span><span class="sc">/</span><span class="dv">100</span>)</span>
+<span id="cb70-2"><a href="example-of-time-series-data.html#cb70-2" tabindex="-1"></a>x2 <span class="ot">=</span> <span class="dv">4</span><span class="sc">*</span><span class="fu">cos</span>(<span class="dv">2</span><span class="sc">*</span>pi<span class="sc">*</span><span class="dv">1</span><span class="sc">:</span><span class="dv">100</span><span class="sc">*</span><span class="dv">10</span><span class="sc">/</span><span class="dv">100</span>) <span class="sc">+</span> <span class="dv">5</span><span class="sc">*</span><span class="fu">sin</span>(<span class="dv">2</span><span class="sc">*</span>pi<span class="sc">*</span><span class="dv">1</span><span class="sc">:</span><span class="dv">100</span><span class="sc">*</span><span class="dv">10</span><span class="sc">/</span><span class="dv">100</span>)</span>
+<span id="cb70-3"><a href="example-of-time-series-data.html#cb70-3" tabindex="-1"></a>x3 <span class="ot">=</span> <span class="dv">6</span><span class="sc">*</span><span class="fu">cos</span>(<span class="dv">2</span><span class="sc">*</span>pi<span class="sc">*</span><span class="dv">1</span><span class="sc">:</span><span class="dv">100</span><span class="sc">*</span><span class="dv">40</span><span class="sc">/</span><span class="dv">100</span>) <span class="sc">+</span> <span class="dv">7</span><span class="sc">*</span><span class="fu">sin</span>(<span class="dv">2</span><span class="sc">*</span>pi<span class="sc">*</span><span class="dv">1</span><span class="sc">:</span><span class="dv">100</span><span class="sc">*</span><span class="dv">40</span><span class="sc">/</span><span class="dv">100</span>)</span>
+<span id="cb70-4"><a href="example-of-time-series-data.html#cb70-4" tabindex="-1"></a>x <span class="ot">=</span> x1 <span class="sc">+</span> x2 <span class="sc">+</span> x3</span>
+<span id="cb70-5"><a href="example-of-time-series-data.html#cb70-5" tabindex="-1"></a></span>
+<span id="cb70-6"><a href="example-of-time-series-data.html#cb70-6" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">2</span>), <span class="at">mar=</span><span class="fu">c</span>(<span class="dv">4</span>,<span class="dv">4</span>,<span class="dv">2</span>,<span class="dv">1</span>))</span>
+<span id="cb70-7"><a href="example-of-time-series-data.html#cb70-7" tabindex="-1"></a><span class="fu">plot.ts</span>(x1, <span class="at">ylim=</span><span class="fu">c</span>(<span class="sc">-</span><span class="dv">10</span>,<span class="dv">10</span>), <span class="at">main=</span><span class="fu">expression</span>(omega<span class="sc">==</span><span class="dv">6</span><span class="sc">/</span><span class="dv">100</span><span class="sc">~</span><span class="er">~~</span>A<span class="sc">^</span><span class="dv">2</span><span class="sc">==</span><span class="dv">13</span>))</span>
+<span id="cb70-8"><a href="example-of-time-series-data.html#cb70-8" tabindex="-1"></a><span class="fu">plot.ts</span>(x2, <span class="at">ylim=</span><span class="fu">c</span>(<span class="sc">-</span><span class="dv">10</span>,<span class="dv">10</span>), <span class="at">main=</span><span class="fu">expression</span>(omega<span class="sc">==</span><span class="dv">10</span><span class="sc">/</span><span class="dv">100</span><span class="sc">~</span><span class="er">~~</span>A<span class="sc">^</span><span class="dv">2</span><span class="sc">==</span><span class="dv">41</span>))</span>
+<span id="cb70-9"><a href="example-of-time-series-data.html#cb70-9" tabindex="-1"></a><span class="fu">plot.ts</span>(x3, <span class="at">ylim=</span><span class="fu">c</span>(<span class="sc">-</span><span class="dv">10</span>,<span class="dv">10</span>), <span class="at">main=</span><span class="fu">expression</span>(omega<span class="sc">==</span><span class="dv">40</span><span class="sc">/</span><span class="dv">100</span><span class="sc">~</span><span class="er">~~</span>A<span class="sc">^</span><span class="dv">2</span><span class="sc">==</span><span class="dv">85</span>))</span>
+<span id="cb70-10"><a href="example-of-time-series-data.html#cb70-10" tabindex="-1"></a><span class="fu">plot.ts</span>(x, <span class="at">ylim=</span><span class="fu">c</span>(<span class="sc">-</span><span class="dv">16</span>,<span class="dv">16</span>), <span class="at">main=</span><span class="st">&quot;sum&quot;</span>)</span></code></pre></div>
+<p><img src="bookdown-TS_files/figure-html/unnamed-chunk-57-1.png" width="1152" style="display: block; margin: auto;" /></p>
+<p>when there is many periodic, it is hard to see</p>
+<ul>
+<li>A: height of the peak
+<ul>
+<li>for <span class="math inline">\(x_1\)</span>, <span class="math inline">\(A^2=2^2+3^2=13\)</span>, the maximum and minimum values that <span class="math inline">\(x_1\)</span> will attain are <span class="math inline">\(\pm\sqrt{13}=\pm3.61\)</span></li>
+</ul></li>
+<li><span class="math inline">\(\omega=\frac jn\)</span>: j = repeated times</li>
+</ul>
+<hr />
+<p><mark>Example 4.2 (p.169) Estimation and the Periodogram</mark></p>
+<div class="sourceCode" id="cb71"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb71-1"><a href="example-of-time-series-data.html#cb71-1" tabindex="-1"></a>P <span class="ot">=</span> <span class="fu">Mod</span>(<span class="dv">2</span><span class="sc">*</span><span class="fu">fft</span>(x)<span class="sc">/</span><span class="dv">100</span>)<span class="sc">^</span><span class="dv">2</span>; Fr <span class="ot">=</span> <span class="dv">0</span><span class="sc">:</span><span class="dv">99</span><span class="sc">/</span><span class="dv">100</span></span>
+<span id="cb71-2"><a href="example-of-time-series-data.html#cb71-2" tabindex="-1"></a><span class="fu">plot</span>(Fr, P, <span class="at">type=</span><span class="st">&quot;o&quot;</span>, <span class="at">xlab=</span><span class="st">&quot;frequency&quot;</span>, <span class="at">ylab=</span><span class="st">&quot;scaled periodogram&quot;</span>)</span>
+<span id="cb71-3"><a href="example-of-time-series-data.html#cb71-3" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">v=</span><span class="fl">0.5</span>, <span class="at">col=</span><span class="st">&quot;red&quot;</span>, <span class="at">lty=</span><span class="dv">2</span>)</span>
+<span id="cb71-4"><a href="example-of-time-series-data.html#cb71-4" tabindex="-1"></a><span class="fu">points</span>(<span class="at">x=</span>Fr[<span class="dv">7</span>], <span class="at">y=</span>P[<span class="dv">7</span>], <span class="at">col=</span><span class="st">&quot;red&quot;</span>, <span class="at">pch=</span><span class="dv">1</span>, <span class="at">cex=</span><span class="dv">3</span>);<span class="fu">text</span>(<span class="at">x=</span>Fr[<span class="dv">7</span>], <span class="at">y=</span>P[<span class="dv">7</span>], <span class="at">labels =</span> <span class="st">&quot;6/100&quot;</span>, <span class="at">pos=</span><span class="dv">3</span>, <span class="at">col=</span><span class="st">&quot;red&quot;</span>)</span>
+<span id="cb71-5"><a href="example-of-time-series-data.html#cb71-5" tabindex="-1"></a><span class="fu">points</span>(<span class="at">x=</span>Fr[<span class="dv">11</span>], <span class="at">y=</span>P[<span class="dv">11</span>], <span class="at">col=</span><span class="st">&quot;red&quot;</span>, <span class="at">pch=</span><span class="dv">1</span>, <span class="at">cex=</span><span class="dv">3</span>);<span class="fu">text</span>(<span class="at">x=</span>Fr[<span class="dv">11</span>], <span class="at">y=</span>P[<span class="dv">11</span>], <span class="at">labels =</span> <span class="st">&quot;10/100&quot;</span>, <span class="at">pos=</span><span class="dv">3</span>, <span class="at">col=</span><span class="st">&quot;red&quot;</span>)</span>
+<span id="cb71-6"><a href="example-of-time-series-data.html#cb71-6" tabindex="-1"></a><span class="fu">points</span>(<span class="at">x=</span>Fr[<span class="dv">41</span>], <span class="at">y=</span>P[<span class="dv">41</span>], <span class="at">col=</span><span class="st">&quot;red&quot;</span>, <span class="at">pch=</span><span class="dv">1</span>, <span class="at">cex=</span><span class="dv">3</span>);<span class="fu">text</span>(<span class="at">x=</span>Fr[<span class="dv">41</span>], <span class="at">y=</span>P[<span class="dv">41</span>], <span class="at">labels =</span> <span class="st">&quot;40/100&quot;</span>, <span class="at">pos=</span><span class="dv">1</span>, <span class="at">col=</span><span class="st">&quot;red&quot;</span>)</span></code></pre></div>
+<p><img src="bookdown-TS_files/figure-html/unnamed-chunk-58-1.png" width="1152" style="display: block; margin: auto;" /></p>
+<ul>
+<li>the plot is symmetric: <span class="math inline">\(I(\omega_j)=I(\omega_{n-j})\)</span></li>
+<li>period: <span class="math inline">\(T=\frac nj\)</span>
+<ul>
+<li><span class="math inline">\(T_1=\frac {100}6\)</span>, <span class="math inline">\(T_2=\frac{100}{10}\)</span>, <span class="math inline">\(T_3=\frac{100}{40}\)</span></li>
+</ul></li>
+<li><span class="math inline">\(\omega_j=\frac jn\)</span>
+<ul>
+<li><span class="math inline">\(\omega_1=\frac 6{100}\)</span>, <span class="math inline">\(\omega_2=\frac {10}{100}\)</span>, <span class="math inline">\(\omega_3=\frac {40}{100}\)</span></li>
+</ul></li>
+</ul>
+<hr />
+<p><mark>Example 4.7 (p.176) spectral density </mark></p>
+<div class="sourceCode" id="cb72"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb72-1"><a href="example-of-time-series-data.html#cb72-1" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">3</span>,<span class="dv">1</span>), <span class="at">mar=</span><span class="fu">c</span>(<span class="dv">4</span>,<span class="dv">4</span>,<span class="dv">1</span>,<span class="dv">1</span>))</span>
+<span id="cb72-2"><a href="example-of-time-series-data.html#cb72-2" tabindex="-1"></a><span class="fu">arma.spec</span>(<span class="at">main=</span><span class="st">&quot;White Noise&quot;</span>)</span>
+<span id="cb72-3"><a href="example-of-time-series-data.html#cb72-3" tabindex="-1"></a><span class="fu">arma.spec</span>(<span class="at">ma=</span>.<span class="dv">5</span>, <span class="at">main=</span><span class="st">&quot;Moving Average&quot;</span>)</span>
+<span id="cb72-4"><a href="example-of-time-series-data.html#cb72-4" tabindex="-1"></a><span class="fu">arma.spec</span>(<span class="at">ar=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="sc">-</span>.<span class="dv">9</span>), <span class="at">main=</span><span class="st">&quot;Autoregression&quot;</span>)</span></code></pre></div>
+<p><img src="bookdown-TS_files/figure-html/unnamed-chunk-59-1.png" width="1152" style="display: block; margin: auto;" /></p>
+<ul>
+<li>Top: White Noise</li>
+<li>Middle: MA(1), <span class="math inline">\(\theta_1=0.5\)</span></li>
+<li>Bottom: AR(2), <span class="math inline">\(\phi_1=1, \phi_2=-0.9\)</span></li>
+</ul>
+<hr />
+<p><mark>Example 4.10 (p.182) Spectral ANOVA</mark></p>
+<blockquote>
+<p>periodogram is symmetric</p>
+</blockquote>
+<p><span class="math display">\[\omega_1=\frac15,\omega_2=\frac25\]</span></p>
+<p><span class="math display">\[SS=2\cdot I(\omega_j)\]</span></p>
+<div class="sourceCode" id="cb73"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb73-1"><a href="example-of-time-series-data.html#cb73-1" tabindex="-1"></a>x <span class="ot">=</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">2</span>, <span class="dv">1</span>)</span>
+<span id="cb73-2"><a href="example-of-time-series-data.html#cb73-2" tabindex="-1"></a>c1 <span class="ot">=</span> <span class="fu">cos</span>(<span class="dv">2</span><span class="sc">*</span>pi<span class="sc">*</span><span class="dv">1</span><span class="sc">:</span><span class="dv">5</span><span class="sc">*</span><span class="dv">1</span><span class="sc">/</span><span class="dv">5</span>); s1 <span class="ot">=</span> <span class="fu">sin</span>(<span class="dv">2</span><span class="sc">*</span>pi<span class="sc">*</span><span class="dv">1</span><span class="sc">:</span><span class="dv">5</span><span class="sc">*</span><span class="dv">1</span><span class="sc">/</span><span class="dv">5</span>)</span>
+<span id="cb73-3"><a href="example-of-time-series-data.html#cb73-3" tabindex="-1"></a>c2 <span class="ot">=</span> <span class="fu">cos</span>(<span class="dv">2</span><span class="sc">*</span>pi<span class="sc">*</span><span class="dv">1</span><span class="sc">:</span><span class="dv">5</span><span class="sc">*</span><span class="dv">2</span><span class="sc">/</span><span class="dv">5</span>); s2 <span class="ot">=</span> <span class="fu">sin</span>(<span class="dv">2</span><span class="sc">*</span>pi<span class="sc">*</span><span class="dv">1</span><span class="sc">:</span><span class="dv">5</span><span class="sc">*</span><span class="dv">2</span><span class="sc">/</span><span class="dv">5</span>)</span>
+<span id="cb73-4"><a href="example-of-time-series-data.html#cb73-4" tabindex="-1"></a>omega1 <span class="ot">=</span> <span class="fu">cbind</span>(c1, s1); omega2 <span class="ot">=</span> <span class="fu">cbind</span>(c2, s2)</span>
+<span id="cb73-5"><a href="example-of-time-series-data.html#cb73-5" tabindex="-1"></a><span class="fu">anova</span>(<span class="fu">lm</span>(x<span class="sc">~</span>omega1<span class="sc">+</span>omega2)) <span class="co"># ANOVA Table</span></span></code></pre></div>
+<pre><code>## Analysis of Variance Table
+## 
+## Response: x
+##           Df  Sum Sq Mean Sq F value Pr(&gt;F)
+## omega1     2 2.74164 1.37082     NaN    NaN
+## omega2     2 0.05836 0.02918     NaN    NaN
+## Residuals  0 0.00000     NaN</code></pre>
+<ul>
+<li><span class="math inline">\(2.74=2\cdot I(\frac15)=2\cdot1.37\)</span></li>
+</ul>
+<p><span class="math inline">\(\downarrow\)</span> <span class="math inline">\(I(0)\)</span> <span class="math inline">\(I(\frac15)\)</span> <span class="math inline">\(I(\frac25)\)</span> <span class="math inline">\(I(\frac35)\)</span> <span class="math inline">\(I(\frac45)\)</span></p>
+<div class="sourceCode" id="cb75"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb75-1"><a href="example-of-time-series-data.html#cb75-1" tabindex="-1"></a><span class="fu">Mod</span>(<span class="fu">fft</span>(x))<span class="sc">^</span><span class="dv">2</span><span class="sc">/</span><span class="dv">5</span> <span class="co"># the periodogram (as a check)</span></span></code></pre></div>
+<pre><code>## [1] 16.20000000  1.37082039  0.02917961  0.02917961  1.37082039</code></pre>
+<hr />
+<p><mark>Example 4.13 (p.187) CI </mark></p>
+<ul>
+<li>n=480, <span class="math inline">\(\because\)</span> periodogram is symmatric, only need to print half of them</li>
+<li>1 unit = 40</li>
+</ul>
+<div class="sourceCode" id="cb77"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb77-1"><a href="example-of-time-series-data.html#cb77-1" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">1</span>), <span class="at">mar=</span><span class="fu">c</span>(<span class="dv">4</span>,<span class="dv">4</span>,<span class="dv">1</span>,<span class="dv">1</span>))</span>
+<span id="cb77-2"><a href="example-of-time-series-data.html#cb77-2" tabindex="-1"></a>soi.per <span class="ot">=</span> <span class="fu">mvspec</span>(soi, <span class="at">log=</span><span class="st">&quot;no&quot;</span>)</span>
+<span id="cb77-3"><a href="example-of-time-series-data.html#cb77-3" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">v=</span><span class="dv">1</span><span class="sc">/</span><span class="dv">4</span>, <span class="at">lty=</span><span class="dv">2</span>)</span>
+<span id="cb77-4"><a href="example-of-time-series-data.html#cb77-4" tabindex="-1"></a>rec.per <span class="ot">=</span> <span class="fu">mvspec</span>(rec, <span class="at">log=</span><span class="st">&quot;no&quot;</span>)</span>
+<span id="cb77-5"><a href="example-of-time-series-data.html#cb77-5" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">v=</span><span class="dv">1</span><span class="sc">/</span><span class="dv">4</span>, <span class="at">lty=</span><span class="dv">2</span>)</span></code></pre></div>
+<p><img src="bookdown-TS_files/figure-html/unnamed-chunk-62-1.png" width="1152" style="display: block; margin: auto;" /></p>
+<ul>
+<li>the peak appear at j=10, 40</li>
+</ul>
+<hr />
+<p><span class="math display">\[\frac{2I(\omega_j)}{f(\omega_j)}\sim\chi^2(2)\]</span></p>
+<p><span class="math display">\[\text{95% CI for }f(\omega_j)=[\frac{2I(\omega_j)}{\chi^2_.975}, \frac{2I(\omega_j)}{\chi^2_.025}]\]</span></p>
+<ul>
+<li><span class="math inline">\(\downarrow I(\omega_j)\)</span></li>
+</ul>
+<div class="sourceCode" id="cb78"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb78-1"><a href="example-of-time-series-data.html#cb78-1" tabindex="-1"></a>soi.per<span class="sc">$</span>spec[<span class="dv">40</span>] <span class="co"># 0.97223; soi pgram at freq 1/12 = 40/480</span></span>
+<span id="cb78-2"><a href="example-of-time-series-data.html#cb78-2" tabindex="-1"></a>soi.per<span class="sc">$</span>spec[<span class="dv">10</span>] <span class="co"># 0.05372; soi pgram at freq 1/48 = 10/480</span></span></code></pre></div>
+<pre><code>## [1] 0.9722312
+## [1] 0.05372962</code></pre>
+<ul>
+<li><span class="math inline">\(\downarrow CI\)</span>: huge interval is a useless interval</li>
+</ul>
+<div class="sourceCode" id="cb80"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb80-1"><a href="example-of-time-series-data.html#cb80-1" tabindex="-1"></a>U <span class="ot">=</span> <span class="fu">qchisq</span>(.<span class="dv">025</span>,<span class="dv">2</span>) <span class="co"># 0.05063</span></span>
+<span id="cb80-2"><a href="example-of-time-series-data.html#cb80-2" tabindex="-1"></a>L <span class="ot">=</span> <span class="fu">qchisq</span>(.<span class="dv">975</span>,<span class="dv">2</span>) <span class="co"># 7.37775</span></span>
+<span id="cb80-3"><a href="example-of-time-series-data.html#cb80-3" tabindex="-1"></a></span>
+<span id="cb80-4"><a href="example-of-time-series-data.html#cb80-4" tabindex="-1"></a><span class="dv">2</span><span class="sc">*</span>soi.per<span class="sc">$</span>spec[<span class="dv">10</span>]<span class="sc">/</span>L <span class="co"># 0.01456</span></span>
+<span id="cb80-5"><a href="example-of-time-series-data.html#cb80-5" tabindex="-1"></a><span class="dv">2</span><span class="sc">*</span>soi.per<span class="sc">$</span>spec[<span class="dv">10</span>]<span class="sc">/</span>U <span class="co"># 2.12220</span></span>
+<span id="cb80-6"><a href="example-of-time-series-data.html#cb80-6" tabindex="-1"></a></span>
+<span id="cb80-7"><a href="example-of-time-series-data.html#cb80-7" tabindex="-1"></a><span class="dv">2</span><span class="sc">*</span>soi.per<span class="sc">$</span>spec[<span class="dv">40</span>]<span class="sc">/</span>L <span class="co"># 0.26355</span></span>
+<span id="cb80-8"><a href="example-of-time-series-data.html#cb80-8" tabindex="-1"></a><span class="dv">2</span><span class="sc">*</span>soi.per<span class="sc">$</span>spec[<span class="dv">40</span>]<span class="sc">/</span>U <span class="co"># 38.40108</span></span></code></pre></div>
+<pre><code>## [1] 0.0145653
+## [1] 2.122207
+## [1] 0.2635573
+## [1] 38.40108</code></pre>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="index.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": false,
+"fontsettings": {
+"theme": "night",
+"family": "sans",
+"size": 2
+},
+"edit": null,
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection",
+"scroll_highlight": true
+},
+"info": false
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>
