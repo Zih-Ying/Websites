@@ -6,21 +6,28 @@ Here are some websites I made. Currently, they are built under the frame of R pa
 ___
 # Content
 <details>
-  <summary>[Bookdown] Time Series</b> (112-1 時間數列分析) Visit it at https://bookdown.org/k408651759/bookdown-TS/ :D</summary>
+  <summary><b>[Bookdown] Time Series</b> (112-1 時間數列分析) <br> Visit it at https://bookdown.org/k408651759/bookdown-TS/ :D</summary>
   <br>
   Personal note for <i>Time Series</i> course.
   <hr>
 </details>
 <br>
 <details>
-  <summary>[Bookdown] Recommender System</b> (112-1 推薦系統) Visit it at https://bookdown.org/k408651759/bookdown-RS/ -w-</summary>
+  <summary><b>[Bookdown] Recommender System</b> (112-1 推薦系統) <br> Visit it at https://bookdown.org/k408651759/bookdown-RS/ -w-</summary>
   <br>
   Personal note for <i>Recommender System</i> course.
   <hr>
 </details>
 <br>
 <details>
-  <summary>[Shiny] YouBike</b> (112-2 程式語言: Python) Visit it at https://zihyingli.shinyapps.io/Python/ OUO</summary>
+  <summary><b>[RMarkdown] RS-ioslides</b> (112-1 推薦系統) <br> Visit it at https://bookdown.org/k408651759/rs-final/ -w-</summary>
+  <br>
+  This is my first try using `rmarkdown` to build slides. You can see these slides in the last section of the Recommender System book. :D
+  <hr>
+</details>
+<br>
+<details>
+  <summary><b>[Shiny] YouBike</b> (112-2 程式語言: Python) <br> Visit it at https://zihyingli.shinyapps.io/Python/ OUO</summary>
   <br>
   
   - Alternatively, if you have R installed, you can use the following code to open the website.
